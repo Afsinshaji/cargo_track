@@ -63,5 +63,3 @@ class LoginImplementation extends LoginService {
     return result;
   }
 }
-
-

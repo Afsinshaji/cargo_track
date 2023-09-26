@@ -121,7 +121,6 @@ class EmailPasswordCard extends StatelessWidget {
                 changeColor: kWhiteColor.withOpacity(0.6),
                 onTap: () async {
                   if (loginKey.currentState!.validate()) {
-
                     await LoginApplication()
                         .login(
                             userName: emailController.text,
@@ -135,8 +134,6 @@ class EmailPasswordCard extends StatelessWidget {
                             ));
                       } else {}
                     });
-
-
                   }
                 },
                 width: size.width * 0.5,

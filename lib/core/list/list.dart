@@ -1,15 +1,18 @@
 final List detailsList = [
-  'SL NO',
-  'COMPANY',
-  'SHIP. NAME',
-  'INVOICE',
-  'PCS',
-  'WEIGHT',
-  'DISTRICT',
-  'STATUS',
-  'SENDING DATE',
-  'RECIEVE DATE',
-  'DESC. OF GOODS'
+  'id',
+  'invoiceno',
+  'date',
+  'district',
+  'company',
+  'address',
+  'phone',
+  'weight',
+  'pcs',
+  'shipmentname',
+  'sendingdate',
+  "recievingdate",
+  "status",
+  "sender_address"
 ];
 
 final List dummyDetails = [
