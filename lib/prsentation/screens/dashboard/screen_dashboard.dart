@@ -1,5 +1,6 @@
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/strings/strings.dart';
+import 'package:cargo_track/prsentation/screens/add_cargo/add_cargo.dart';
 import 'package:flutter/material.dart';
 
 import '../login/widget/logo_image_box.dart';
@@ -31,7 +32,14 @@ class DaashBoardScreen extends StatelessWidget {
               child: Column(
                 children: [StatusCard()],
               ),
-            )
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AddCargoPage(),
+                  ));
+                },
+                child: Text('Add Cargo')),
           ],
         )));
   }

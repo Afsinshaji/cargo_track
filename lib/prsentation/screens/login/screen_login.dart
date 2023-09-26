@@ -1,9 +1,8 @@
 import 'package:cargo_track/application/login/login.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
-import 'package:cargo_track/infrastructure/login/login_implementation.dart';
+import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 
-import 'package:cargo_track/prsentation/screens/search/screen_search.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/text_before_field.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/login_textfield.dart';
@@ -122,6 +121,7 @@ class EmailPasswordCard extends StatelessWidget {
                 changeColor: kWhiteColor.withOpacity(0.6),
                 onTap: () async {
                   if (loginKey.currentState!.validate()) {
+
                     await LoginApplication()
                         .login(
                             userName: emailController.text,
@@ -131,10 +131,12 @@ class EmailPasswordCard extends StatelessWidget {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => SearchScreen(),
+                              builder: (context) => MainPageScreen(),
                             ));
                       } else {}
                     });
+
+
                   }
                 },
                 width: size.width * 0.5,
