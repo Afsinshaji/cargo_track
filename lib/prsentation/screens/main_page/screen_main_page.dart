@@ -1,4 +1,4 @@
-import 'package:cargo_track/prsentation/screens/Reports/screen_reports.dart';
+import 'package:cargo_track/prsentation/screens/reports/screen_reports.dart';
 import 'package:cargo_track/prsentation/screens/dashboard/screen_dashboard.dart';
 import 'package:cargo_track/prsentation/screens/main_page/widgets/bottom_nav_bar.dart';
 import 'package:cargo_track/prsentation/screens/scanner/screen_scanner.dart';
@@ -13,7 +13,6 @@ class MainPageScreen extends StatelessWidget {
     SearchScreen(),
     const ScannerScreen(),
     const ReportsScreen()
-
   ];
 
   @override

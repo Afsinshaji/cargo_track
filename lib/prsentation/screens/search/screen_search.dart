@@ -14,9 +14,10 @@ class SearchScreen extends StatelessWidget {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        // Lazy loading
+        // For Lazy Loading in Future
       }
     });
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(size.height * 0.17),

@@ -2,7 +2,6 @@ import 'package:cargo_track/core/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class TextbeforeField extends StatelessWidget {
   const TextbeforeField({super.key, required this.text});
   final String text;

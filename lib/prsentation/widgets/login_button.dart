@@ -30,7 +30,6 @@ class ClickButton extends StatelessWidget {
           onTap();
         },
         style: ButtonStyle(
-          
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
               return changeColor;

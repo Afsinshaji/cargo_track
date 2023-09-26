@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                 height: size.height * 0.3,
                 child: Align(
                     alignment: Alignment.center,
-                    child: LogoImageBox(screenWidth: size.width))),
+                    child: LogoImageBox(logoHeight: size.width * 0.3))),
             Stack(
               children: [
                 Container(
