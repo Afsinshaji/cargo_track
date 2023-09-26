@@ -88,11 +88,11 @@ class _LoginTextFieldState extends State<LoginTextField> {
             if (text == null || text.isEmpty) {
               return "Can't be Empty";
             }
-            if (widget.isTextEmailType &&
-                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(text)) {
-              return 'Enter a valid Email';
-            }
+            // if (widget.isTextEmailType &&
+            //     !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            //         .hasMatch(text)) {
+            //   return 'Enter a valid Email';
+            // }
             if (widget.isTextPasswordConfirmType &&
                 text != widget.enteredPassword) {
               return "password doesn't match";

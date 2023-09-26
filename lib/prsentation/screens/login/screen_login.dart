@@ -1,5 +1,7 @@
+import 'package:cargo_track/application/login/login.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
+import 'package:cargo_track/infrastructure/login/login_implementation.dart';
 
 import 'package:cargo_track/prsentation/screens/search/screen_search.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/text_before_field.dart';
@@ -118,13 +120,21 @@ class EmailPasswordCard extends StatelessWidget {
             child: Center(
               child: ClickButton(
                 changeColor: kWhiteColor.withOpacity(0.6),
-                onTap: () {
+                onTap: () async {
                   if (loginKey.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => SearchScreen(),
-                        ));
+                    await LoginApplication()
+                        .login(
+                            userName: emailController.text,
+                            password: passwordController.text)
+                        .then((isLogged) {
+                      if (isLogged == true) {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => SearchScreen(),
+                            ));
+                      } else {}
+                    });
                   }
                 },
                 width: size.width * 0.5,
