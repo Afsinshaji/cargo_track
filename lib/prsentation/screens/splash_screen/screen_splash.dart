@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateUser() async {
     const auth = true;
-    if (auth == true) {
+    if (auth == false) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
