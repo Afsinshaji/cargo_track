@@ -1,5 +1,6 @@
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
+import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 
 import 'package:cargo_track/prsentation/screens/search/screen_search.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/text_before_field.dart';
@@ -123,7 +124,7 @@ class EmailPasswordCard extends StatelessWidget {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => SearchScreen(),
+                          builder: (context) => MainPageScreen(),
                         ));
                   }
                 },

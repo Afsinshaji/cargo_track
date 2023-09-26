@@ -10,6 +10,8 @@ class SearchScreen extends StatelessWidget {
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    int currentindex;
+
     final Size size = MediaQuery.of(context).size;
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -18,18 +20,86 @@ class SearchScreen extends StatelessWidget {
       }
     });
 
-    return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.17),
-          child: const SearchBar(),
-        ),
-        body: SafeArea(
-            child: ListView.builder(
-          itemCount: 30,
-          itemBuilder: (context, index) {
-            return InvoiceCardItem(size: size);
-          },
-        )));
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(size.height * 0.18),
+              child: Column(
+                children: [
+                  const SearchBar(),
+                  TabBar(tabs: [
+                    Tab(
+                      text: 'Invoice',
+                    ),
+                    Tab(
+                      text: 'Trip Sheet',
+                    )
+                  ])
+                ],
+              ),
+            ),
+          ),
+          //  PreferredSize(
+          //   preferredSize: Size.fromHeight(size.height * 0.17),
+          //   child: const SearchBar(),
+          // ),
+          body: SafeArea(
+              child: TabBarView(children: [
+            ListInvoice(size: size),
+            ListTripSheet(size: size)
+          ])
+              // TabBarView(children: [
+              //     ListInvoice(size: size),
+              //     ListTripSheet(size: size)
+              //   ])
+              //     ListView.builder(
+              //   itemCount: 30,
+              //   itemBuilder: (context, index) {
+              //     return InvoiceCardItem(size: size);
+              //   },
+              // )
+              )),
+    );
+  }
+}
+
+class ListInvoice extends StatelessWidget {
+  const ListInvoice({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 30,
+      itemBuilder: (context, index) {
+        return InvoiceCardItem(size: size);
+      },
+    );
+  }
+}
+
+class ListTripSheet extends StatelessWidget {
+  const ListTripSheet({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 30,
+      itemBuilder: (context, index) {
+        return InvoiceCardItem(size: size);
+      },
+    );
   }
 }
 
