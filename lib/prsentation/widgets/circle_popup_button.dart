@@ -6,7 +6,7 @@ class CirclePopUpButton extends StatelessWidget {
     super.key,
     this.iconSize = 28,
     this.leftPadding = 4,
-    this.radius=20,
+    this.radius = 20,
   });
   final double iconSize;
   final double leftPadding;

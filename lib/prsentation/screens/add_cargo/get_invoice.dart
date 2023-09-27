@@ -28,12 +28,9 @@ class getinvoice {
       print('heiii');
       // print(httpresponse.body.toString());
       final responsebody = jsonDecode(httpresponse.body);
-       invoice= Invoice.fromJson(responsebody);
+      invoice = Invoice.fromJson(responsebody);
 
-      
       print(invoice.company);
-
-      
     }
     return invoice;
   }

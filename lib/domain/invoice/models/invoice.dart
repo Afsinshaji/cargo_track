@@ -63,7 +63,7 @@ class Invoice {
 
   Map<String, dynamic> toJson() => _$InvoiceToJson(this);
 
- List<String?> tolist() {
+  List<String?> tolist() {
     return [
       id,
       invoiceno,
@@ -79,8 +79,6 @@ class Invoice {
       recievingdate,
       status,
       senderAddress,
-      recieverAddress,
-      rewight,
       goodsDesc,
       goodsStatus,
       lrNumber,

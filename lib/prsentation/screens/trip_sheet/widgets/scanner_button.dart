@@ -42,7 +42,10 @@ class ScannerButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.qr_code,color: kWhiteColor,),
+            const Icon(
+              Icons.qr_code,
+              color: kWhiteColor,
+            ),
             kWidth,
             Text(
               text,

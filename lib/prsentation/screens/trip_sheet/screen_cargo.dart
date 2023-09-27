@@ -22,9 +22,7 @@ class CargoScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: CirclePopUpButton(
-                 
-                ),
+                child: CirclePopUpButton(),
               ),
             ),
             TripSheetDetailsCard(

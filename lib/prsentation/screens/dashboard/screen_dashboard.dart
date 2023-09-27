@@ -1,4 +1,3 @@
-
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/strings/strings.dart';
 import 'package:cargo_track/prsentation/screens/add_cargo/add_cargo.dart';
@@ -42,12 +41,10 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>  AddCargoPage(),
+                    builder: (context) => AddCargoPage(),
                   ));
                 },
-
                 child: Text('Get Invoice'))
-
           ],
         )));
   }

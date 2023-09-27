@@ -25,24 +25,30 @@ class SearchScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(size.height * 0.18),
-              child: Column(
-                children: [
-                  SearchBar(),
-                  const TabBar(tabs: [
+          appBar:
+              // AppBar(
+              //   bottom:
+              PreferredSize(
+            preferredSize: Size.fromHeight(size.height * 0.235),
+            child: Column(
+              children: [
+                SearchBar(),
+                SizedBox(
+                  height: size.height * 0.08,
+                  child:
+                      const TabBar(indicatorPadding: EdgeInsets.all(10), tabs: [
                     Tab(
                       text: 'Invoice',
                     ),
                     Tab(
                       text: 'Trip Sheet',
                     )
-                  ])
-                ],
-              ),
+                  ]),
+                )
+              ],
             ),
           ),
+          // ),
           //  PreferredSize(
           //   preferredSize: Size.fromHeight(size.height * 0.17),
           //   child: const SearchBar(),
@@ -119,11 +125,11 @@ class InvoiceCardItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const InvoiceScreen(),
-              ));
+          // Navigator.push(
+          //     context,
+          //     CupertinoPageRoute(
+          //       builder: (context) => const InvoiceScreen(),
+          //     ));
         },
         child: Card(
           shape:
@@ -170,6 +176,7 @@ class SearchBar extends StatelessWidget {
           )),
       child: Column(
         children: [
+          kHeight50,
           kHeight30,
           // Row(
           //   children: [

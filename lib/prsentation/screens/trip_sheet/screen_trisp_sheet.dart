@@ -1,6 +1,7 @@
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/domain/trip_sheet/models/trip_sheet/trip_sheet.dart';
+import 'package:cargo_track/prsentation/screens/scanner/sample.dart';
 import 'package:cargo_track/prsentation/screens/scanner/screen_scanner.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/screen_cargo.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/widgets/scanner_button.dart';
@@ -87,7 +88,8 @@ class TripSheetScreen extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => const ScannerScreen(),
+                  builder: (context) => BarcodeScannerWithZoom(
+                      tripSheetId: tripSheetList[0].tripSheetId ??= ''),
                 ));
           },
           text: 'SCAN',

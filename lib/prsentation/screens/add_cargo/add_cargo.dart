@@ -8,7 +8,6 @@ import 'package:cargo_track/core/strings/strings.dart';
 import 'package:cargo_track/domain/invoice/models/invoice.dart';
 import 'package:cargo_track/prsentation/screens/add_cargo/get_invoice.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

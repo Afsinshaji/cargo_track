@@ -168,13 +168,12 @@
 //   }
 // }
 
-
- import 'package:image_picker/image_picker.dart';
+import 'package:cargo_track/core/colors/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:mobile_scanner/mobile_scanner.dart';
-
 
 class BarcodeScannerWithoutController extends StatefulWidget {
   const BarcodeScannerWithoutController({Key? key}) : super(key: key);
@@ -296,14 +295,6 @@ class ScannerErrorWidget extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
-
-
 class BarcodeScannerWithZoom extends StatefulWidget {
   const BarcodeScannerWithZoom({Key? key}) : super(key: key);
 
@@ -325,13 +316,20 @@ class _BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('With zoom slider')),
       backgroundColor: Colors.black,
       body: Builder(
         builder: (context) {
           return Stack(
             children: [
               MobileScanner(
+                overlay: Container(
+                  margin: EdgeInsets.all(100),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    color: kBlueColor,
+                    width: 10,
+                  )),
+                ),
                 controller: controller,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, child) {
@@ -391,19 +389,6 @@ class _BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                             iconSize: 32.0,
                             onPressed: () => controller.toggleTorch(),
                           ),
-                          IconButton(
-                            color: Colors.white,
-                            icon: isStarted
-                                ? const Icon(Icons.stop)
-                                : const Icon(Icons.play_arrow),
-                            iconSize: 32.0,
-                            onPressed: () => setState(() {
-                              isStarted
-                                  ? controller.stop()
-                                  : controller.start();
-                              isStarted = !isStarted;
-                            }),
-                          ),
                           Center(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width - 200,
@@ -411,7 +396,7 @@ class _BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                               child: FittedBox(
                                 child: Text(
                                   barcode?.barcodes.first.rawValue ??
-                                      'Scan something!',
+                                      'Scan Barcode',
                                   overflow: TextOverflow.fade,
                                   style: Theme.of(context)
                                       .textTheme
@@ -420,25 +405,6 @@ class _BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                                 ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            color: Colors.white,
-                            icon: ValueListenableBuilder(
-                              valueListenable: controller.cameraFacingState,
-                              builder: (context, state, child) {
-                                if (state == null) {
-                                  return const Icon(Icons.camera_front);
-                                }
-                                switch (state as CameraFacing) {
-                                  case CameraFacing.front:
-                                    return const Icon(Icons.camera_front);
-                                  case CameraFacing.back:
-                                    return const Icon(Icons.camera_rear);
-                                }
-                              },
-                            ),
-                            iconSize: 32.0,
-                            onPressed: () => controller.switchCamera(),
                           ),
                           IconButton(
                             color: Colors.white,

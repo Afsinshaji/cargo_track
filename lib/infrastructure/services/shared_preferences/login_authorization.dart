@@ -29,7 +29,8 @@ class LoginAuthorization {
     final String authToken = sharedPreferences.getString('AuthToken')!;
     return authToken;
   }
- Future deleteAuthToken()async{
+
+  Future deleteAuthToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('AuthToken', '');
   }

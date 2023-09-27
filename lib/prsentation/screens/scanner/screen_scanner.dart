@@ -27,17 +27,14 @@ class ScannerScreenState extends State<ScannerScreen>
             alignment: Alignment.topCenter,
             children: [
               MobileScanner(
-                
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, child) {
                   return ScannerErrorWidget(error: error);
                 },
                 onDetect: (capture) {
                   setState(() {
-                   this.capture = capture;
-                 
+                    this.capture = capture;
                   });
-                  
                 },
               ),
               Align(
@@ -57,16 +54,15 @@ class ScannerScreenState extends State<ScannerScreen>
                             child: Column(
                               children: [
                                 Text(
-                                  capture?.barcodes.first.rawValue ??
-                                      'Scan',
+                                  capture?.barcodes.first.rawValue ?? 'Scan',
                                   overflow: TextOverflow.fade,
-                                  
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium!
                                       .copyWith(color: Colors.white),
                                 ),
-                                ClickButton(onTap: (){}, width: 500 , text: 'Capture')
+                                ClickButton(
+                                    onTap: () {}, width: 500, text: 'Capture')
                               ],
                             ),
                           ),

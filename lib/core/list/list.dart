@@ -13,6 +13,11 @@ final List detailsList = [
   "recievingdate",
   "status",
   "sender_address"
+      'goodsDesc',
+  'goodsStatus',
+  'lrNumber',
+  'createdAt',
+  'updatedAt',
 ];
 
 final List dummyDetails = [
