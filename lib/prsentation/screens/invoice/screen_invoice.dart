@@ -274,8 +274,5 @@ Future<File> generateBarcode(String data) async {
   final file = File(filePath);
   await file.writeAsString(svg);
 
-  // Log the file path
-  print(filePath);
-
   return file;
 }

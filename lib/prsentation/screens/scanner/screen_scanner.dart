@@ -1,3 +1,5 @@
+import 'package:cargo_track/core/colors/colors.dart';
+import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -15,21 +17,27 @@ class ScannerScreenState extends State<ScannerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Without controller')),
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: kBlueColor,
+      ),
+      backgroundColor: kBlueColor,
       body: Builder(
         builder: (context) {
           return Stack(
+            alignment: Alignment.topCenter,
             children: [
               MobileScanner(
+                
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, child) {
                   return ScannerErrorWidget(error: error);
                 },
                 onDetect: (capture) {
                   setState(() {
-                    this.capture = capture;
+                   this.capture = capture;
+                 
                   });
+                  
                 },
               ),
               Align(
@@ -46,14 +54,20 @@ class ScannerScreenState extends State<ScannerScreen>
                           width: MediaQuery.of(context).size.width - 120,
                           height: 50,
                           child: FittedBox(
-                            child: Text(
-                              capture?.barcodes.first.rawValue ??
-                                  'Scan something!',
-                              overflow: TextOverflow.fade,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(color: Colors.white),
+                            child: Column(
+                              children: [
+                                Text(
+                                  capture?.barcodes.first.rawValue ??
+                                      'Scan',
+                                  overflow: TextOverflow.fade,
+                                  
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                ClickButton(onTap: (){}, width: 500 , text: 'Capture')
+                              ],
                             ),
                           ),
                         ),

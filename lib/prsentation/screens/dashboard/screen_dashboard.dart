@@ -25,21 +25,21 @@ class DaashBoardScreen extends StatelessWidget {
               child: Image.network(truckImage),
             ),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: kBlueColor,
                   borderRadius:
                       BorderRadius.only(topLeft: Radius.circular(30))),
-              child: Column(
+              child: const Column(
                 children: [StatusCard()],
               ),
             ),
             ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AddCargoPage(),
+                    builder: (context) => const AddCargoPage(),
                   ));
                 },
-                child: Text('Add Cargo')),
+                child: const Text('Add Cargo')),
           ],
         )));
   }

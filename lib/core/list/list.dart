@@ -25,3 +25,21 @@ final List dummyDetails = [
   '21/09/2023',
   'House Hold Items'
 ];
+
+final List tripSheetDetails = [
+  'id',
+  'tripSheetId',
+  'goodsId',
+  'invoiceNumber',
+  'cargoId',
+  'cargoName',
+  'place',
+  'mobilenumber',
+  'quantity',
+  'weight',
+  'status',
+  'message',
+  'image',
+  'createdAt',
+  'updatedAt',
+];

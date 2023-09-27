@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:cargo_track/application/trip_sheet/trip_sheet.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/prsentation/screens/invoice/screen_invoice.dart';
+import 'package:cargo_track/prsentation/screens/trip_sheet/screen_trisp_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,8 +14,6 @@ class SearchScreen extends StatelessWidget {
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    int currentindex;
-
     final Size size = MediaQuery.of(context).size;
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -28,8 +30,8 @@ class SearchScreen extends StatelessWidget {
               preferredSize: Size.fromHeight(size.height * 0.18),
               child: Column(
                 children: [
-                  const SearchBar(),
-                  TabBar(tabs: [
+                  SearchBar(),
+                  const TabBar(tabs: [
                     Tab(
                       text: 'Invoice',
                     ),
@@ -152,10 +154,11 @@ class InvoiceCardItem extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({
+  SearchBar({
     super.key,
   });
 
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,29 +171,29 @@ class SearchBar extends StatelessWidget {
       child: Column(
         children: [
           kHeight30,
-          Row(
-            children: [
-              kWidth20,
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.menu,
-                    color: kWhiteColor,
-                  )),
-              kWidth50,
-              Text(
-                'Search Invoice',
-                style: GoogleFonts.openSans(
-                  textStyle: const TextStyle(
-                    letterSpacing: .3,
-                    fontSize: 22,
-                    color: kWhiteColor,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     kWidth20,
+          //     IconButton(
+          //         onPressed: () {},
+          //         icon: const Icon(
+          //           Icons.menu,
+          //           color: kWhiteColor,
+          //         )),
+          //     kWidth50,
+          //     Text(
+          //       'Search Invoice',
+          //       style: GoogleFonts.openSans(
+          //         textStyle: const TextStyle(
+          //           letterSpacing: .3,
+          //           fontSize: 22,
+          //           color: kWhiteColor,
+          //           fontWeight: FontWeight.w700,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Material(
@@ -198,6 +201,7 @@ class SearchBar extends StatelessWidget {
               elevation: 2,
               borderRadius: BorderRadius.circular(25),
               child: TextField(
+                controller: searchController,
                 keyboardType: TextInputType.number,
                 style: GoogleFonts.openSans(
                   textStyle: const TextStyle(
@@ -215,8 +219,20 @@ class SearchBar extends StatelessWidget {
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 20.0),
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.search),
+                        onPressed: () async {
+                          await TripSheetApplication()
+                              .getCargo(int.parse(searchController.text))
+                              .then((tripSheet) {
+                            log(tripSheet.toString());
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) =>
+                                      TripSheetScreen(tripSheetList: tripSheet),
+                                ));
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_forward),
                         color: kBlackColor,
                       ),
                     ),

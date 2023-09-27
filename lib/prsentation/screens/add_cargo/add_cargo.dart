@@ -16,7 +16,7 @@ class AddCargoPage extends StatelessWidget {
               width: 300,
               child: TextFormField(
                 controller: invoicecontroller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.file_open),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30)))),

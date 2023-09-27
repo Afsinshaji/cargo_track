@@ -1,6 +1,7 @@
 import 'package:cargo_track/application/login/login.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
+import 'package:cargo_track/infrastructure/services/shared_preferences/login_authorization.dart';
 import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 
 import 'package:cargo_track/prsentation/screens/login/widget/text_before_field.dart';
@@ -8,6 +9,7 @@ import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/login_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'widget/logo_image_box.dart';
 
@@ -95,11 +97,11 @@ class EmailPasswordCard extends StatelessWidget {
         elevation: 3,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           kHeight30,
-          const TextbeforeField(text: 'Email'),
+          const TextbeforeField(text: 'UserName'),
           kHeight,
           LoginTextField(
             controller: emailController,
-            text: "Enter Email Id",
+            text: "Enter UserName",
             icon: Icons.person_2_outlined,
             isTextPasswordType: false,
             isTextEmailType: true,
@@ -121,22 +123,33 @@ class EmailPasswordCard extends StatelessWidget {
                 changeColor: kWhiteColor.withOpacity(0.6),
                 onTap: () async {
                   if (loginKey.currentState!.validate()) {
-
                     await LoginApplication()
                         .login(
                             userName: emailController.text,
                             password: passwordController.text)
-                        .then((isLogged) {
-                      if (isLogged == true) {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => MainPageScreen(),
-                            ));
-                      } else {}
+                        .then((isLogged) async {
+                      if (isLogged['status'] == true) {
+                        await LoginAuthorization.instance
+                            .saveAuthorizationToken(isLogged['authToken']);
+                        await LoginAuthorization.instance.setLoginTrue().then(
+                              (value) => Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => MainPageScreen(),
+                                ),
+                              ),
+                            );
+                      } else {
+                        //Type An Error Here
+                        Fluttertoast.showToast(
+                          msg: 'Credentials are not Valid',
+                          toastLength: Toast.LENGTH_SHORT,
+                          backgroundColor: Colors.red,
+                          textColor: kWhiteColor,
+                          fontSize: 16,
+                        );
+                      }
                     });
-
-
                   }
                 },
                 width: size.width * 0.5,

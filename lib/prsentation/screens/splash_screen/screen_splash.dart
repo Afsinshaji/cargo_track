@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/strings/strings.dart';
+import 'package:cargo_track/infrastructure/services/shared_preferences/login_authorization.dart';
 
 import 'package:cargo_track/prsentation/screens/login/screen_login.dart';
 import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
@@ -35,22 +36,23 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateUser() async {
-    const auth = true;
-    if (auth == false) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainPageScreen(),
-        ),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    }
+    await LoginAuthorization.instance.getLoginStatus().then((auth) {
+      if (auth == true) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainPageScreen(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+      }
+    });
   }
 
   @override
