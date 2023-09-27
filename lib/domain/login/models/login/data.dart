@@ -4,13 +4,19 @@ part 'data.g.dart';
 
 @JsonSerializable()
 class Data {
+  @JsonKey(name: 'id')
   String? id;
+  @JsonKey(name: 'name')
   String? name;
+  @JsonKey(name: 'username')
   String? username;
+  @JsonKey(name: 'mobile')
   String? mobile;
+  @JsonKey(name: 'status')
   String? status;
   @JsonKey(name: 'api_token')
   String? apiToken;
+  @JsonKey(name: 'role')
   String? role;
 
   Data({

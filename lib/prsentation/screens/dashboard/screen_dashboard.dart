@@ -45,10 +45,12 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AddCargoPage(),
+                    builder: (context) => const AddCargoPage(),
                   ));
                 },
+
                 child: Text('Get Invoice'))
+
           ],
         )));
   }
