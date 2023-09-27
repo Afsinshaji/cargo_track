@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
+import 'package:cargo_track/domain/invoice/invoice_service.dart';
 import 'package:cargo_track/domain/invoice/models/invoice.dart';
-
 import 'package:http/http.dart' as http;
 
-class getinvoice {
+class InvoiceImplementation extends InvoiceService {
+  @override
   Future<Invoice?> getInvoice({required String invoicenumber}) async {
     Invoice? invoice;
     final url = "${ApiEndPoints.getInvoice}$invoicenumber";
-    final String token = 'n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5';
-    print('hellooo');
+    const String token = 'n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5';
 
     //using http
     final uri = Uri.parse(url);
@@ -25,15 +25,9 @@ class getinvoice {
       headers: headers,
     );
     if (httpresponse.statusCode == 401) {
-      print('heiii');
       // print(httpresponse.body.toString());
       final responsebody = jsonDecode(httpresponse.body);
-       invoice= Invoice.fromJson(responsebody);
-
-      
-      print(invoice.company);
-
-      
+      invoice = Invoice.fromJson(responsebody);
     }
     return invoice;
   }

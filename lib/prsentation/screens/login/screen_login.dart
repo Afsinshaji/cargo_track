@@ -5,6 +5,7 @@ import 'package:cargo_track/infrastructure/services/shared_preferences/login_aut
 import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 
 import 'package:cargo_track/prsentation/screens/login/widget/text_before_field.dart';
+import 'package:cargo_track/prsentation/screens/main_page/widgets/bottom_nav_bar.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/login_textfield.dart';
 import 'package:flutter/cupertino.dart';
@@ -131,22 +132,25 @@ class EmailPasswordCard extends StatelessWidget {
                       if (isLogged['status'] == true) {
                         await LoginAuthorization.instance
                             .saveAuthorizationToken(isLogged['authToken']);
-                        await LoginAuthorization.instance.setLoginTrue().then(
-                              (value) => Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => MainPageScreen(),
-                                ),
-                              ),
-                            );
+                        await LoginAuthorization.instance
+                            .setLoginTrue()
+                            .then((value) {
+                          indexChangeNotifier.value = 0;
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => MainPageScreen(),
+                            ),
+                          );
+                        });
                       } else {
                         //Type An Error Here
                         Fluttertoast.showToast(
                           msg: 'Credentials are not Valid',
-                          toastLength: Toast.LENGTH_SHORT,
+                          toastLength: Toast.LENGTH_LONG,
                           backgroundColor: Colors.red,
                           textColor: kWhiteColor,
-                          fontSize: 16,
+                          fontSize: 22,
                         );
                       }
                     });

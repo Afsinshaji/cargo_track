@@ -4,16 +4,16 @@ import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/core/list/list.dart';
 import 'package:cargo_track/core/strings/strings.dart';
-import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
+
+import 'package:cargo_track/domain/invoice/models/invoice.dart';
 import 'package:cargo_track/prsentation/screens/add_cargo/get_invoice.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 
 class AddCargoPage extends StatefulWidget {
-  AddCargoPage({
+  const AddCargoPage({
     super.key,
   });
   static ValueNotifier<Invoice?> invoiceNotifier =
@@ -30,7 +30,6 @@ class _AddCargoPageState extends State<AddCargoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kBlueColor,
       body: SafeArea(

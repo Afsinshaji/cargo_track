@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^6.1.0
   google_nav_bar: ^5.0.6
   http: ^1.1.0
+  image_picker: ^1.0.4
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
   mobile_scanner: ^3.4.1
