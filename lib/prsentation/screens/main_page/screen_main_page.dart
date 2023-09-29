@@ -12,7 +12,7 @@ class MainPageScreen extends StatelessWidget {
   final List _pages = [
     const DaashBoardScreen(),
     SearchScreen(),
-    const BarcodeScannerWithZoom(),
+    BarcodeScannerWithZoom(),
     const ReportsScreen()
   ];
 

@@ -10,8 +10,9 @@ class ClickButton extends StatelessWidget {
     this.changeColor = kBlueColor,
     this.backGroundColor = kBlueColor,
     this.textColor = kWhiteColor,
+    this.height = 50,
   });
-
+  final double height;
   final double width;
   final Function onTap;
   final String text;
@@ -22,7 +23,7 @@ class ClickButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: 50,
+      height: height,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(

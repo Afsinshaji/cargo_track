@@ -178,29 +178,6 @@ class SearchBar extends StatelessWidget {
         children: [
           kHeight50,
           kHeight30,
-          // Row(
-          //   children: [
-          //     kWidth20,
-          //     IconButton(
-          //         onPressed: () {},
-          //         icon: const Icon(
-          //           Icons.menu,
-          //           color: kWhiteColor,
-          //         )),
-          //     kWidth50,
-          //     Text(
-          //       'Search Invoice',
-          //       style: GoogleFonts.openSans(
-          //         textStyle: const TextStyle(
-          //           letterSpacing: .3,
-          //           fontSize: 22,
-          //           color: kWhiteColor,
-          //           fontWeight: FontWeight.w700,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Material(

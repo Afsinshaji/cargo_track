@@ -43,6 +43,7 @@ dependencies:
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
   mobile_scanner: ^3.4.1
+  mysql1: ^0.20.0
   path_provider: ^2.1.1
   shared_preferences: ^2.2.1
 

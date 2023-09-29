@@ -27,7 +27,6 @@ class CargoImplementation extends CargoService {
       'Authorization': 'Bearer n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5',
       'Accept': '*/*',
       'Content-Type': 'application/json',
-      'Content-Length': '53',
     };
     final body = jsonEncode({
       "invoiceno": cargo.invoiceno,

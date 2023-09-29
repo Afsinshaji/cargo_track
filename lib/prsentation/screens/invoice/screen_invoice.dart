@@ -19,7 +19,10 @@ import 'package:barcode/barcode.dart';
 
 class InvoiceScreen extends StatefulWidget {
   const InvoiceScreen(
-      {super.key, required this.invoice, this.isFromTripSheet = false,  this.tripSheetId=''});
+      {super.key,
+      required this.invoice,
+      this.isFromTripSheet = false,
+      this.tripSheetId = ''});
   final Invoice invoice;
   final bool isFromTripSheet;
   final String tripSheetId;
@@ -111,7 +114,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               )
             : ClickButton(
                 onTap: () async {
-                  addInvoiceToCargo(widget.invoice);
+                  addInvoiceToCargo(widget.invoice, widget.tripSheetId);
                 },
                 text: 'Add to tripsheet',
                 width: size.width * 0.5,
@@ -122,10 +125,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
-  void addInvoiceToCargo(Invoice invoice) {
-    final cargo = Cargo(address: invoice.recieverAddress,company: invoice.company,district:invoice.district ,id:invoice.id ,
-    
-    invoiceno: invoice.invoiceno,pcs: invoice.pcs,phone: invoice.phone,tripSheetId:  ,weight: invoice.weight,);
+  void addInvoiceToCargo(Invoice invoice, String tripSheetId) {
+    final cargo = Cargo(
+      address: invoice.recieverAddress,
+      company: invoice.company,
+      district: invoice.district,
+      id: invoice.id,
+      invoiceno: invoice.invoiceno,
+      pcs: invoice.pcs,
+      phone: invoice.phone,
+      tripSheetId: tripSheetId,
+      weight: invoice.weight,
+    );
 
     CargoApplication().addCargo(cargo);
   }
@@ -218,7 +229,7 @@ class DetailsCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FieldText(details: details[index]),
-                            DetailsText(dummy: dummy[index]),
+                            DetailsText(dummy: dummy[index] ??= ''),
                           ],
                         ),
                       ))),
