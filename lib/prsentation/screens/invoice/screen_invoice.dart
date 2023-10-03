@@ -1,8 +1,12 @@
 import 'dart:io';
-import 'package:cargo_track/application/cargo/cargo.dart';
+
+import 'package:cargo_track/application/cargo/cargo_bloc.dart';
+import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/domain/cargo/models/cargo/cargo.dart';
-import 'package:cargo_track/domain/invoice/models/invoice.dart';
+import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
+
 import 'package:cargo_track/prsentation/widgets/circle_popup_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:cargo_track/core/colors/colors.dart';
@@ -19,11 +23,8 @@ import 'package:barcode/barcode.dart';
 
 class InvoiceScreen extends StatefulWidget {
   const InvoiceScreen(
-      {super.key,
-      required this.invoice,
-      this.isFromTripSheet = false,
-      this.tripSheetId = ''});
-  final Invoice invoice;
+      {super.key, this.isFromTripSheet = false, this.tripSheetId = ''});
+
   final bool isFromTripSheet;
   final String tripSheetId;
   @override
@@ -38,26 +39,66 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    Invoice invoice = Invoice.empty();
+    List fieldList = [];
+    String recieverAddress = '';
     return Scaffold(
       backgroundColor: kBlueColor,
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: CirclePopUpButton(),
-              ),
-            ),
-            DetailsCard(details: details, dummy: widget.invoice.tolist()),
-            RcieverAddressCard(
-                recieverAddress: widget.invoice.recieverAddress ??= ''),
-            reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
-            kHeight50,
-            kHeight30,
-          ],
+      body: SafeArea(child: SingleChildScrollView(
+        child: BlocBuilder<InvoiceBloc, InvoiceState>(
+          builder: (context, state) {
+            if (state is displayInvoice) {
+              if (state.isLoading) {
+                return Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.4,
+                      ),
+                      const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
+              }
+              invoice = state.invoice;
+              if (invoice.data != null) {
+                fieldList = invoice.data!.toList();
+                recieverAddress = invoice.data!.recieverAddress ??= '';
+              }
+            }
+            if (fieldList.isEmpty) {
+              return Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.4,
+                    ),
+                    const Text(
+                      'Empty',
+                      style: TextStyle(color: kWhiteColor),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CirclePopUpButton(),
+                  ),
+                ),
+                DetailsCard(details: details, dummy: fieldList),
+                RcieverAddressCard(recieverAddress: recieverAddress),
+                reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
+                kHeight50,
+                kHeight30,
+              ],
+            );
+          },
         ),
       )),
       floatingActionButton: Padding(
@@ -114,7 +155,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               )
             : ClickButton(
                 onTap: () async {
-                  addInvoiceToCargo(widget.invoice, widget.tripSheetId);
+                  addInvoiceToCargo(invoice, widget.tripSheetId);
                 },
                 text: 'Add to tripsheet',
                 width: size.width * 0.5,
@@ -127,18 +168,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   void addInvoiceToCargo(Invoice invoice, String tripSheetId) {
     final cargo = Cargo(
-      address: invoice.recieverAddress,
-      company: invoice.company,
-      district: invoice.district,
-      id: invoice.id,
-      invoiceno: invoice.invoiceno,
-      pcs: invoice.pcs,
-      phone: invoice.phone,
+      address: invoice.data!.recieverAddress,
+      company: invoice.data!.company,
+      district: invoice.data!.district,
+      id: invoice.data!.id.toString(),
+      invoiceno: invoice.data!.invoiceno,
+      pcs: invoice.data!.pcs,
+      phone: invoice.data!.phone,
       tripSheetId: tripSheetId,
-      weight: invoice.weight,
+      weight: invoice.data!.weight,
     );
 
-    CargoApplication().addCargo(cargo);
+    BlocProvider.of<CargoBloc>(context).add(CargoEvent.addCargo(cargo: cargo));
   }
 }
 

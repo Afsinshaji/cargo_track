@@ -169,11 +169,13 @@
 // }
 import 'dart:async';
 import 'dart:developer';
-import 'package:cargo_track/application/invoice/invoice.dart';
+
+import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/prsentation/screens/invoice/screen_invoice.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -413,7 +415,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                         IconButton(
                             color: kWhiteColor,
                             iconSize: 32.0,
-                            onPressed: () async {
+                            onPressed: () {
                               if (capture != null) {
                                 final barcodeText =
                                     capture!.barcodes.first.rawValue;
@@ -425,7 +427,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                                       TorchState.on) {
                                     controller.toggleTorch();
                                   }
-                                  await navigateToPage(barcodeText);
+                                  navigateToPage(barcodeText);
                                   // });
                                 }
                               }
@@ -507,20 +509,26 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
         );
   }
 
-  Future navigateToPage(String barcodeText) async {
+  navigateToPage(String barcodeText) {
     log(barcodeText);
     // Your navigation code here
-    await InvoiceApplication()
-        .getInvoice(barcodeText)
-        .then((invoice) => Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => InvoiceScreen(
-                invoice: invoice,
-                isFromTripSheet: true,
-                tripSheetId: widget.tripSheetId,
-              ),
-            )));
+    final invoiceBloc = BlocProvider.of<InvoiceBloc>(context);
+    invoiceBloc.add(InvoiceEvent.getInvoice(invoiceNumber: barcodeText));
+    final value = invoiceBloc.state;
+
+    if (value is displayInvoice) {
+      log(value.invoice.toString());
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => InvoiceScreen(
+              isFromTripSheet: true,
+              tripSheetId: widget.tripSheetId,
+            ),
+          ));
+    } else {
+      log('Try Again');
+    }
     widget.hasFunctionRun.value = true;
   }
 }

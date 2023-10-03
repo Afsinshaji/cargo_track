@@ -1,6 +1,9 @@
-import 'package:cargo_track/application/login/login.dart';
+import 'dart:developer';
+
+import 'package:cargo_track/application/login/login_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
+import 'package:cargo_track/infrastructure/services/secure_storage/secure_storage.dart';
 import 'package:cargo_track/infrastructure/services/shared_preferences/login_authorization.dart';
 import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 
@@ -10,6 +13,7 @@ import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:cargo_track/prsentation/screens/login/widget/login_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'widget/logo_image_box.dart';
@@ -117,49 +121,69 @@ class EmailPasswordCard extends StatelessWidget {
             isTextPasswordType: true,
           ),
           kHeight20,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Center(
-              child: ClickButton(
-                changeColor: kWhiteColor.withOpacity(0.6),
-                onTap: () async {
-                  if (loginKey.currentState!.validate()) {
-                    await LoginApplication()
-                        .login(
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is loginAuth) {
+                log('0');
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state.statusMap['status'] == true) {
+                  log('A');
+                  StorageService.instance.writeSecureData(StorageItem(
+                    'authToken',
+                    state.statusMap['authToken'],
+                  ));
+                  log('B');
+                  log(state.statusMap['authToken']);
+                  LoginAuthorization.instance
+                      .saveAuthorizationToken(state.statusMap['authToken']);
+
+                  LoginAuthorization.instance.setLoginTrue().then((value) {
+                    indexChangeNotifier.value = 0;
+
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => MainPageScreen(),
+                      ),
+                    );
+                    BlocProvider.of<LoginBloc>(context)
+                        .add(const LoginEvent.loginInitialized());
+                  });
+                } else {
+                  //Type An Error Here
+
+                  Fluttertoast.showToast(
+                    msg: 'Credentials are not Valid',
+                    toastLength: Toast.LENGTH_LONG,
+                    backgroundColor: Colors.red,
+                    textColor: kWhiteColor,
+                    fontSize: 22,
+                  );
+                  BlocProvider.of<LoginBloc>(context)
+                      .add(const LoginEvent.loginInitialized());
+                }
+              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Center(
+                  child: ClickButton(
+                    changeColor: kWhiteColor.withOpacity(0.6),
+                    onTap: () async {
+                      if (loginKey.currentState!.validate()) {
+                        final loginBloc = BlocProvider.of<LoginBloc>(context);
+                        loginBloc.add(LoginEvent.login(
                             userName: emailController.text,
-                            password: passwordController.text)
-                        .then((isLogged) async {
-                      if (isLogged['status'] == true) {
-                        await LoginAuthorization.instance
-                            .saveAuthorizationToken(isLogged['authToken']);
-                        await LoginAuthorization.instance
-                            .setLoginTrue()
-                            .then((value) {
-                          indexChangeNotifier.value = 0;
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => MainPageScreen(),
-                            ),
-                          );
-                        });
-                      } else {
-                        //Type An Error Here
-                        Fluttertoast.showToast(
-                          msg: 'Credentials are not Valid',
-                          toastLength: Toast.LENGTH_LONG,
-                          backgroundColor: Colors.red,
-                          textColor: kWhiteColor,
-                          fontSize: 22,
-                        );
+                            password: passwordController.text));
                       }
-                    });
-                  }
-                },
-                width: size.width * 0.5,
-                text: 'Login',
-              ),
-            ),
+                    },
+                    width: size.width * 0.5,
+                    text: 'Login',
+                  ),
+                ),
+              );
+            },
           ),
           kHeight,
         ]),

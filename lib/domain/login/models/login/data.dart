@@ -4,20 +4,17 @@ part 'data.g.dart';
 
 @JsonSerializable()
 class Data {
-  @JsonKey(name: 'id')
-  String? id;
-  @JsonKey(name: 'name')
+  int? id;
   String? name;
-  @JsonKey(name: 'username')
   String? username;
-  @JsonKey(name: 'mobile')
   String? mobile;
-  @JsonKey(name: 'status')
-  String? status;
+  int? status;
   @JsonKey(name: 'api_token')
   String? apiToken;
-  @JsonKey(name: 'role')
-  String? role;
+  @JsonKey(name: 'created_at')
+  DateTime? createdAt;
+  @JsonKey(name: 'updated_at')
+  DateTime? updatedAt;
 
   Data({
     this.id,
@@ -26,7 +23,8 @@ class Data {
     this.mobile,
     this.status,
     this.apiToken,
-    this.role,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

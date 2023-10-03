@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'invoice.dart';
+part of 'data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
-      id: json['id'] as String?,
+Data _$DataFromJson(Map<String, dynamic> json) => Data(
+      id: json['id'] as int?,
       invoiceno: json['invoiceno'] as String?,
       date: json['date'] as String?,
       district: json['district'] as String?,
@@ -19,18 +19,19 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
       shipmentname: json['shipmentname'] as String?,
       sendingdate: json['sendingdate'] as String?,
       recievingdate: json['recievingdate'] as String?,
-      status: json['status'] as String?,
+      status: json['status'] as int?,
       senderAddress: json['sender_address'],
       recieverAddress: json['reciever_address'] as String?,
-      rewight: json['rewight'] as String?,
+      rewight: json['rewight'] as int?,
       goodsDesc: json['goods_desc'] as String?,
       goodsStatus: json['goods_status'] as String?,
-      lrNumber: json['lr_number'] as String?,
-      createdAt: json['created_at'] as String?,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
       updatedAt: json['updated_at'] as String?,
     );
 
-Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
+Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'id': instance.id,
       'invoiceno': instance.invoiceno,
       'date': instance.date,
@@ -49,7 +50,6 @@ Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
       'rewight': instance.rewight,
       'goods_desc': instance.goodsDesc,
       'goods_status': instance.goodsStatus,
-      'lr_number': instance.lrNumber,
-      'created_at': instance.createdAt,
+      'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt,
     };

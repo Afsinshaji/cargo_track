@@ -12,10 +12,10 @@ final List detailsList = [
   'sendingdate',
   "recievingdate",
   "status",
-  "sender_address"
-      'goodsDesc',
+  "sender_address",
+  'reweight',
+  'goodsDesc',
   'goodsStatus',
-  'lrNumber',
   'createdAt',
   'updatedAt',
 ];

@@ -4,8 +4,8 @@ import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/core/list/list.dart';
 import 'package:cargo_track/core/strings/strings.dart';
+import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
 
-import 'package:cargo_track/domain/invoice/models/invoice.dart';
 import 'package:cargo_track/prsentation/screens/add_cargo/get_invoice.dart';
 
 import 'package:flutter/material.dart';
@@ -55,8 +55,6 @@ class _AddCargoPageState extends State<AddCargoPage> {
                     .getInvoice(invoicenumber: invoicecontroller.text);
                 AddCargoPage.invoiceNotifier.value = invoice;
 
-                print(invoice!.invoiceno);
-                print(invoice!.createdAt.toString());
                 setState(() {
                   invoiceData = invoice;
                 });
@@ -83,7 +81,7 @@ class _AddCargoPageState extends State<AddCargoPage> {
             valueListenable: AddCargoPage.invoiceNotifier,
             builder: (context, value, child) {
               if (value != null) {
-                final datalist = value.tolist();
+                final datalist = value.data!.toList();
                 return Column(
                   children: [
                     Padding(
@@ -144,7 +142,7 @@ class _AddCargoPageState extends State<AddCargoPage> {
                                   height: 10),
                               kHeight,
                               Text(
-                                value.recieverAddress!,
+                                value.data!.recieverAddress!,
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                     letterSpacing: .5,

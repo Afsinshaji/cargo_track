@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:cargo_track/domain/cargo/cargo_service.dart';
 import 'package:cargo_track/domain/cargo/models/cargo/cargo.dart';
 import 'package:cargo_track/domain/core/api_end_points.dart';
+import 'package:cargo_track/domain/core/failure/failure.dart';
 import 'package:cargo_track/domain/status/status/status.dart';
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
 class CargoImplementation extends CargoService {
@@ -18,7 +20,7 @@ class CargoImplementation extends CargoService {
   //
 
   @override
-  Future<Status> addCargo({required Cargo cargo}) async {
+  Future<Either<MainFailure, Status>> addCargo({required Cargo cargo}) async {
     const url = ApiEndPoints.addCargo;
     final uri = Uri.parse(url);
     final headers = {
@@ -50,6 +52,6 @@ class CargoImplementation extends CargoService {
     final result = Status.fromJson(responsebody);
     log(result.toString());
 
-    return result;
+    return Right(result);
   }
 }

@@ -6,11 +6,11 @@ part 'login.g.dart';
 
 @JsonSerializable()
 class Login {
-  bool? status;
-  String? message;
+  String? success;
+  String? status;
   Data? data;
 
-  Login({this.status, this.message, this.data});
+  Login({this.success, this.status, this.data});
 
   factory Login.fromJson(Map<String, dynamic> json) => _$LoginFromJson(json);
 

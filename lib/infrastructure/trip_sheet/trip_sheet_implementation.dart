@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
+import 'package:cargo_track/domain/core/failure/failure.dart';
 import 'package:cargo_track/domain/trip_sheet/models/trip_sheet/trip_sheet.dart';
 import 'package:cargo_track/domain/trip_sheet/tripsheet_service.dart';
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
 class TripSheetImplementation extends TripSheetService {
@@ -17,7 +19,8 @@ class TripSheetImplementation extends TripSheetService {
   //
 
   @override
-  Future<List<TripSheet>> getCargo({required int tripNumber}) async {
+  Future<Either<MainFailure, List<TripSheet>>> getCargo(
+      {required int tripNumber}) async {
     final url = '${ApiEndPoints.tripSheet}/$tripNumber';
     final uri = Uri.parse(url);
     final headers = {
@@ -37,6 +40,6 @@ class TripSheetImplementation extends TripSheetService {
       result.add(TripSheet.fromJson(responsebody[i]));
     }
     log(result.toString());
-    return result;
+    return right(result);
   }
 }

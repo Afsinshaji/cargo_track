@@ -1,12 +1,19 @@
 import 'dart:developer';
 
-import 'package:cargo_track/application/trip_sheet/trip_sheet.dart';
+import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
+import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
+import 'package:cargo_track/application/invoice/invoice_bloc.dart';
+
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
+import 'package:cargo_track/domain/all_invoice/all_invoice/datum.dart';
+import 'package:cargo_track/domain/all_trip_sheet/all_trip_sheet/all_trip_sheet.dart';
+import 'package:cargo_track/domain/all_trip_sheet/all_trip_sheet/datum.dart';
 import 'package:cargo_track/prsentation/screens/invoice/screen_invoice.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/screen_trisp_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -73,7 +80,7 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-class ListInvoice extends StatelessWidget {
+class ListInvoice extends StatefulWidget {
   const ListInvoice({
     super.key,
     required this.size,
@@ -82,17 +89,46 @@ class ListInvoice extends StatelessWidget {
   final Size size;
 
   @override
+  State<ListInvoice> createState() => _ListInvoiceState();
+}
+
+class _ListInvoiceState extends State<ListInvoice> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AllInvoiceBloc>(context)
+        .add(const AllInvoiceEvent.getAllInvoiceList());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 30,
-      itemBuilder: (context, index) {
-        return InvoiceCardItem(size: size);
+    List<InvoiceDatum> invoiceList = [];
+    return BlocBuilder<AllInvoiceBloc, AllInvoiceState>(
+      builder: (context, state) {
+        if (state is displayingAllInvoice) {
+          if (state.isLoading) {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: kBlueColor,
+            ));
+          }
+          invoiceList = state.allInvoiceList;
+        }
+        return ListView.builder(
+          itemCount: invoiceList.length,
+          itemBuilder: (context, index) {
+            return InvoiceCardItem(
+              size: widget.size,
+              invoiceNum: invoiceList[index].invoiceno ??= 'No Invoice number',
+            );
+          },
+        );
       },
     );
   }
 }
 
-class ListTripSheet extends StatelessWidget {
+class ListTripSheet extends StatefulWidget {
   const ListTripSheet({
     super.key,
     required this.size,
@@ -101,11 +137,42 @@ class ListTripSheet extends StatelessWidget {
   final Size size;
 
   @override
+  State<ListTripSheet> createState() => _ListTripSheetState();
+}
+
+class _ListTripSheetState extends State<ListTripSheet> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AllTripSheetBloc>(context)
+        .add(const AllTripSheetEvent.getAllTripSheetList());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 30,
-      itemBuilder: (context, index) {
-        return InvoiceCardItem(size: size);
+    List<Datum> tripSheetList = [];
+    return BlocBuilder<AllTripSheetBloc, AllTripSheetState>(
+      builder: (context, state) {
+        if (state is displayingAllTripSheet) {
+          if (state.isLoading) {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: kBlueColor,
+            ));
+          }
+          tripSheetList = state.allTripSheetList;
+        }
+
+        return ListView.builder(
+          itemCount: tripSheetList.length,
+          itemBuilder: (context, index) {
+            final num = tripSheetList[index].tripNumber;
+            return InvoiceCardItem(
+              size: widget.size,
+              invoiceNum: num.toString(),
+            );
+          },
+        );
       },
     );
   }
@@ -115,21 +182,24 @@ class InvoiceCardItem extends StatelessWidget {
   const InvoiceCardItem({
     super.key,
     required this.size,
+    required this.invoiceNum,
   });
 
   final Size size;
-
+  final String invoiceNum;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //     context,
-          //     CupertinoPageRoute(
-          //       builder: (context) => const InvoiceScreen(),
-          //     ));
+          BlocProvider.of<InvoiceBloc>(context)
+              .add(InvoiceEvent.getInvoice(invoiceNumber: invoiceNum));
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const InvoiceScreen(),
+              ));
         },
         child: Card(
           shape:
@@ -141,7 +211,7 @@ class InvoiceCardItem extends StatelessWidget {
             height: size.height * 0.08,
             child: Center(
               child: Text(
-                '101154345555',
+                invoiceNum,
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
                     letterSpacing: .5,
@@ -204,17 +274,17 @@ class SearchBar extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: IconButton(
                         onPressed: () async {
-                          await TripSheetApplication()
-                              .getCargo(int.parse(searchController.text))
-                              .then((tripSheet) {
-                            log(tripSheet.toString());
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) =>
-                                      TripSheetScreen(tripSheetList: tripSheet),
-                                ));
-                          });
+                          // await TripSheetApplication()
+                          //     .getCargo(int.parse(searchController.text))
+                          //     .then((tripSheet) {
+                          //   log(tripSheet.toString());
+                          //   Navigator.push(
+                          //       context,
+                          //       CupertinoPageRoute(
+                          //         builder: (context) =>
+                          //             TripSheetScreen(tripSheetList: tripSheet),
+                          //       ));
+                          // });
                         },
                         icon: const Icon(Icons.arrow_forward),
                         color: kBlackColor,

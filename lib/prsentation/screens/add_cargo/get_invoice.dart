@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
-import 'package:cargo_track/domain/invoice/models/invoice.dart';
+import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -29,8 +29,6 @@ class getinvoice {
       // print(httpresponse.body.toString());
       final responsebody = jsonDecode(httpresponse.body);
       invoice = Invoice.fromJson(responsebody);
-
-      print(invoice.company);
     }
     return invoice;
   }

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
+import 'package:cargo_track/domain/core/failure/failure.dart';
 import 'package:cargo_track/domain/login/login_service.dart';
 import 'package:cargo_track/domain/login/models/login/login.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import 'package:http/http.dart' as http;
@@ -21,7 +23,7 @@ class LoginImplementation extends LoginService {
   //
 
   @override
-  Future<Login> login(
+  Future<Either<MainFailure, Login>> login(
       {required String userName, required String password}) async {
     const url = ApiEndPoints.login;
     log('hellooo');
@@ -60,7 +62,8 @@ class LoginImplementation extends LoginService {
 
     final responsebody = jsonDecode(httpresponse.body);
     final result = Login.fromJson(responsebody);
-
-    return result;
+    log(result.success.toString());
+    log("$userName$password");
+    return right(result);
   }
 }

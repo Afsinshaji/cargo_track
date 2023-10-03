@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'invoice.g.dart';
+part 'data.g.dart';
 
 @JsonSerializable()
-class Invoice {
-  String? id;
+class Data {
+  int? id;
   String? invoiceno;
   String? date;
   String? district;
@@ -16,24 +16,22 @@ class Invoice {
   String? shipmentname;
   String? sendingdate;
   String? recievingdate;
-  String? status;
+  int? status;
   @JsonKey(name: 'sender_address')
   dynamic senderAddress;
   @JsonKey(name: 'reciever_address')
   String? recieverAddress;
-  String? rewight;
+  int? rewight;
   @JsonKey(name: 'goods_desc')
   String? goodsDesc;
   @JsonKey(name: 'goods_status')
   String? goodsStatus;
-  @JsonKey(name: 'lr_number')
-  String? lrNumber;
   @JsonKey(name: 'created_at')
-  String? createdAt;
+  DateTime? createdAt;
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
-  Invoice({
+  Data({
     this.id,
     this.invoiceno,
     this.date,
@@ -52,20 +50,16 @@ class Invoice {
     this.rewight,
     this.goodsDesc,
     this.goodsStatus,
-    this.lrNumber,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory Invoice.fromJson(Map<String, dynamic> json) {
-    return _$InvoiceFromJson(json);
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$InvoiceToJson(this);
-
-  List<String?> tolist() {
+  Map<String, dynamic> toJson() => _$DataToJson(this);
+  List<String?> toList() {
     return [
-      id,
+      id.toString(),
       invoiceno,
       date,
       district,
@@ -77,12 +71,12 @@ class Invoice {
       shipmentname,
       sendingdate,
       recievingdate,
-      status,
+      status.toString(),
       senderAddress,
+      rewight.toString(),
       goodsDesc,
       goodsStatus,
-      lrNumber,
-      createdAt,
+      createdAt.toString(),
       updatedAt,
     ];
   }

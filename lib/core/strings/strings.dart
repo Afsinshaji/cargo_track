@@ -3,7 +3,7 @@ const logoImage = 'http://erp.cargotrack.co.in/assets/cargologo.png';
 const truckImage =
     'https://www.pngmart.com/files/10/Truck-Transparent-Images-PNG.png';
 
-const kBaseUrl = 'https://cargo.divinedentalclinictcr.com/api';
+const kBaseUrl = 'https://cargotrackapi.cyenosure.co.in';
 
 // https://www.transparentpng.com/thumb/cargo-truck/thermoking-transportation-cargo-truck-blue-images--11.png
 
