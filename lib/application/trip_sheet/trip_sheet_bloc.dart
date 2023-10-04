@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:cargo_track/domain/trip_sheet/models/trip_sheet/trip_sheet.dart';
+import 'package:cargo_track/domain/trip_sheet/trip_sheet/datum.dart';
+
+
 import 'package:cargo_track/infrastructure/trip_sheet/trip_sheet_implementation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,7 +10,7 @@ part 'trip_sheet_state.dart';
 part 'trip_sheet_bloc.freezed.dart';
 
 class TripSheetBloc extends Bloc<TripSheetEvent, TripSheetState> {
-  TripSheetBloc() : super(tripSheetInitial()) {
+  TripSheetBloc() : super(const tripSheetInitial()) {
     on<getCargo>((event, emit) async {
       emit(const displayTripSheet(
         cargoList: [],

@@ -1,17 +1,19 @@
+import 'package:cargo_track/application/riverpod/search/search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 
 ValueNotifier<int> indexChangeNotifier = ValueNotifier(0);
 
-class BottomNavBar extends StatefulWidget {
+class BottomNavBar extends ConsumerStatefulWidget {
   const BottomNavBar({super.key});
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
+  BottomNavBarState createState() => BottomNavBarState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBarState extends ConsumerState<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -46,20 +48,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   duration: const Duration(milliseconds: 400),
                   tabBackgroundColor: Colors.grey[100]!,
                   color: kBlueColor,
-                  tabs: const [
-                    GButton(
+                  tabs: [
+                    const GButton(
                       icon: Icons.dashboard,
                       text: 'Dashboard',
                     ),
                     GButton(
+                      onPressed: () {
+                        ref.read(searchProvider.notifier).state = '';
+                      },
                       icon: Icons.search,
                       text: 'Search',
                     ),
-                    GButton(
+                    const GButton(
                       icon: Icons.qr_code,
                       text: 'Scanner',
                     ),
-                    GButton(
+                    const GButton(
                       icon: Icons.file_copy,
                       text: 'Reports',
                     ),

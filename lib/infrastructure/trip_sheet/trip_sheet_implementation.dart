@@ -3,8 +3,11 @@ import 'dart:developer';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
 import 'package:cargo_track/domain/core/failure/failure.dart';
-import 'package:cargo_track/domain/trip_sheet/models/trip_sheet/trip_sheet.dart';
+import 'package:cargo_track/domain/trip_sheet/trip_sheet/datum.dart';
+
+import 'package:cargo_track/domain/trip_sheet/trip_sheet/trip_sheet.dart';
 import 'package:cargo_track/domain/trip_sheet/tripsheet_service.dart';
+import 'package:cargo_track/infrastructure/services/secure_storage/secure_storage.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,27 +22,34 @@ class TripSheetImplementation extends TripSheetService {
   //
 
   @override
-  Future<Either<MainFailure, List<TripSheet>>> getCargo(
+  Future<Either<MainFailure, List<TripSheetDatum>>> getCargo(
       {required int tripNumber}) async {
-    final url = '${ApiEndPoints.tripSheet}/$tripNumber';
+    final url = '${ApiEndPoints.tripSheet}$tripNumber';
+    String? token = await StorageService.instance.readSecureData('authToken');
+    token ??= '';
     final uri = Uri.parse(url);
     final headers = {
-      'User-Agent': 'insomnia/2023.5.8',
-      'Cookie': 'ci_session=8dd98d4359d4a2f9ddfc7e9ffde5ab1a032e0ecb',
-      'Authorization': 'Bearer n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5',
-      'Accept': '*/*',
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
     };
     final httpResponse = await http.get(uri, headers: headers);
 
     if (httpResponse.statusCode == 401) {
       log(httpResponse.body.toString());
     }
+    log(httpResponse.body.toString());
     final responsebody = jsonDecode(httpResponse.body);
-    List<TripSheet> result = [];
-    for (int i = 0; i < responsebody.length; i++) {
-      result.add(TripSheet.fromJson(responsebody[i]));
+
+    final tripSheetResult = TripSheet.fromJson(responsebody);
+
+    final List<TripSheetDatum> result = [];
+    if (tripSheetResult.data != null) {
+      for (int i = 0; i < tripSheetResult.data!.length; i++) {
+        result.add(tripSheetResult.data![i]);
+      }
     }
     log(result.toString());
+
     return right(result);
   }
 }

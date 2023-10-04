@@ -4,7 +4,7 @@ part 'status.g.dart';
 
 @JsonSerializable()
 class Status {
-  int? status;
+  String? status;
 
   Status({this.status});
 

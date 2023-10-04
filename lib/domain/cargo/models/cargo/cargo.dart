@@ -5,7 +5,8 @@ part 'cargo.g.dart';
 @JsonSerializable()
 class Cargo {
   String? invoiceno;
-  String? id;
+  @JsonKey(name: 'goods_id')
+  String? goodsId;
   @JsonKey(name: 'trip_sheet_id')
   String? tripSheetId;
   String? district;
@@ -14,10 +15,11 @@ class Cargo {
   int? phone;
   String? weight;
   String? pcs;
+  String? status;
 
   Cargo({
     this.invoiceno,
-    this.id,
+    this.goodsId,
     this.tripSheetId,
     this.district,
     this.company,
@@ -25,6 +27,7 @@ class Cargo {
     this.phone,
     this.weight,
     this.pcs,
+    this.status,
   });
 
   factory Cargo.fromJson(Map<String, dynamic> json) => _$CargoFromJson(json);

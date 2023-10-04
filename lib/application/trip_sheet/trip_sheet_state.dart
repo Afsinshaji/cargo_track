@@ -6,7 +6,7 @@ class TripSheetState with _$TripSheetState {
   const factory TripSheetState.displayTripSheet(
       {required bool isLoading,
       required bool isError,
-      required List<TripSheet> cargoList}) = displayTripSheet;
+      required List<TripSheetDatum> cargoList}) = displayTripSheet;
 }
 
 // import 'package:cargo_track/domain/trip_sheet/models/trip_sheet/trip_sheet.dart';

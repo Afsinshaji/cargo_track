@@ -76,8 +76,7 @@ class Data {
       rewight.toString(),
       goodsDesc,
       goodsStatus,
-      createdAt.toString(),
-      updatedAt,
+
     ];
   }
 }

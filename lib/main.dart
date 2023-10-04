@@ -3,13 +3,15 @@ import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart'
 import 'package:cargo_track/application/cargo/cargo_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/application/login/login_bloc.dart';
+import 'package:cargo_track/application/re_weight/re_weight_bloc.dart';
 import 'package:cargo_track/application/trip_sheet/trip_sheet_bloc.dart';
 import 'package:cargo_track/prsentation/screens/splash_screen/screen_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,6 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        
+         BlocProvider(
+          create: (context) => ReWeightBloc(),
+        ),
         BlocProvider(
           create: (context) => AllInvoiceBloc(),
         ),

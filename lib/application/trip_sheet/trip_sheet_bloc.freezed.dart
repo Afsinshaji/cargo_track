@@ -225,21 +225,23 @@ mixin _$TripSheetState {
   TResult when<TResult extends Object?>({
     required TResult Function() tripSheetInitial,
     required TResult Function(
-            bool isLoading, bool isError, List<TripSheet> cargoList)
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)
         displayTripSheet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tripSheetInitial,
-    TResult? Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult? Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tripSheetInitial,
-    TResult Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
     required TResult orElse(),
   }) =>
@@ -323,7 +325,7 @@ class _$tripSheetInitial implements tripSheetInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() tripSheetInitial,
     required TResult Function(
-            bool isLoading, bool isError, List<TripSheet> cargoList)
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)
         displayTripSheet,
   }) {
     return tripSheetInitial();
@@ -333,7 +335,8 @@ class _$tripSheetInitial implements tripSheetInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tripSheetInitial,
-    TResult? Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult? Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
   }) {
     return tripSheetInitial?.call();
@@ -343,7 +346,8 @@ class _$tripSheetInitial implements tripSheetInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tripSheetInitial,
-    TResult Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
     required TResult orElse(),
   }) {
@@ -395,7 +399,7 @@ abstract class _$$displayTripSheetCopyWith<$Res> {
           _$displayTripSheet value, $Res Function(_$displayTripSheet) then) =
       __$$displayTripSheetCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool isLoading, bool isError, List<TripSheet> cargoList});
+  $Res call({bool isLoading, bool isError, List<TripSheetDatum> cargoList});
 }
 
 /// @nodoc
@@ -425,7 +429,7 @@ class __$$displayTripSheetCopyWithImpl<$Res>
       cargoList: null == cargoList
           ? _value._cargoList
           : cargoList // ignore: cast_nullable_to_non_nullable
-              as List<TripSheet>,
+              as List<TripSheetDatum>,
     ));
   }
 }
@@ -436,16 +440,16 @@ class _$displayTripSheet implements displayTripSheet {
   const _$displayTripSheet(
       {required this.isLoading,
       required this.isError,
-      required final List<TripSheet> cargoList})
+      required final List<TripSheetDatum> cargoList})
       : _cargoList = cargoList;
 
   @override
   final bool isLoading;
   @override
   final bool isError;
-  final List<TripSheet> _cargoList;
+  final List<TripSheetDatum> _cargoList;
   @override
-  List<TripSheet> get cargoList {
+  List<TripSheetDatum> get cargoList {
     if (_cargoList is EqualUnmodifiableListView) return _cargoList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_cargoList);
@@ -483,7 +487,7 @@ class _$displayTripSheet implements displayTripSheet {
   TResult when<TResult extends Object?>({
     required TResult Function() tripSheetInitial,
     required TResult Function(
-            bool isLoading, bool isError, List<TripSheet> cargoList)
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)
         displayTripSheet,
   }) {
     return displayTripSheet(isLoading, isError, cargoList);
@@ -493,7 +497,8 @@ class _$displayTripSheet implements displayTripSheet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tripSheetInitial,
-    TResult? Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult? Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
   }) {
     return displayTripSheet?.call(isLoading, isError, cargoList);
@@ -503,7 +508,8 @@ class _$displayTripSheet implements displayTripSheet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tripSheetInitial,
-    TResult Function(bool isLoading, bool isError, List<TripSheet> cargoList)?
+    TResult Function(
+            bool isLoading, bool isError, List<TripSheetDatum> cargoList)?
         displayTripSheet,
     required TResult orElse(),
   }) {
@@ -549,11 +555,11 @@ abstract class displayTripSheet implements TripSheetState {
   const factory displayTripSheet(
       {required final bool isLoading,
       required final bool isError,
-      required final List<TripSheet> cargoList}) = _$displayTripSheet;
+      required final List<TripSheetDatum> cargoList}) = _$displayTripSheet;
 
   bool get isLoading;
   bool get isError;
-  List<TripSheet> get cargoList;
+  List<TripSheetDatum> get cargoList;
   @JsonKey(ignore: true)
   _$$displayTripSheetCopyWith<_$displayTripSheet> get copyWith =>
       throw _privateConstructorUsedError;

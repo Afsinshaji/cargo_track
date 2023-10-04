@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
 import 'package:cargo_track/domain/core/failure/failure.dart';
@@ -42,7 +42,7 @@ class InvoiceImplementation extends InvoiceService {
     }
     final responsebody = jsonDecode(httpresponse.body);
     invoice = Invoice.fromJson(responsebody);
-    log(invoice.data.toString());
+
     return right(invoice);
   }
 }

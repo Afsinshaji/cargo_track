@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cargo_track/application/cargo/cargo_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
+import 'package:cargo_track/application/re_weight/re_weight_bloc.dart';
 import 'package:cargo_track/domain/cargo/models/cargo/cargo.dart';
 import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
 
@@ -42,6 +43,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     Invoice invoice = Invoice.empty();
     List fieldList = [];
     String recieverAddress = '';
+    String goodsId = '';
+    String invoiceno = '';
     return Scaffold(
       backgroundColor: kBlueColor,
       body: SafeArea(child: SingleChildScrollView(
@@ -63,7 +66,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               invoice = state.invoice;
               if (invoice.data != null) {
                 fieldList = invoice.data!.toList();
+                goodsId = invoice.data!.id.toString();
+                invoiceno = invoice.data!.invoiceno??='';
                 recieverAddress = invoice.data!.recieverAddress ??= '';
+                final reweight = invoice.data!.rewight;
+                if (reweight != null && reweight != 0 && reweight > 0) {
+                  generateBarcodeButton = true;
+                }
               }
             }
             if (fieldList.isEmpty) {
@@ -139,8 +148,15 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       ? ClickButton(
                           onTap: () {
                             setState(() {
-                              details.add('RE-WEIGHT');
-                              dummy.add(reWeightController.text);
+                              // details.add('RE-WEIGHT');
+                              // dummy.add(reWeightController.text);
+                              BlocProvider.of<ReWeightBloc>(context).add(
+                                  ReWeightEvent.addReWeight(
+                                      reWeight: reWeightController.text,
+                                      goodsId: goodsId));
+                              BlocProvider.of<InvoiceBloc>(context).add(
+                                  InvoiceEvent.getInvoice(
+                                      invoiceNumber: invoiceno ));
                               generateBarcodeButton = true;
                               reWeightController.clear();
                             });
@@ -171,7 +187,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       address: invoice.data!.recieverAddress,
       company: invoice.data!.company,
       district: invoice.data!.district,
-      id: invoice.data!.id.toString(),
+      goodsId: invoice.data!.id.toString(),
       invoiceno: invoice.data!.invoiceno,
       pcs: invoice.data!.pcs,
       phone: invoice.data!.phone,

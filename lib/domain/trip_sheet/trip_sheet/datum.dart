@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'trip_sheet.g.dart';
+part 'datum.g.dart';
 
 @JsonSerializable()
-class TripSheet {
-  String? id;
+class TripSheetDatum {
+  int? id;
   @JsonKey(name: 'trip_sheet_id')
-  String? tripSheetId;
+  int? tripSheetId;
   @JsonKey(name: 'goods_id')
-  String? goodsId;
+  int? goodsId;
   @JsonKey(name: 'invoice_number')
   String? invoiceNumber;
   @JsonKey(name: 'cargo_id')
@@ -17,17 +17,17 @@ class TripSheet {
   String? cargoName;
   String? place;
   String? mobilenumber;
-  String? quantity;
+  int? quantity;
   String? weight;
-  String? status;
+  int? status;
   dynamic message;
   dynamic image;
   @JsonKey(name: 'created_at')
-  String? createdAt;
+  DateTime? createdAt;
   @JsonKey(name: 'updated_at')
-  String? updatedAt;
+  DateTime? updatedAt;
 
-  TripSheet({
+  TripSheetDatum({
     this.id,
     this.tripSheetId,
     this.goodsId,
@@ -45,28 +45,25 @@ class TripSheet {
     this.updatedAt,
   });
 
-  factory TripSheet.fromJson(Map<String, dynamic> json) {
-    return _$TripSheetFromJson(json);
-  }
+  factory TripSheetDatum.fromJson(Map<String, dynamic> json) =>
+      _$TripSheetDatumFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TripSheetToJson(this);
-  List<String?> toList() {
+  Map<String, dynamic> toJson() => _$TripSheetDatumToJson(this);
+  List<String?> toListed() {
     return [
-      id,
-      tripSheetId,
-      goodsId,
+      id.toString(),
+      tripSheetId.toString(),
+      goodsId.toString(),
       invoiceNumber,
       cargoId,
       cargoName,
       place,
       mobilenumber,
-      quantity,
+      quantity.toString(),
       weight,
-      status,
-      message,
-      image,
-      createdAt,
-      updatedAt,
+      status.toString(),
+      message.toString(),
+
     ];
   }
 }
