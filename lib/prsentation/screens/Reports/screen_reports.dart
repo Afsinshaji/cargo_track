@@ -1,7 +1,5 @@
-
 import 'package:cargo_track/infrastructure/services/secure_storage/secure_storage.dart';
 import 'package:cargo_track/infrastructure/services/shared_preferences/login_authorization.dart';
-import 'package:cargo_track/prsentation/screens/dashboard/widgets/sample.dart';
 
 import 'package:cargo_track/prsentation/screens/login/screen_login.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
@@ -35,14 +33,8 @@ class _ReportsScreenState extends State<ReportsScreen>
         child: Center(
           child: Column(
             children: [
-              MealsListView(
-                mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0)
-                    .animate(CurvedAnimation(
-                        parent: animationController!,
-                        curve: Interval((1 / count) * 3, 1.0,
-                            curve: Curves.fastOutSlowIn))),
-                mainScreenAnimationController: animationController,
-              ),
+              Image.asset(
+                  'assets/images/isometric-illustration-concept-expedition-of-land-sea-and-air-free-vector-removebg-preview.png'),
               ClickButton(
                   onTap: () async {
                     // var auth = await StorageService.instance

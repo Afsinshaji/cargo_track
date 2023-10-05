@@ -1,6 +1,5 @@
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/strings/strings.dart';
-import 'package:cargo_track/prsentation/screens/add_cargo/add_cargo.dart';
 import 'package:cargo_track/prsentation/screens/dashboard/widgets/draggable_bottom_sheet.dart';
 import 'package:cargo_track/prsentation/screens/track/screen_track.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
@@ -41,7 +40,7 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
               )),
               Align(
                 alignment: Alignment.centerRight,
-                child: Image.network(truckImage),
+                child: Image.asset('assets/images/Truck-Transparent-Images-PNG.png'),
               ),
               Container(
                 decoration: const BoxDecoration(
@@ -60,7 +59,7 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                         children: [
                           kHeight20,
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             decoration: const BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(color: kBlackColor, blurRadius: 1)
@@ -149,7 +148,7 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: size.height * 0.44,
+                      height: size.height * 0.1,
                       width: size.width,
                     ),
                     const StatusCard()

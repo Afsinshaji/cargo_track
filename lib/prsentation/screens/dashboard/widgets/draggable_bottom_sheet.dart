@@ -1,4 +1,3 @@
-import 'package:cargo_track/core/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 void openDraggableBottomSheet(

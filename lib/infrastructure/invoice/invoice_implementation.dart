@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 
 import 'package:cargo_track/domain/core/api_end_points.dart';
 import 'package:cargo_track/domain/core/failure/failure.dart';
@@ -22,27 +22,33 @@ class InvoiceImplementation extends InvoiceService {
   @override
   Future<Either<MainFailure, Invoice>> getInvoice(
       {required String invoicenumber}) async {
-    Invoice invoice;
-    final url = "${ApiEndPoints.getInvoice}$invoicenumber";
-    String? token = await StorageService.instance.readSecureData('authToken');
-    token ??= '';
-    //using http
-    final uri = Uri.parse(url);
-    final headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
+    try {
+      Invoice invoice;
+      final url = "${ApiEndPoints.getInvoice}$invoicenumber";
+      String? token = await StorageService.instance.readSecureData('authToken');
+      token ??= '';
+      //using http
+      final uri = Uri.parse(url);
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      };
 
-    final httpresponse = await http.get(
-      uri,
-      headers: headers,
-    );
-    if (httpresponse.statusCode == 401) {
-      // print(httpresponse.body.toString());
+      final httpresponse = await http.get(
+        uri,
+        headers: headers,
+      );
+if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201){
+      final responsebody = jsonDecode(httpresponse.body);
+      invoice = Invoice.fromJson(responsebody);
+
+      return right(invoice);}
+      else {
+        return const Left(MainFailure.serverFailure());
+      }
+    } catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
     }
-    final responsebody = jsonDecode(httpresponse.body);
-    invoice = Invoice.fromJson(responsebody);
-
-    return right(invoice);
   }
 }

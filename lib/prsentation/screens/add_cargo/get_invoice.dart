@@ -9,7 +9,7 @@ class getinvoice {
   Future<Invoice?> getInvoice({required String invoicenumber}) async {
     Invoice? invoice;
     final url = "${ApiEndPoints.getInvoice}$invoicenumber";
-    final String token = 'n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5';
+    const String token = 'n6vmW4LtLQYlrevCkZnTqlwVoKeLJ1O5';
     print('hellooo');
 
     //using http

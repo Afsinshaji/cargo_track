@@ -23,25 +23,32 @@ class AllInvoiceImplementation extends AllInvoiceService {
 
   @override
   Future<Either<MainFailure, List<InvoiceDatum>>> getAllInvoice() async {
-    const url = ApiEndPoints.getAllInvoice;
-    log(url);
-    String? authToken =
-        await StorageService.instance.readSecureData('authToken');
-    authToken ??= '';
-    final uri = Uri.parse(url);
-    final headers = {
-      'Authorization': 'Bearer $authToken',
-      'Accept': 'application/json',
-    };
-    final httpresponse = await http.get(
-      uri,
-      headers: headers,
-    );
-    if (httpresponse.statusCode == 200) {}
+    try {
+      const url = ApiEndPoints.getAllInvoice;
+      log(url);
+      String? authToken =
+          await StorageService.instance.readSecureData('authToken');
+      authToken ??= '';
+      final uri = Uri.parse(url);
+      final headers = {
+        'Authorization': 'Bearer $authToken',
+        'Accept': 'application/json',
+      };
+      final httpresponse = await http.get(
+        uri,
+        headers: headers,
+      );
+      if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
+        final responsebody = jsonDecode(httpresponse.body);
+        final result = AllInvoice.fromJson(responsebody);
 
-    final responsebody = jsonDecode(httpresponse.body);
-    final result = AllInvoice.fromJson(responsebody);
-
-    return Right(result.data ??= []);
+        return Right(result.data ??= []);
+      } else {
+        return const Left(MainFailure.serverFailure());
+      }
+    } catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
+    }
   }
 }

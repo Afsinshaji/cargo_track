@@ -19,7 +19,7 @@ class CargoBloc extends Bloc<CargoEvent, CargoState> {
                 isError: true,
                 isLoading: false,
               )), (r) {
-        if (r.status == 200) {
+        if (r.status == '200') {
           return emit(const addedCargo(
             isAdded: true,
             isError: false,

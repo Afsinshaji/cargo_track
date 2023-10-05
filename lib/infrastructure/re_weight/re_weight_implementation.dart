@@ -22,7 +22,7 @@ class ReWeightImplementation extends ReWeightService {
   @override
   Future<Either<MainFailure, Status>> addReWeight(
       {required String reWeight, required String goodsId}) async {
-    const url = ApiEndPoints.addReweight;
+   try {const url = ApiEndPoints.addReweight;
     String? token = await StorageService.instance.readSecureData('authToken');
     token ??= '';
     final uri = Uri.parse(url);
@@ -36,11 +36,18 @@ class ReWeightImplementation extends ReWeightService {
         jsonEncode({"goods_id": goodsId, "rewight": num.parse(reWeight)});
 
     final httpResponse = await http.post(uri, headers: headers, body: body);
-    final responsebody = jsonDecode(httpResponse.body);
+  if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201){  final responsebody = jsonDecode(httpResponse.body);
 
     final result = Status.fromJson(responsebody);
     log(result.toString());
 
-    return Right(result);
+    return Right(result);}else {
+        return const Left(MainFailure.serverFailure());
+      }
+    
+    }catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
+    }
   }
 }

@@ -25,45 +25,53 @@ class LoginImplementation extends LoginService {
   @override
   Future<Either<MainFailure, Login>> login(
       {required String userName, required String password}) async {
-    const url = ApiEndPoints.login;
-    log('hellooo');
-    //using http
-    final uri = Uri.parse(url);
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
+    try {
+      const url = ApiEndPoints.login;
+      log('hellooo');
+      //using http
+      final uri = Uri.parse(url);
+      final headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      };
 
-    final body = jsonEncode({
-      'username': userName,
-      'password': password,
-    });
+      final body = jsonEncode({
+        'username': userName,
+        'password': password,
+      });
 
-    final httpresponse = await http.post(uri, headers: headers, body: body);
+      final httpresponse = await http.post(uri, headers: headers, body: body);
 
-    //
+      //
 
-    // final response = await dio.post(url,
-    //     data: {'username': userName, 'password': password},
-    //     options: Options(headers: {
-    //       'User-Agent': 'insomnia/2023.5.8',
-    // 'Content-Type': 'application/json',
-    // 'Content-Length': '53',
-    //       'Accept': 'application/json',
-    //     }));
-    // if (response.statusCode == 401) {
-    //   log('heiii');
-    //   log(response.data.toString());
-    // }
-    if (httpresponse.statusCode == 401) {
-      log('heiii');
-      log(httpresponse.body.toString());
+      // final response = await dio.post(url,
+      //     data: {'username': userName, 'password': password},
+      //     options: Options(headers: {
+      //       'User-Agent': 'insomnia/2023.5.8',
+      // 'Content-Type': 'application/json',
+      // 'Content-Length': '53',
+      //       'Accept': 'application/json',
+      //     }));
+      // if (response.statusCode == 401) {
+      //   log('heiii');
+      //   log(response.data.toString());
+      // }
+   
+  
+    if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201)  {  log(httpresponse.body.toString());
+      
+
+      final responsebody = jsonDecode(httpresponse.body);
+      final result = Login.fromJson(responsebody);
+      log(result.success.toString());
+      log("$userName$password");
+      return right(result);}
+      else {
+        return const Left(MainFailure.serverFailure());
+      }
+    } catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
     }
-
-    final responsebody = jsonDecode(httpresponse.body);
-    final result = Login.fromJson(responsebody);
-    log(result.success.toString());
-    log("$userName$password");
-    return right(result);
   }
 }

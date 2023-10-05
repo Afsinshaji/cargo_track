@@ -49,7 +49,7 @@ class _AddCargoPageState extends State<AddCargoPage> {
           ),
           ElevatedButton(
               onPressed: () async {
-                print(invoicecontroller.text);
+              
                 log('hellooo');
                 invoice = await getinvoice()
                     .getInvoice(invoicenumber: invoicecontroller.text);
@@ -144,7 +144,7 @@ class _AddCargoPageState extends State<AddCargoPage> {
                               Text(
                                 value.data!.recieverAddress!,
                                 style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     letterSpacing: .5,
                                     fontSize: 16,
                                     color: kBlackColor,
@@ -176,7 +176,7 @@ class RcieverAddressCard extends StatelessWidget {
     super.key,
   });
 
-  final List<String> textList = recieverAddress.split(',');
+  final List<String> textList = ''.split(',');
   @override
   Widget build(BuildContext context) {
     return Padding(

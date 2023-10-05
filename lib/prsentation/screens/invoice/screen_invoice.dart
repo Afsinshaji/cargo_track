@@ -1,8 +1,13 @@
-import 'dart:io';
 
+import 'dart:io';
+import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
+import 'package:cargo_track/prsentation/widgets/empty_box.dart';
+import 'package:cargo_track/prsentation/widgets/error_box.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cargo_track/application/cargo/cargo_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/application/re_weight/re_weight_bloc.dart';
+import 'package:cargo_track/application/trip_sheet/trip_sheet_bloc.dart';
 import 'package:cargo_track/domain/cargo/models/cargo/cargo.dart';
 import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
 
@@ -34,13 +39,14 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final TextEditingController reWeightController = TextEditingController();
-  bool generateBarcodeButton = false;
+  // bool generateBarcodeButton = false;
   List details = detailsList;
   List dummy = dummyDetails;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Invoice invoice = Invoice.empty();
+    Invoice buttonInvoice = Invoice.empty();
     List fieldList = [];
     String recieverAddress = '';
     String goodsId = '';
@@ -63,16 +69,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   ),
                 );
               }
+               if (state.isError) {
+                return Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.2),
+                  child: const ErrorBox(),
+                );
+              }
               invoice = state.invoice;
               if (invoice.data != null) {
                 fieldList = invoice.data!.toList();
                 goodsId = invoice.data!.id.toString();
-                invoiceno = invoice.data!.invoiceno??='';
+                invoiceno = invoice.data!.invoiceno ??= '';
                 recieverAddress = invoice.data!.recieverAddress ??= '';
-                final reweight = invoice.data!.rewight;
-                if (reweight != null && reweight != 0 && reweight > 0) {
-                  generateBarcodeButton = true;
-                }
               }
             }
             if (fieldList.isEmpty) {
@@ -80,12 +88,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: size.height * 0.4,
+                      height: size.height * 0.2,
                     ),
-                    const Text(
-                      'Empty',
-                      style: TextStyle(color: kWhiteColor),
-                    ),
+                   const EmptyBox()
                   ],
                 ),
               );
@@ -110,75 +115,119 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
           },
         ),
       )),
-      floatingActionButton: Padding(
-        padding: reWeightController.text.isEmpty
-            ? EdgeInsets.only(
-                top: size.height - 70,
-                left: size.width * 0.1,
-                right: generateBarcodeButton == true ? size.width * 0.2 : 0)
-            : EdgeInsets.only(top: size.height - 150, left: size.width * 0.1),
-        child: widget.isFromTripSheet == false
-            ? Column(
-                children: [
-                  generateBarcodeButton == false
-                      ? ReWeightTextField(
-                          controller: reWeightController,
-                          icon: Icons.monitor_weight,
-                          text: 'Add Re-Weight',
-                          onEditingComplete: () {
-                            setState(() {});
-                          },
-                        )
-                      : ClickButton(
-                          onTap: () async {
-                            await generateBarcode(dummy[3])
-                                .then((value) => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BarcodeScreen(barcodeImage: value),
-                                    )));
-                          },
-                          text: 'Generate Barcode',
-                          width: size.width * 0.5,
-                          backGroundColor: kBlackColor,
-                          changeColor: kBlackColor.withOpacity(0.3),
-                        ),
-                  reWeightController.text.isNotEmpty
-                      ? ClickButton(
-                          onTap: () {
-                            setState(() {
-                              // details.add('RE-WEIGHT');
-                              // dummy.add(reWeightController.text);
-                              BlocProvider.of<ReWeightBloc>(context).add(
-                                  ReWeightEvent.addReWeight(
-                                      reWeight: reWeightController.text,
-                                      goodsId: goodsId));
-                              BlocProvider.of<InvoiceBloc>(context).add(
-                                  InvoiceEvent.getInvoice(
-                                      invoiceNumber: invoiceno ));
-                              generateBarcodeButton = true;
-                              reWeightController.clear();
-                            });
-                          },
-                          backGroundColor: kBlackColor,
-                          changeColor: kBlackColor.withOpacity(0.3),
-                          text: 'Save',
-                          width: size.width * 0.5,
-                        )
-                      : const SizedBox(),
-                ],
-              )
-            : ClickButton(
-                onTap: () async {
-                  addInvoiceToCargo(invoice, widget.tripSheetId);
-                },
-                text: 'Add to tripsheet',
-                width: size.width * 0.5,
-                backGroundColor: kBlackColor,
-                changeColor: kBlackColor.withOpacity(0.3),
-              ),
-      ),
+      floatingActionButton: Consumer(builder: (context, ref, _) {
+        return BlocBuilder<InvoiceBloc, InvoiceState>(
+          builder: (context, state) {
+            if (state is displayInvoice) {
+              if (state.isLoading || state.isError) {
+                return const SizedBox();
+              }
+              buttonInvoice = state.invoice;
+              if (buttonInvoice.data != null) {
+                final reweight = buttonInvoice.data!.rewight;
+                if (reweight != null && reweight != 0 && reweight > 0) {
+                  // generateBarcodeButton = true;
+                  Future(() {
+             
+                    ref.read(generateBarcodeProvider.notifier).state = true;
+                  });
+                } else {
+                  Future(() {
+                    
+                    ref.read(generateBarcodeProvider.notifier).state = false;
+                  });
+                }
+              }
+            }
+          
+            return Padding(
+              padding: ref.watch(reWeightField)==false
+              //reWeightController.text.isEmpty
+                  ? EdgeInsets.only(
+                      top: size.height - 70,
+                      left: size.width * 0.1,
+                      right: ref.watch(generateBarcodeProvider) == true
+                          ? size.width * 0.2
+                          : 0)
+                  : EdgeInsets.only(
+                      top: size.height - 150, left: size.width * 0.1),
+              child: widget.isFromTripSheet == false
+                  ? Column(
+                      children: [
+                        ref.watch(generateBarcodeProvider) == false
+                            ? ReWeightTextField(
+                                controller: reWeightController,
+                                icon: Icons.monitor_weight,
+                                text: 'Add Re-Weight',
+                                
+                              
+                              )
+                            : ClickButton(
+                                onTap: () async {
+                                  final id = invoice.data!.id;
+
+                                  File? idBarcode;
+                                  if (id != null) {
+                                    idBarcode =
+                                        await generateBarcode(id.toString());
+                                  }
+                                  await generateBarcode(invoiceno)
+                                      .then((value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BarcodeScreen(
+                                                barcodeImage: value,
+                                                idBarcode: idBarcode),
+                                          )));
+                                },
+                                text: 'Generate Barcode',
+                                width: size.width * 0.5,
+                                backGroundColor: kBlackColor,
+                                changeColor: kBlackColor.withOpacity(0.3),
+                              ),
+                        //reWeightController.text.isNotEmpty
+                        ref.watch(reWeightField) == true
+                            ? ClickButton(
+                                onTap: () {
+                                  // setState(() {
+                                  // details.add('RE-WEIGHT');
+                                  // dummy.add(reWeightController.text);
+                                  BlocProvider.of<ReWeightBloc>(context).add(
+                                      ReWeightEvent.addReWeight(
+                                          reWeight: reWeightController.text,
+                                          goodsId: goodsId));
+                                  BlocProvider.of<InvoiceBloc>(context).add(
+                                      InvoiceEvent.getInvoice(
+                                          invoiceNumber: invoiceno));
+                                  ref
+                                      .read(generateBarcodeProvider.notifier)
+                                      .state = true;
+                                  ref.read(reWeightField.notifier).state =
+                                      false;
+                                  reWeightController.clear();
+                                  // });
+                                },
+                                backGroundColor: kBlackColor,
+                                changeColor: kBlackColor.withOpacity(0.3),
+                                text: 'Save',
+                                width: size.width * 0.5,
+                              )
+                            : const SizedBox(),
+                      ],
+                    )
+                  : ClickButton(
+                      onTap: () async {
+                        addInvoiceToCargo(invoice, widget.tripSheetId);
+                      },
+                      text: 'Add to tripsheet',
+                      width: size.width * 0.5,
+                      backGroundColor: kBlackColor,
+                      changeColor: kBlackColor.withOpacity(0.3),
+                    ),
+            );
+          },
+        );
+      }),
     );
   }
 
@@ -196,6 +245,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
 
     BlocProvider.of<CargoBloc>(context).add(CargoEvent.addCargo(cargo: cargo));
+    BlocProvider.of<TripSheetBloc>(context)
+        .add(TripSheetEvent.getCargo(tripNumber: int.parse(tripSheetId)));
+
+    Navigator.pop(context);
   }
 }
 
@@ -356,10 +409,12 @@ class FieldText extends StatelessWidget {
 //   return image;
 // }
 
-Future<File> generateBarcode(String data) async {
+Future<File> generateBarcode(
+  String invoiceno,
+) async {
   final barcode = Barcode.code93();
-  final svg = barcode.toSvg(data, width: 200, height: 200);
-  final fileName = barcode.name.replaceAll(RegExp(r'\s'), '-').toLowerCase();
+  final svg = barcode.toSvg(invoiceno, width: 200, height: 200);
+  final fileName = invoiceno.replaceAll(RegExp(r'\s'), '-').toLowerCase();
 
   // Get the document directory where you want to save the file
   final directory = await getApplicationDocumentsDirectory();

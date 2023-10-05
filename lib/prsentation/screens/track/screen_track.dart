@@ -26,7 +26,7 @@ class TrackScreen extends StatelessWidget {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.4),
-                    child: Divider(
+                    child: const Divider(
                       color: kGreyColor,
                       thickness: 5,
                     ),

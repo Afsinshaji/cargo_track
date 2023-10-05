@@ -2,13 +2,13 @@ import 'package:cargo_track/application/trip_sheet/trip_sheet_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/domain/trip_sheet/trip_sheet/datum.dart';
-
-import 'package:cargo_track/domain/trip_sheet/trip_sheet/trip_sheet.dart';
-import 'package:cargo_track/prsentation/screens/scanner/sample.dart';
 import 'package:cargo_track/prsentation/screens/scanner/screen_scanner.dart';
+
 import 'package:cargo_track/prsentation/screens/trip_sheet/screen_cargo.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/widgets/scanner_button.dart';
 import 'package:cargo_track/prsentation/widgets/circle_popup_button.dart';
+import 'package:cargo_track/prsentation/widgets/empty_box.dart';
+import 'package:cargo_track/prsentation/widgets/error_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +37,16 @@ class TripSheetScreen extends StatelessWidget {
                   ),
                 );
               }
+              if (state.isError) {
+                return Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.2),
+                  child: const ErrorBox(),
+                );
+              }
               tripSheetList = state.cargoList;
             }
             if (tripSheetList.isEmpty) {
-              return const Text('Empty');
+              return const EmptyBox();
             }
             return Column(
               children: [
@@ -112,7 +118,8 @@ class TripSheetScreen extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => BarcodeScannerWithZoom(
+                  builder: (context) => BarcodeScannerScreen(
+                      isFromTripSheet: true,
                       tripSheetId: tripSheetList[0].tripSheetId.toString()),
                 ));
           },

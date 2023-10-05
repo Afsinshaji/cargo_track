@@ -1,23 +1,27 @@
+import 'dart:developer';
+
+import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ReWeightTextField extends StatelessWidget {
+class ReWeightTextField extends ConsumerWidget {
   const ReWeightTextField({
     super.key,
     required this.controller,
     required this.icon,
     required this.text,
-    required this.onEditingComplete,
+ 
   });
 
   final TextEditingController controller;
 
   final IconData icon;
   final String text;
-  final Function() onEditingComplete;
+  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
@@ -28,7 +32,21 @@ class ReWeightTextField extends StatelessWidget {
         elevation: 2,
         borderRadius: BorderRadius.circular(15),
         child: TextFormField(
-          onEditingComplete: onEditingComplete,
+        
+          onEditingComplete: () {
+            log('complete');
+             ref.read(reWeightField.notifier).state = true;
+          },
+          onChanged: (value) {
+          
+           
+            if(value.isEmpty){
+             ref.read(reWeightField.notifier).state = false;  
+            }else{
+               ref.read(reWeightField.notifier).state = true;
+            }
+           
+          },
           textAlign: TextAlign.start,
           controller: controller,
           cursorColor: kWhiteColor,

@@ -14,6 +14,7 @@ import 'package:cargo_track/prsentation/screens/invoice/screen_invoice.dart';
 import 'package:cargo_track/prsentation/screens/search/widgets/invoice_card_item.dart';
 import 'package:cargo_track/prsentation/screens/search/widgets/search_bar.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/screen_trip_sheet.dart';
+import 'package:cargo_track/prsentation/widgets/error_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,6 +112,9 @@ class _ListInvoiceState extends State<ListInvoice> {
               color: kBlueColor,
             ));
           }
+           if (state.isError) {
+                return const ErrorBox();
+              }
 
           invoiceList = state.allInvoiceList;
         }
@@ -196,6 +200,9 @@ class _ListTripSheetState extends State<ListTripSheet> {
               color: kBlueColor,
             ));
           }
+           if (state.isError) {
+                return const ErrorBox();
+              }
           tripSheetList = state.allTripSheetList;
         }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cargo_track/domain/all_trip_sheet/all_trip_sheet/all_trip_sheet.dart';
 import 'package:cargo_track/domain/all_trip_sheet/all_trip_sheet/datum.dart';
@@ -22,22 +23,29 @@ class AllTripSheetImplementation extends AllTripSheetService {
 
   @override
   Future<Either<MainFailure, List<Datum>>> getAllTripSheet() async {
-    const url = ApiEndPoints.getAllTripSheet;
-    String? authToken =
-        await StorageService.instance.readSecureData('authToken');
-    authToken ??= '';
-    final uri = Uri.parse(url);
-    final headers = {
-      'Authorization': 'Bearer $authToken',
-      'Accept': 'application/json',
-    };
-    final httpresponse = await http.get(
-      uri,
-      headers: headers,
-    );
-    final responsebody = jsonDecode(httpresponse.body);
-    final result = AllTripSheet.fromJson(responsebody);
+    try {
+      const url = ApiEndPoints.getAllTripSheet;
+      String? authToken =
+          await StorageService.instance.readSecureData('authToken');
+      authToken ??= '';
+      final uri = Uri.parse(url);
+      final headers = {
+        'Authorization': 'Bearer $authToken',
+        'Accept': 'application/json',
+      };
+      final httpresponse = await http.get(
+        uri,
+        headers: headers,
+      );
+   if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201)  { final responsebody = jsonDecode(httpresponse.body);
+      final result = AllTripSheet.fromJson(responsebody);
 
-    return Right(result.data ??= []);
+      return Right(result.data ??= []);}else {
+        return const Left(MainFailure.serverFailure());
+      }
+    } catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
+    }
   }
 }
