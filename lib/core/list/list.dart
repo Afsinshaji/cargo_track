@@ -16,7 +16,6 @@ final List detailsList = [
   'Re-Weight',
   'Goods Desc',
   'Goods Status',
-
 ];
 
 final List dummyDetails = [
@@ -46,5 +45,10 @@ final List tripSheetDetails = [
   'Weight',
   'Status',
   'Message',
+];
 
+final List<String> reportDropDownInvoiceFilters = [
+  'Contains',
+  'Start With',
+  'Exact',
 ];

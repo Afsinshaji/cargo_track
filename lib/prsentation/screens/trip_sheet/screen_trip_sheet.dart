@@ -9,6 +9,7 @@ import 'package:cargo_track/prsentation/screens/trip_sheet/widgets/scanner_butto
 import 'package:cargo_track/prsentation/widgets/circle_popup_button.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
 import 'package:cargo_track/prsentation/widgets/error_box.dart';
+import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,8 +34,11 @@ class TripSheetScreen extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.only(top: size.height * 0.4),
                   child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                child: FourRotatingDots(
+                  color: kBlackColor,
+                 
+                  size: 100,
+                ))
                 );
               }
               if (state.isError) {

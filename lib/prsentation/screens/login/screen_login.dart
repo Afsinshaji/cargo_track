@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
+import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
 import 'package:cargo_track/application/login/login_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
@@ -141,7 +143,10 @@ class EmailPasswordCard extends StatelessWidget {
 
                   LoginAuthorization.instance.setLoginTrue().then((value) {
                     indexChangeNotifier.value = 0;
-
+                    BlocProvider.of<AllTripSheetBloc>(context)
+                        .add(const AllTripSheetEvent.getAllTripSheetList());
+                    BlocProvider.of<AllInvoiceBloc>(context)
+                        .add(const AllInvoiceEvent.getAllInvoiceList());
                     Navigator.push(
                       context,
                       CupertinoPageRoute(

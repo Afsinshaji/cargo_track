@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
 import 'package:cargo_track/prsentation/widgets/error_box.dart';
+import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cargo_track/application/cargo/cargo_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
@@ -64,7 +65,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       SizedBox(
                         height: size.height * 0.4,
                       ),
-                      const CircularProgressIndicator(),
+                      const FourRotatingDots(
+                        color: kBlackColor,
+                       
+                        size: 100,
+                      )
                     ],
                   ),
                 );

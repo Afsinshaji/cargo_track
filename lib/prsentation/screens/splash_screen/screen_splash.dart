@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
+import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
 import 'package:cargo_track/application/riverpod/splash_screen/splash_screen.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/strings/strings.dart';
@@ -8,6 +10,7 @@ import 'package:cargo_track/infrastructure/services/shared_preferences/login_aut
 import 'package:cargo_track/prsentation/screens/login/screen_login.dart';
 import 'package:cargo_track/prsentation/screens/main_page/screen_main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -41,6 +44,10 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   void navigateUser() async {
     await LoginAuthorization.instance.getLoginStatus().then((auth) {
       if (auth == true) {
+        BlocProvider.of<AllTripSheetBloc>(context)
+        .add(const AllTripSheetEvent.getAllTripSheetList());
+         BlocProvider.of<AllInvoiceBloc>(context)
+        .add(const AllInvoiceEvent.getAllInvoiceList());
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -12,7 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class BarcodeScannerScreen extends StatefulWidget {
-  const BarcodeScannerScreen({Key? key, this.tripSheetId = '', required this.isFromTripSheet})
+  const BarcodeScannerScreen(
+      {Key? key, this.tripSheetId = '', required this.isFromTripSheet})
       : super(key: key);
   final String tripSheetId;
   final bool isFromTripSheet;
@@ -125,6 +126,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                             iconSize: 32.0,
                             onPressed: () {
                               if (capture != null) {
+                               
                                 final barcodeText =
                                     capture!.barcodes.first.rawValue;
 
@@ -151,14 +153,36 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                               source: ImageSource.gallery,
                             );
                             if (image != null) {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Center(
+                                          child: CircularProgressIndicator())));
+                            
+                              final k =
+                                  await controller.analyzeImage(image.path);
+                              log(k.toString());
                               if (await controller.analyzeImage(image.path)) {
                                 if (!mounted) return;
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Barcode found!'),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
+
+                                final barcode = await controller.barcodes.first;
+                                log(barcode.toString());
+
+                                final barcodeText =
+                                    barcode.barcodes.first.rawValue;
+                                if (barcodeText != null) {
+                                  log('heyyyy');
+
+                                  navigateToPage(barcodeText);
+                                }
                               } else {
                                 if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -218,21 +242,36 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen>
 
   navigateToPage(String barcodeText) {
     log(barcodeText);
+
     // Your navigation code here
     final invoiceBloc = BlocProvider.of<InvoiceBloc>(context);
     invoiceBloc.add(InvoiceEvent.getInvoice(invoiceNumber: barcodeText));
     final value = invoiceBloc.state;
-
+    log(value.toString());
     if (value is displayInvoice) {
+      if (controller.torchState.value == TorchState.on) {
+        controller.toggleTorch();
+      }
       log(value.invoice.toString());
-      Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => InvoiceScreen(
-              isFromTripSheet: widget.isFromTripSheet,
-              tripSheetId: widget.tripSheetId,
-            ),
-          ));
+      if (widget.isFromTripSheet == true) {
+        Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => InvoiceScreen(
+                isFromTripSheet: widget.isFromTripSheet,
+                tripSheetId: widget.tripSheetId,
+              ),
+            ));
+      } else {
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => InvoiceScreen(
+                isFromTripSheet: widget.isFromTripSheet,
+                tripSheetId: widget.tripSheetId,
+              ),
+            ));
+      }
     } else {
       log('Try Again');
     }

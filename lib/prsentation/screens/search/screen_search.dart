@@ -11,10 +11,12 @@ import 'package:cargo_track/domain/all_invoice/all_invoice/datum.dart';
 
 import 'package:cargo_track/domain/all_trip_sheet/all_trip_sheet/datum.dart';
 import 'package:cargo_track/prsentation/screens/invoice/screen_invoice.dart';
+import 'package:cargo_track/prsentation/screens/search/widgets/floating_refresh_button.dart';
 import 'package:cargo_track/prsentation/screens/search/widgets/invoice_card_item.dart';
 import 'package:cargo_track/prsentation/screens/search/widgets/search_bar.dart';
 import 'package:cargo_track/prsentation/screens/trip_sheet/screen_trip_sheet.dart';
 import 'package:cargo_track/prsentation/widgets/error_box.dart';
+import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,15 +41,18 @@ class SearchScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButton:  RefreshingFloatingButton(size: size),
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(size.height * 0.2),
+            preferredSize: Size.fromHeight(size.height * 0.198),
             child: Column(
               children: [
-                SearchingBar(),
+                SearchingBar(size: size),
                 SizedBox(
-                  height: size.height * 0.08,
+                  height: size.height * 0.075,
                   child:
-                      const TabBar(indicatorPadding: EdgeInsets.all(10), tabs: [
+                      const TabBar(
+                        // labelStyle: ,
+                        indicatorPadding: EdgeInsets.all(10), tabs: [
                     Tab(
                       text: 'Invoice',
                     ),
@@ -95,8 +100,7 @@ class _ListInvoiceState extends State<ListInvoice> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AllInvoiceBloc>(context)
-        .add(const AllInvoiceEvent.getAllInvoiceList());
+   
   }
 
   @override
@@ -107,10 +111,16 @@ class _ListInvoiceState extends State<ListInvoice> {
       builder: (context, state) {
         if (state is displayingAllInvoice) {
           if (state.isLoading) {
-            return const Center(
-                child: CircularProgressIndicator(
-              color: kBlueColor,
-            ));
+            return  const Center(
+                child: FourRotatingDots(
+                  color: kBlackColor,
+                 
+                  size: 100,
+                ));
+                
+            //     CircularProgressIndicator(
+            //   color: kBlueColor,
+            // ));
           }
            if (state.isError) {
                 return const ErrorBox();
@@ -184,8 +194,7 @@ class _ListTripSheetState extends State<ListTripSheet> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AllTripSheetBloc>(context)
-        .add(const AllTripSheetEvent.getAllTripSheetList());
+    
   }
 
   @override
@@ -196,9 +205,15 @@ class _ListTripSheetState extends State<ListTripSheet> {
         if (state is displayingAllTripSheet) {
           if (state.isLoading) {
             return const Center(
-                child: CircularProgressIndicator(
-              color: kBlueColor,
-            ));
+                child:FourRotatingDots(
+                  color: kBlackColor,
+               
+                  size: 100,
+                ));
+                
+            //      CircularProgressIndicator(
+            //   color: kBlueColor,
+            // ));
           }
            if (state.isError) {
                 return const ErrorBox();

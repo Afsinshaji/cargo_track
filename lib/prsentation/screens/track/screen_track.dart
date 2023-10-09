@@ -17,6 +17,7 @@ class TrackScreen extends StatelessWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Container(
+            height: size.height,
             decoration: const BoxDecoration(
               color: kWhiteColor,
             ),
@@ -64,7 +65,7 @@ class TrackScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                kHeight100,
+             
               ],
             ),
           ),

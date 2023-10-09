@@ -1,12 +1,10 @@
 import 'package:cargo_track/core/colors/colors.dart';
-import 'package:cargo_track/core/strings/strings.dart';
 import 'package:cargo_track/prsentation/screens/dashboard/widgets/draggable_bottom_sheet.dart';
 import 'package:cargo_track/prsentation/screens/track/screen_track.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../login/widget/logo_image_box.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 
 class DaashBoardScreen extends StatefulWidget {
@@ -30,11 +28,19 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
               Center(
                   child: Row(
                 children: [
-                  LogoImageBox(
-                      logoHeight: size.width * 0.5, logimage: ctsWhiteLogo),
-                  LogoImageBox(
-                    logoHeight: size.width * 0.5,
-                    logimage: tagLineWhiteLogo,
+                  // LogoImageBox(
+                  //     logoHeight: size.width * 0.5, logimage: ctsWhiteLogo),
+                  SizedBox(
+                    height: size.width * 0.5,
+                    child: Image.asset('assets/images/Untitled-design.jpg'),
+                  ),
+                  // LogoImageBox(
+                  //   logoHeight: size.width * 0.5,
+                  //   logimage: tagLineWhiteLogo,
+                  // )
+                  SizedBox(
+                    height: size.width * 0.5,
+                    child: Image.asset('assets/images/Untitled-design-1.jpg'),
                   )
                 ],
               )),
@@ -51,6 +57,8 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
+                      height: size.height * 0.38,
+                      width: size.width,
                       decoration: const BoxDecoration(
                           color: kWhiteColor,
                           borderRadius:
@@ -147,11 +155,11 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: size.height * 0.1,
-                      width: size.width,
-                    ),
-                    const StatusCard()
+                    // SizedBox(
+                    //   height: size.height * 0.1,
+                    //   width: size.width,
+                    // ),
+                    // const StatusCard()
                   ],
                 ),
               ),

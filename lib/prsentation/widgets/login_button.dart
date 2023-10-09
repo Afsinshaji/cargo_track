@@ -10,7 +10,7 @@ class ClickButton extends StatelessWidget {
     this.changeColor = kBlueColor,
     this.backGroundColor = kBlueColor,
     this.textColor = kWhiteColor,
-    this.height = 50,
+    this.height = 50, this.boxShadow,
   });
   final double height;
   final double width;
@@ -19,13 +19,16 @@ class ClickButton extends StatelessWidget {
   final Color changeColor;
   final Color backGroundColor;
   final Color textColor;
+  final List<BoxShadow>? boxShadow;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+      decoration: BoxDecoration(
+        boxShadow: boxShadow,
+        borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
           onTap();
