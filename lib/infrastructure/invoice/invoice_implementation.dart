@@ -38,12 +38,12 @@ class InvoiceImplementation extends InvoiceService {
         uri,
         headers: headers,
       );
-if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201){
-      final responsebody = jsonDecode(httpresponse.body);
-      invoice = Invoice.fromJson(responsebody);
+      if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
+        final responsebody = jsonDecode(httpresponse.body);
+        invoice = Invoice.fromJson(responsebody);
 
-      return right(invoice);}
-      else {
+        return right(invoice);
+      } else {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {

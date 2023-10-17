@@ -63,7 +63,6 @@ class TripSheetDatum {
       weight,
       status.toString(),
       message.toString(),
-
     ];
   }
 }

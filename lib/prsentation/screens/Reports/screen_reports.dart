@@ -1,9 +1,14 @@
+import 'dart:developer';
+
+import 'package:cargo_track/application/reports/reports_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/core/list/list.dart';
 import 'package:cargo_track/prsentation/screens/reports/widgets/invoice_field.dart';
 import 'package:cargo_track/prsentation/widgets/dropdown_field.dart';
+import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +32,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: null,
             pinned: true,
             backgroundColor: kBlueColor.withOpacity(0.01),
             expandedHeight: size.height * 0.65,
@@ -248,11 +254,37 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
               ),
             ),
             kHeight30,
-            const DropDownSearchTextField(
-              hintText: 'Vehicle Number',
-            ),
-            kHeight30,
-            const DropDownSearchTextField(hintText: 'Cargo Name'),
+            BlocBuilder<ReportsBloc, ReportsState>(builder: (context, state) {
+              List<String> allCargoName = [];
+              List<String> allVehicle = [];
+              if (state is displayingReports) {
+                if (state.isLoading) {
+                  return const Center(
+                    child: FourRotatingDots(
+                      color: kBlueColor,
+                      size: 100,
+                    ),
+                  );
+                }
+                allCargoName = state.allCargoNameList;
+                allVehicle = state.allVehicleList;
+                log(allVehicle.toString());
+                log(allCargoName.toString());
+              }
+              return Column(
+                children: [
+                  DropDownSearchTextField(
+                    hintText: 'Vehicle Number',
+                    dataList: allVehicle,
+                  ),
+                  kHeight30,
+                  DropDownSearchTextField(
+                    hintText: 'Cargo Name',
+                    dataList: allCargoName,
+                  ),
+                ],
+              );
+            }),
             kHeight20,
             Center(
               child: ClickButton(
@@ -281,8 +313,10 @@ class DropDownSearchTextField extends StatelessWidget {
   const DropDownSearchTextField({
     super.key,
     required this.hintText,
+    required this.dataList,
   });
   final String hintText;
+  final List<String> dataList;
 
   @override
   Widget build(BuildContext context) {
@@ -298,9 +332,9 @@ class DropDownSearchTextField extends StatelessWidget {
             hintText: hintText,
             enableSearch: true,
             dropDownList: List.generate(
-              100,
-              (index) =>
-                  const DropDownValueModel(name: 'KL 06-22-07', value: 1),
+              dataList.length,
+              (index) => DropDownValueModel(
+                  name: dataList[index], value: dataList[index]),
             )),
       ),
     );

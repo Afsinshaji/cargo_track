@@ -46,7 +46,8 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
               )),
               Align(
                 alignment: Alignment.centerRight,
-                child: Image.asset('assets/images/Truck-Transparent-Images-PNG.png'),
+                child: Image.asset(
+                    'assets/images/Truck-Transparent-Images-PNG.png'),
               ),
               Container(
                 decoration: const BoxDecoration(

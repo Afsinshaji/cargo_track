@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
@@ -67,14 +66,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       ),
                       const FourRotatingDots(
                         color: kBlackColor,
-                       
                         size: 100,
                       )
                     ],
                   ),
                 );
               }
-               if (state.isError) {
+              if (state.isError) {
                 return Padding(
                   padding: EdgeInsets.only(top: size.height * 0.2),
                   child: const ErrorBox(),
@@ -95,7 +93,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     SizedBox(
                       height: size.height * 0.2,
                     ),
-                   const EmptyBox()
+                    const EmptyBox()
                   ],
                 ),
               );
@@ -133,21 +131,19 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 if (reweight != null && reweight != 0 && reweight > 0) {
                   // generateBarcodeButton = true;
                   Future(() {
-             
                     ref.read(generateBarcodeProvider.notifier).state = true;
                   });
                 } else {
                   Future(() {
-                    
                     ref.read(generateBarcodeProvider.notifier).state = false;
                   });
                 }
               }
             }
-          
+
             return Padding(
-              padding: ref.watch(reWeightField)==false
-              //reWeightController.text.isEmpty
+              padding: ref.watch(reWeightField) == false
+                  //reWeightController.text.isEmpty
                   ? EdgeInsets.only(
                       top: size.height - 70,
                       left: size.width * 0.1,
@@ -164,8 +160,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 controller: reWeightController,
                                 icon: Icons.monitor_weight,
                                 text: 'Add Re-Weight',
-                                
-                              
                               )
                             : ClickButton(
                                 onTap: () async {

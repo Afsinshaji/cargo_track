@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cargo_track/domain/trip_sheet/trip_sheet/datum.dart';
 
-
 import 'package:cargo_track/infrastructure/trip_sheet/trip_sheet_implementation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

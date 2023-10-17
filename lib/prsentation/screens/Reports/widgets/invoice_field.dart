@@ -1,4 +1,3 @@
-
 import 'package:cargo_track/core/colors/colors.dart';
 
 import 'package:flutter/material.dart';
@@ -6,19 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InvoiceField extends StatelessWidget {
-  InvoiceField( {
+  InvoiceField({
     super.key,
     required this.size,
   });
   final Size size;
-  
 
   final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height*0.06,
+      height: size.height * 0.06,
       decoration: const BoxDecoration(
           color: kBlueColor,
           borderRadius: BorderRadius.only(
@@ -35,9 +33,7 @@ class InvoiceField extends StatelessWidget {
             bottomRight: Radius.circular(35),
           ),
           child: TextField(
-            onChanged: (value) {
-          
-            },
+            onChanged: (value) {},
             controller: searchController,
             keyboardType: TextInputType.number,
             style: GoogleFonts.openSans(
@@ -53,7 +49,6 @@ class InvoiceField extends StatelessWidget {
             cursorHeight: 20,
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(left: 20, right: 0),
-               
                 hintText: 'Invoice...',
                 hintStyle: TextStyle(
                   color: kBlackColor.withOpacity(0.4),

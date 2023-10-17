@@ -6,19 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchingBar extends ConsumerWidget {
-  SearchingBar( {
+  SearchingBar({
     super.key,
     required this.size,
   });
   final Size size;
-  
 
   final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      height: size.height*0.15,
+      height: size.height * 0.15,
       decoration: const BoxDecoration(
           color: kBlueColor,
           borderRadius: BorderRadius.only(

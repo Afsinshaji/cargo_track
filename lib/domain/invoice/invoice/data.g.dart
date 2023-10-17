@@ -22,7 +22,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       status: json['status'] as int?,
       senderAddress: json['sender_address'],
       recieverAddress: json['reciever_address'] as String?,
-      rewight: json['rewight'] as int?,
+      rewight: (json['rewight'] as num?)?.toDouble(),
       goodsDesc: json['goods_desc'] as String?,
       goodsStatus: json['goods_status'] as String?,
       createdAt: json['created_at'] == null

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cargo_track/core/colors/colors.dart';
@@ -9,12 +8,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BarcodeScreen extends StatelessWidget {
-  const BarcodeScreen({super.key, required this.barcodeImage, required this.idBarcode});
+  const BarcodeScreen(
+      {super.key, required this.barcodeImage, required this.idBarcode});
   final File barcodeImage;
   final File? idBarcode;
   @override
   Widget build(BuildContext context) {
-   
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kBlueColor,
@@ -47,45 +46,48 @@ class BarcodeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-            
               Container(
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
-                    color: kWhiteColor, borderRadius: BorderRadius.circular(30)),
+                    color: kWhiteColor,
+                    borderRadius: BorderRadius.circular(30)),
                 child: SvgPicture.file(
                   barcodeImage,
                   width: size.height * 0.3,
                   height: size.height * 0.3,
                 ),
               ),
-        kHeight20,
-           idBarcode!=null?     Column(
-             children: [
-              Text(
-              'L.R. NO. Barcode',
-              style: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                  letterSpacing: .5,
-                  fontSize: 24,
-                  color: kWhiteColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            kHeight20,
-               Container(
-                    padding: const EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                        color: kWhiteColor, borderRadius: BorderRadius.circular(30)),
-                    child: SvgPicture.file(
-                      idBarcode!,
-                      width: size.height * 0.3,
-                      height: size.height * 0.3,
-                    ),
-                  ),
-             ],
-           ):kHeight,
-           kHeight20
+              kHeight20,
+              idBarcode != null
+                  ? Column(
+                      children: [
+                        Text(
+                          'L.R. NO. Barcode',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              letterSpacing: .5,
+                              fontSize: 24,
+                              color: kWhiteColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        kHeight20,
+                        Container(
+                          padding: const EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(30)),
+                          child: SvgPicture.file(
+                            idBarcode!,
+                            width: size.height * 0.3,
+                            height: size.height * 0.3,
+                          ),
+                        ),
+                      ],
+                    )
+                  : kHeight,
+              kHeight20
             ],
           ),
         ),

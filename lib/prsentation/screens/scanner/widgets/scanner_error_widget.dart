@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -53,8 +49,6 @@ class ScannerErrorWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 // class Debouncer {
 //   final int milliseconds;

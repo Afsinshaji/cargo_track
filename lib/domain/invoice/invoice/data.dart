@@ -21,7 +21,7 @@ class Data {
   dynamic senderAddress;
   @JsonKey(name: 'reciever_address')
   String? recieverAddress;
-  int? rewight;
+  double? rewight;
   @JsonKey(name: 'goods_desc')
   String? goodsDesc;
   @JsonKey(name: 'goods_status')
@@ -76,7 +76,6 @@ class Data {
       rewight.toString(),
       goodsDesc,
       goodsStatus,
-
     ];
   }
 }

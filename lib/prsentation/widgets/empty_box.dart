@@ -12,16 +12,17 @@ class EmptyBox extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-        'assets/images/isometric-illustration-concept-expedition-of-land-sea-and-air-free-vector-removebg-preview.png'),
-         Text('Empty',
-         style: GoogleFonts.aldrich(
-                              textStyle: const TextStyle(
-                                letterSpacing: 2,
-                                fontSize: 35,
-                                color: kWhiteColor,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
+            'assets/images/isometric-illustration-concept-expedition-of-land-sea-and-air-free-vector-removebg-preview.png'),
+        Text(
+          'Empty',
+          style: GoogleFonts.aldrich(
+            textStyle: const TextStyle(
+              letterSpacing: 2,
+              fontSize: 35,
+              color: kWhiteColor,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ),
       ],
     );

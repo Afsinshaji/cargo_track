@@ -75,7 +75,8 @@ class DropDownTextField extends StatefulWidget {
       this.listPadding,
       this.listTextStyle,
       this.keyboardType,
-      this.autovalidateMode, this.hintText})
+      this.autovalidateMode,
+      this.hintText})
       : assert(
           !(initialValue != null && controller != null),
           "you cannot add both initialValue and singleController,\nset initial value using controller \n\tEg: SingleValueDropDownController(data:initial value) ",
@@ -119,7 +120,8 @@ class DropDownTextField extends StatefulWidget {
       this.listPadding,
       this.listTextStyle,
       this.checkBoxProperty,
-      this.autovalidateMode, this.hintText})
+      this.autovalidateMode,
+      this.hintText})
       : assert(initialValue == null || controller == null,
             "you cannot add both initialValue and multiController\nset initial value using controller\n\tMultiValueDropDownController(data:initial value)"),
         assert(
@@ -242,7 +244,6 @@ class DropDownTextFieldState extends State<DropDownTextField>
       CurveTween(curve: Curves.easeIn);
 
   late TextEditingController _cnt;
-  
 
   late bool _isExpanded;
   OverlayEntry? _entry;
@@ -354,10 +355,10 @@ class DropDownTextFieldState extends State<DropDownTextField>
               _listPadding.top +
               _listPadding.bottom;
       _maxListItem = widget.dropDownItemCount;
-
+//Afsin Look Here
       _height = (_dropDownList.length < _maxListItem
           ? _dropDownList.length * _listTileHeight
-          : _listTileHeight * _maxListItem.toDouble());
+          : _listTileHeight * _maxListItem.toDouble()-50);
     });
   }
 
@@ -405,7 +406,6 @@ class DropDownTextFieldState extends State<DropDownTextField>
         return CompositedTransformTarget(
           link: _layerLink,
           child: TextFormField(
-          
             controller: _cnt,
             focusNode: _textFieldFocusNode,
             keyboardType: widget.keyboardType,
@@ -427,7 +427,6 @@ class DropDownTextFieldState extends State<DropDownTextField>
                 widget.validator != null ? widget.validator!(value) : null,
             decoration: widget.textFieldDecoration != null
                 ? widget.textFieldDecoration!.copyWith(
-                  
                     suffixIcon: (_cnt.text.isEmpty || !widget.clearOption)
                         ? Icon(
                             widget.dropDownIconProperty?.icon ??
@@ -447,8 +446,7 @@ class DropDownTextFieldState extends State<DropDownTextField>
                             : null,
                   )
                 : InputDecoration(
-                  enabledBorder: InputBorder.none,
-                  
+                    enabledBorder: InputBorder.none,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintText: widget.hintText,
                     hintStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -866,11 +864,8 @@ class _SingleSelectionState extends State<SingleSelection> {
                         top: widget.listPadding.top),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(newDropDownList[index].name,
-                            style: widget.listTextStyle),
-                      ),
+                      child: Text(newDropDownList[index].name,
+                          style: widget.listTextStyle),
                     ),
                   ),
                 );

@@ -32,7 +32,6 @@ class ReportsSliverAppBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30)),
               ),
             ),
-           
           ],
         ),
       ),

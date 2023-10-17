@@ -23,7 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchScreen extends StatelessWidget {
-   SearchScreen({super.key});
+  SearchScreen({super.key});
   static ValueNotifier<String> searching = ValueNotifier('');
 
   final ScrollController scrollController = ScrollController();
@@ -41,7 +41,7 @@ class SearchScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        floatingActionButton:  RefreshingFloatingButton(size: size),
+          floatingActionButton: RefreshingFloatingButton(size: size),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(size.height * 0.198),
             child: Column(
@@ -49,17 +49,17 @@ class SearchScreen extends StatelessWidget {
                 SearchingBar(size: size),
                 SizedBox(
                   height: size.height * 0.075,
-                  child:
-                      const TabBar(
-                        // labelStyle: ,
-                        indicatorPadding: EdgeInsets.all(10), tabs: [
-                    Tab(
-                      text: 'Invoice',
-                    ),
-                    Tab(
-                      text: 'Trip Sheet',
-                    )
-                  ]),
+                  child: const TabBar(
+                      // labelStyle: ,
+                      indicatorPadding: EdgeInsets.all(10),
+                      tabs: [
+                        Tab(
+                          text: 'Invoice',
+                        ),
+                        Tab(
+                          text: 'Trip Sheet',
+                        )
+                      ]),
                 )
               ],
             ),
@@ -69,9 +69,7 @@ class SearchScreen extends StatelessWidget {
                   valueListenable: searching,
                   builder: (context, value, _) {
                     return TabBarView(children: [
-                      ListInvoice(
-                          size: size,
-                          serchingInvoice: searching.value),
+                      ListInvoice(size: size, serchingInvoice: searching.value),
                       ListTripSheet(
                         size: size,
                         searchingTripSheet: searching.value,
@@ -100,7 +98,6 @@ class _ListInvoiceState extends State<ListInvoice> {
   @override
   void initState() {
     super.initState();
-   
   }
 
   @override
@@ -111,20 +108,19 @@ class _ListInvoiceState extends State<ListInvoice> {
       builder: (context, state) {
         if (state is displayingAllInvoice) {
           if (state.isLoading) {
-            return  const Center(
+            return const Center(
                 child: FourRotatingDots(
-                  color: kBlackColor,
-                 
-                  size: 100,
-                ));
-                
+              color: kBlackColor,
+              size: 100,
+            ));
+
             //     CircularProgressIndicator(
             //   color: kBlueColor,
             // ));
           }
-           if (state.isError) {
-                return const ErrorBox();
-              }
+          if (state.isError) {
+            return const ErrorBox();
+          }
 
           invoiceList = state.allInvoiceList;
         }
@@ -194,7 +190,6 @@ class _ListTripSheetState extends State<ListTripSheet> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
@@ -205,19 +200,18 @@ class _ListTripSheetState extends State<ListTripSheet> {
         if (state is displayingAllTripSheet) {
           if (state.isLoading) {
             return const Center(
-                child:FourRotatingDots(
-                  color: kBlackColor,
-               
-                  size: 100,
-                ));
-                
+                child: FourRotatingDots(
+              color: kBlackColor,
+              size: 100,
+            ));
+
             //      CircularProgressIndicator(
             //   color: kBlueColor,
             // ));
           }
-           if (state.isError) {
-                return const ErrorBox();
-              }
+          if (state.isError) {
+            return const ErrorBox();
+          }
           tripSheetList = state.allTripSheetList;
         }
 
@@ -269,10 +263,6 @@ class TripSheetBuilder extends ConsumerWidget {
     );
   }
 }
-
-
-
-
 
 // search(String value) {
 //     setState(() {

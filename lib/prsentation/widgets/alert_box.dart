@@ -1,4 +1,3 @@
-
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,7 +73,7 @@ alertBox(BuildContext context, String message, Function() onTap) {
                     ),
                   ),
                 )),
-                kWidth,
+            kWidth,
             TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(

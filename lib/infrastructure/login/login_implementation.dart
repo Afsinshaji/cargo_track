@@ -56,17 +56,16 @@ class LoginImplementation extends LoginService {
       //   log('heiii');
       //   log(response.data.toString());
       // }
-   
-  
-    if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201)  {  log(httpresponse.body.toString());
-      
 
-      final responsebody = jsonDecode(httpresponse.body);
-      final result = Login.fromJson(responsebody);
-      log(result.success.toString());
-      log("$userName$password");
-      return right(result);}
-      else {
+      if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
+        log(httpresponse.body.toString());
+
+        final responsebody = jsonDecode(httpresponse.body);
+        final result = Login.fromJson(responsebody);
+        log(result.success.toString());
+        log("$userName$password");
+        return right(result);
+      } else {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {

@@ -11,17 +11,15 @@ class ReWeightTextField extends ConsumerWidget {
     required this.controller,
     required this.icon,
     required this.text,
- 
   });
 
   final TextEditingController controller;
 
   final IconData icon;
   final String text;
-  
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
@@ -32,20 +30,16 @@ class ReWeightTextField extends ConsumerWidget {
         elevation: 2,
         borderRadius: BorderRadius.circular(15),
         child: TextFormField(
-        
           onEditingComplete: () {
             log('complete');
-             ref.read(reWeightField.notifier).state = true;
+            ref.read(reWeightField.notifier).state = true;
           },
           onChanged: (value) {
-          
-           
-            if(value.isEmpty){
-             ref.read(reWeightField.notifier).state = false;  
-            }else{
-               ref.read(reWeightField.notifier).state = true;
+            if (value.isEmpty) {
+              ref.read(reWeightField.notifier).state = false;
+            } else {
+              ref.read(reWeightField.notifier).state = true;
             }
-           
           },
           textAlign: TextAlign.start,
           controller: controller,

@@ -126,7 +126,6 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                             iconSize: 32.0,
                             onPressed: () {
                               if (capture != null) {
-                               
                                 final barcodeText =
                                     capture!.barcodes.first.rawValue;
 
@@ -159,7 +158,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                                       backgroundColor: Colors.black,
                                       content: Center(
                                           child: CircularProgressIndicator())));
-                            
+
                               final k =
                                   await controller.analyzeImage(image.path);
                               log(k.toString());

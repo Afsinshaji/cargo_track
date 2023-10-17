@@ -52,13 +52,15 @@ class CargoImplementation extends CargoService {
       if (httpResponse.statusCode == 401) {
         log(httpResponse.body.toString());
       }
-if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201){      final responsebody = jsonDecode(httpResponse.body);
+      if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
+        final responsebody = jsonDecode(httpResponse.body);
 
-      final result = Status.fromJson(responsebody);
-      log('oii');
-      log(result.status.toString());
+        final result = Status.fromJson(responsebody);
+        log('oii');
+        log(result.status.toString());
 
-      return Right(result);}else {
+        return Right(result);
+      } else {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {
@@ -67,3 +69,5 @@ if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201){      fina
     }
   }
 }
+
+//"Phone number already exists"

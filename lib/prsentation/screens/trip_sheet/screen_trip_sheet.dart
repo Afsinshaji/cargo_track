@@ -32,14 +32,12 @@ class TripSheetScreen extends StatelessWidget {
             if (state is displayTripSheet) {
               if (state.isLoading) {
                 return Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.4),
-                  child: const Center(
-                child: FourRotatingDots(
-                  color: kBlackColor,
-                 
-                  size: 100,
-                ))
-                );
+                    padding: EdgeInsets.only(top: size.height * 0.4),
+                    child: const Center(
+                        child: FourRotatingDots(
+                      color: kBlackColor,
+                      size: 100,
+                    )));
               }
               if (state.isError) {
                 return Padding(

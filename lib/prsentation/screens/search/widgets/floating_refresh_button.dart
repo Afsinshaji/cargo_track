@@ -23,9 +23,9 @@ class RefreshingFloatingButton extends StatelessWidget {
         child: IconButton(
           onPressed: () {
             BlocProvider.of<AllTripSheetBloc>(context)
-        .add(const AllTripSheetEvent.getAllTripSheetList());
-         BlocProvider.of<AllInvoiceBloc>(context)
-        .add(const AllInvoiceEvent.getAllInvoiceList());
+                .add(const AllTripSheetEvent.getAllTripSheetList());
+            BlocProvider.of<AllInvoiceBloc>(context)
+                .add(const AllInvoiceEvent.getAllInvoiceList());
           },
           icon: const Icon(Icons.refresh),
           iconSize: size.width * 0.07,

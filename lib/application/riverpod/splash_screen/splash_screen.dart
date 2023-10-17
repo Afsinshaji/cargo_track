@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final opacityProvider = StateProvider(
@@ -8,6 +6,5 @@ final opacityProvider = StateProvider(
   },
 );
 increaseOpacity(double opacity, WidgetRef ref) {
-  
   ref.read(opacityProvider.notifier).state = opacity;
 }

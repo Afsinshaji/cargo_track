@@ -10,17 +10,19 @@ class ErrorBox extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Image.asset('assets/images/istockphoto-1138194127-612x612-removebg-preview.png'),
-          Text('Please Try Again',
-         style: GoogleFonts.aldrich(
-                              textStyle: const TextStyle(
-                                letterSpacing: 2,
-                                fontSize: 35,
-                                color: kWhiteColor,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-        ),
+          Image.asset(
+              'assets/images/istockphoto-1138194127-612x612-removebg-preview.png'),
+          Text(
+            'Please Try Again',
+            style: GoogleFonts.aldrich(
+              textStyle: const TextStyle(
+                letterSpacing: 2,
+                fontSize: 35,
+                color: kWhiteColor,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
         ],
       ),
     );

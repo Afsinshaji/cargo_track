@@ -37,10 +37,12 @@ class AllTripSheetImplementation extends AllTripSheetService {
         uri,
         headers: headers,
       );
-   if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201)  { final responsebody = jsonDecode(httpresponse.body);
-      final result = AllTripSheet.fromJson(responsebody);
+      if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
+        final responsebody = jsonDecode(httpresponse.body);
+        final result = AllTripSheet.fromJson(responsebody);
 
-      return Right(result.data ??= []);}else {
+        return Right(result.data ??= []);
+      } else {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {
