@@ -1,10 +1,12 @@
+import 'package:cargo_track/application/riverpod/reports/reports.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class InvoiceField extends StatelessWidget {
+class InvoiceField extends ConsumerWidget {
   InvoiceField({
     super.key,
     required this.size,
@@ -14,7 +16,8 @@ class InvoiceField extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    searchController.text = ref.watch(reportsInvoiceProvider);
     return Container(
       height: size.height * 0.06,
       decoration: const BoxDecoration(
@@ -33,7 +36,10 @@ class InvoiceField extends StatelessWidget {
             bottomRight: Radius.circular(35),
           ),
           child: TextField(
-            onChanged: (value) {},
+            onEditingComplete: () {},
+            onChanged: (value) {
+              addInvoiceNum(value, ref);
+            },
             controller: searchController,
             keyboardType: TextInputType.number,
             style: GoogleFonts.openSans(

@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AllTripSheetBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => ReportsBloc(),
         ),
       ],

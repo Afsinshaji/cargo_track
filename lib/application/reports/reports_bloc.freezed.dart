@@ -169,24 +169,36 @@ mixin _$ReportsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() reportsInitial,
-    required TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)
+    required TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)
         displayingReports,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reportsInitial,
-    TResult? Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult? Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reportsInitial,
-    TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
     required TResult orElse(),
   }) =>
@@ -269,8 +281,12 @@ class _$reportsInitial implements reportsInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() reportsInitial,
-    required TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)
+    required TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)
         displayingReports,
   }) {
     return reportsInitial();
@@ -280,8 +296,12 @@ class _$reportsInitial implements reportsInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reportsInitial,
-    TResult? Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult? Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
   }) {
     return reportsInitial?.call();
@@ -291,8 +311,12 @@ class _$reportsInitial implements reportsInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reportsInitial,
-    TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
     required TResult orElse(),
   }) {
@@ -348,7 +372,8 @@ abstract class _$$displayingReportsCopyWith<$Res> {
       {bool isLoading,
       bool isError,
       List<String> allCargoNameList,
-      List<String> allVehicleList});
+      List<String> allVehicleList,
+      List<ReportsDTO> allReportsList});
 }
 
 /// @nodoc
@@ -366,6 +391,7 @@ class __$$displayingReportsCopyWithImpl<$Res>
     Object? isError = null,
     Object? allCargoNameList = null,
     Object? allVehicleList = null,
+    Object? allReportsList = null,
   }) {
     return _then(_$displayingReports(
       isLoading: null == isLoading
@@ -384,6 +410,10 @@ class __$$displayingReportsCopyWithImpl<$Res>
           ? _value._allVehicleList
           : allVehicleList // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      allReportsList: null == allReportsList
+          ? _value._allReportsList
+          : allReportsList // ignore: cast_nullable_to_non_nullable
+              as List<ReportsDTO>,
     ));
   }
 }
@@ -395,9 +425,11 @@ class _$displayingReports implements displayingReports {
       {required this.isLoading,
       required this.isError,
       required final List<String> allCargoNameList,
-      required final List<String> allVehicleList})
+      required final List<String> allVehicleList,
+      required final List<ReportsDTO> allReportsList})
       : _allCargoNameList = allCargoNameList,
-        _allVehicleList = allVehicleList;
+        _allVehicleList = allVehicleList,
+        _allReportsList = allReportsList;
 
   @override
   final bool isLoading;
@@ -420,9 +452,17 @@ class _$displayingReports implements displayingReports {
     return EqualUnmodifiableListView(_allVehicleList);
   }
 
+  final List<ReportsDTO> _allReportsList;
+  @override
+  List<ReportsDTO> get allReportsList {
+    if (_allReportsList is EqualUnmodifiableListView) return _allReportsList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allReportsList);
+  }
+
   @override
   String toString() {
-    return 'ReportsState.displayingReports(isLoading: $isLoading, isError: $isError, allCargoNameList: $allCargoNameList, allVehicleList: $allVehicleList)';
+    return 'ReportsState.displayingReports(isLoading: $isLoading, isError: $isError, allCargoNameList: $allCargoNameList, allVehicleList: $allVehicleList, allReportsList: $allReportsList)';
   }
 
   @override
@@ -436,7 +476,9 @@ class _$displayingReports implements displayingReports {
             const DeepCollectionEquality()
                 .equals(other._allCargoNameList, _allCargoNameList) &&
             const DeepCollectionEquality()
-                .equals(other._allVehicleList, _allVehicleList));
+                .equals(other._allVehicleList, _allVehicleList) &&
+            const DeepCollectionEquality()
+                .equals(other._allReportsList, _allReportsList));
   }
 
   @override
@@ -445,7 +487,8 @@ class _$displayingReports implements displayingReports {
       isLoading,
       isError,
       const DeepCollectionEquality().hash(_allCargoNameList),
-      const DeepCollectionEquality().hash(_allVehicleList));
+      const DeepCollectionEquality().hash(_allVehicleList),
+      const DeepCollectionEquality().hash(_allReportsList));
 
   @JsonKey(ignore: true)
   @override
@@ -457,38 +500,50 @@ class _$displayingReports implements displayingReports {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() reportsInitial,
-    required TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)
+    required TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)
         displayingReports,
   }) {
     return displayingReports(
-        isLoading, isError, allCargoNameList, allVehicleList);
+        isLoading, isError, allCargoNameList, allVehicleList, allReportsList);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reportsInitial,
-    TResult? Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult? Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
   }) {
     return displayingReports?.call(
-        isLoading, isError, allCargoNameList, allVehicleList);
+        isLoading, isError, allCargoNameList, allVehicleList, allReportsList);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reportsInitial,
-    TResult Function(bool isLoading, bool isError,
-            List<String> allCargoNameList, List<String> allVehicleList)?
+    TResult Function(
+            bool isLoading,
+            bool isError,
+            List<String> allCargoNameList,
+            List<String> allVehicleList,
+            List<ReportsDTO> allReportsList)?
         displayingReports,
     required TResult orElse(),
   }) {
     if (displayingReports != null) {
       return displayingReports(
-          isLoading, isError, allCargoNameList, allVehicleList);
+          isLoading, isError, allCargoNameList, allVehicleList, allReportsList);
     }
     return orElse();
   }
@@ -530,12 +585,14 @@ abstract class displayingReports implements ReportsState {
       {required final bool isLoading,
       required final bool isError,
       required final List<String> allCargoNameList,
-      required final List<String> allVehicleList}) = _$displayingReports;
+      required final List<String> allVehicleList,
+      required final List<ReportsDTO> allReportsList}) = _$displayingReports;
 
   bool get isLoading;
   bool get isError;
   List<String> get allCargoNameList;
   List<String> get allVehicleList;
+  List<ReportsDTO> get allReportsList;
   @JsonKey(ignore: true)
   _$$displayingReportsCopyWith<_$displayingReports> get copyWith =>
       throw _privateConstructorUsedError;

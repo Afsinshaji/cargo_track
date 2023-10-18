@@ -46,7 +46,21 @@ final List tripSheetDetails = [
   'Status',
   'Message',
 ];
-
+final List<String> eachReportDetails = [
+  'id',
+  'tripSheetId',
+  'invoiceNumber',
+  'cargoId',
+  'cargoName',
+  'place',
+  'mobilenumber',
+  'quantity',
+  'weight',
+  'status',
+  'goodsId',
+  'vehicleNumber',
+  'driverName'
+];
 final List<String> reportDropDownInvoiceFilters = [
   'Contains',
   'Start With',

@@ -1,31 +1,31 @@
 import 'dart:developer';
 
 import 'package:cargo_track/application/reports/reports_bloc.dart';
+import 'package:cargo_track/application/riverpod/reports/reports.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/core/list/list.dart';
+import 'package:cargo_track/prsentation/screens/reports/screen_each_report.dart';
 import 'package:cargo_track/prsentation/screens/reports/widgets/invoice_field.dart';
 import 'package:cargo_track/prsentation/widgets/dropdown_field.dart';
+import 'package:cargo_track/prsentation/widgets/empty_box.dart';
 import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 const int count = 9;
 
-class ReportsScreen extends StatefulWidget {
-  const ReportsScreen({super.key});
+// ignore: must_be_immutable
+class ReportsScreen extends ConsumerWidget {
+  ReportsScreen({super.key});
 
-  @override
-  State<ReportsScreen> createState() => _ReportsScreenState();
-}
-
-class _ReportsScreenState extends State<ReportsScreen> {
   AnimationController? animationController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kBlueColor.withOpacity(0.3),
@@ -67,6 +67,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     top: size.height * 0.13,
                     child: ReportDropdownStack(
                       size: size,
+                      ref: ref,
                     ),
                   ),
                 ],
@@ -74,95 +75,180 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
           ),
           SliverList(delegate: SliverChildListDelegate([])),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, int index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0, vertical: 10),
-                    child: Row(children: [
-                      Text(
-                        'Invoices',
-                        style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            letterSpacing: .5,
-                            fontSize: 16,
-                            color: kBlackColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.arrow_drop_down_outlined)
-                    ]),
-                  );
-                }
+          BlocBuilder<ReportsBloc, ReportsState>(
+            builder: (context, state) {
+              List<ReportsDTO> allReportsList = [];
+              final ReportsSearchDTO reportsSearch =
+                  ref.watch(reportsSearchProvider);
+              if (state is displayingReports) {
+                // log(state.allReportsList.toString());
+                allReportsList = state.allReportsList;
 
-                return ListTile(
-                  title: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                              blurRadius: 2,
-                              color: kBlackColor,
-                              spreadRadius: 0,
-                              offset: Offset(1, 1))
-                        ],
-                        color: index / 2 == 1 ? kBlueColor : kGreenColor,
-                        borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(50),
-                          topLeft: Radius.circular(50),
+                if (reportsSearch.invoice.isNotEmpty) {
+                  final invoice = reportsSearch.invoice;
+                  if (reportsSearch.filter == 'Contains') {
+                    final searchList = allReportsList
+                        .where((element) =>
+                            element.invoiceNumber.contains(invoice))
+                        .toList();
+                    allReportsList = searchList;
+                  } else if (reportsSearch.filter == 'Start With') {
+                    final searchList = allReportsList
+                        .where((element) =>
+                            element.invoiceNumber.startsWith(invoice))
+                        .toList();
+                    allReportsList = searchList;
+                  } else if (reportsSearch.filter == 'Exact') {
+                    final searchList = allReportsList
+                        .where((element) => element.invoiceNumber == invoice)
+                        .toList();
+                    allReportsList = searchList;
+                  }
+                }
+                if (reportsSearch.vehicleNum.isNotEmpty) {
+                  final searchList = allReportsList
+                      .where((element) =>
+                          element.vehicleNumber == reportsSearch.vehicleNum)
+                      .toList();
+                  allReportsList = searchList;
+                }
+                if (reportsSearch.cargoName.isNotEmpty) {
+                  final searchList = allReportsList
+                      .where((element) =>
+                          element.cargoName == reportsSearch.cargoName)
+                      .toList();
+                  allReportsList = searchList;
+                }
+                // log('Here${allReportsList.toString()}');
+              }
+
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (_, int sliverindex) {
+                    if (sliverindex == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            left: 25.0, top: 15, right: 20, bottom: 10),
+                        child: Column(
+                          children: [
+                            Center(
+                                child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.3),
+                              child: const Divider(
+                                color: kGreyColor,
+                                thickness: 5,
+                              ),
+                            )),
+                            Row(children: [
+                              Text(
+                                'Invoices',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    letterSpacing: .5,
+                                    fontSize: 16,
+                                    color: kBlackColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const Icon(Icons.arrow_drop_down_outlined)
+                            ]),
+                          ],
                         ),
+                      );
+                    }
+
+                    return SizedBox(
+                      height: size.height * 0.73,
+                      child:allReportsList.isEmpty?const EmptyBox(): ListView.builder(
+                        // shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EachReportScreen(report:allReportsList[index] ),
+                              ));
+                            },
+                            title: Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        blurRadius: 2,
+                                        color: kBlackColor,
+                                        spreadRadius: 0,
+                                        offset: Offset(1, 1))
+                                  ],
+                                  color: allReportsList[index].status == 3
+                                      ? kGreenColor
+                                      : kBlueColor,
+                                  borderRadius: const BorderRadius.only(
+                                    bottomRight: Radius.circular(50),
+                                    topLeft: Radius.circular(50),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                height: size.width * 0.2,
+                                width: size.width * 0.9,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      width: size.width * 0.3,
+                                      child: Text(
+                                        allReportsList[index].invoiceNumber,
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                            letterSpacing: .5,
+                                            fontSize: 18,
+                                            color: kBlackColor,
+                                            fontWeight: FontWeight.w600,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          allReportsList[index].driverName,
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              letterSpacing: .5,
+                                              fontSize: 16,
+                                              color: kBlackColor,
+                                              fontWeight: FontWeight.w600,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          allReportsList[index].vehicleNumber,
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              letterSpacing: .5,
+                                              fontSize: 16,
+                                              color: kBlackColor,
+                                              fontWeight: FontWeight.w600,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                )),
+                          );
+                        },
+                        itemCount: allReportsList.length,
                       ),
-                      padding: const EdgeInsets.all(8),
-                      height: size.width * 0.2,
-                      width: size.width * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            '1404',
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                letterSpacing: .5,
-                                fontSize: 18,
-                                color: kBlackColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                'Nisar Ahammed',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    letterSpacing: .5,
-                                    fontSize: 16,
-                                    color: kBlackColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'KL-35-E-0715',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    letterSpacing: .5,
-                                    fontSize: 16,
-                                    color: kBlackColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      )),
-                );
-              },
-              childCount: 20,
-            ),
+                    );
+                  },
+                  childCount: 2,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -174,9 +260,11 @@ class ReportDropdownStack extends StatefulWidget {
   const ReportDropdownStack({
     super.key,
     required this.size,
+    required this.ref,
   });
 
   final Size size;
+  final WidgetRef ref;
 
   @override
   State<ReportDropdownStack> createState() => _ReportDropdownStackState();
@@ -217,32 +305,17 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
               padding: const EdgeInsets.all(0.0),
               child: Row(
                 children: [
-                  Material(
+                  const Material(
                     elevation: 2,
                     shadowColor: kBlackColor,
-                    shape: const RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       bottomLeft: Radius.circular(35),
                     )),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: DropdownButton<String>(
-                        underline: const SizedBox(),
-                        value: dropdownvalue,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: reportDropDownInvoiceFilters.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                      ),
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: FilterDropDown(),
                     ),
                   ),
                   SizedBox(
@@ -276,11 +349,13 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                   DropDownSearchTextField(
                     hintText: 'Vehicle Number',
                     dataList: allVehicle,
+                    isVehicleNum: true,
                   ),
                   kHeight30,
                   DropDownSearchTextField(
                     hintText: 'Cargo Name',
                     dataList: allCargoName,
+                    isVehicleNum: false,
                   ),
                 ],
               );
@@ -295,7 +370,17 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                       spreadRadius: 0.01,
                       offset: const Offset(2, 2))
                 ],
-                onTap: () {},
+                onTap: () {
+                  setState(() {});
+
+                  searchInReports(
+                    widget.ref.watch(reportsFilterProvider),
+                    widget.ref.watch(reportsInvoiceProvider),
+                    widget.ref.watch(reportsVehicleNumProvider),
+                    widget.ref.watch(reportsCargoProvider),
+                    widget.ref,
+                  );
+                },
                 width: widget.size.width * 0.85,
                 text: 'Search',
                 height: widget.size.width * 0.13,
@@ -309,17 +394,43 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
   }
 }
 
-class DropDownSearchTextField extends StatelessWidget {
+class FilterDropDown extends ConsumerWidget {
+  const FilterDropDown({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButton<String>(
+      underline: const SizedBox(),
+      value: ref.watch(reportsFilterProvider),
+      icon: const Icon(Icons.keyboard_arrow_down),
+      items: reportDropDownInvoiceFilters.map((String items) {
+        return DropdownMenuItem(
+          value: items,
+          child: Text(items),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        selectFilter(newValue!, ref);
+      },
+    );
+  }
+}
+
+class DropDownSearchTextField extends ConsumerWidget {
   const DropDownSearchTextField({
     super.key,
     required this.hintText,
     required this.dataList,
+    required this.isVehicleNum,
   });
   final String hintText;
   final List<String> dataList;
+  final bool isVehicleNum;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       elevation: 2,
       shadowColor: kBlackColor,
@@ -329,6 +440,18 @@ class DropDownSearchTextField extends StatelessWidget {
           horizontal: 20.0,
         ),
         child: DropDownTextField(
+            initialValue: '',
+            onChanged: (value) {
+              String newValue = '';
+              if (value is DropDownValueModel) {
+                newValue = value.value;
+              }
+              if (isVehicleNum == true) {
+                addVehicleNum(newValue, ref);
+              } else {
+                addCargoName(newValue, ref);
+              }
+            },
             hintText: hintText,
             enableSearch: true,
             dropDownList: List.generate(

@@ -7,7 +7,8 @@ class ApiEndPoints {
   static const getAllTripSheet = '$kBaseUrl/api/v1/trip_sheet';
   static const getAllInvoice = '$kBaseUrl/api/v1/invoices';
   static const getAllVehicle = '$kBaseUrl/api/v1/vehicles';
-static const getAllCargoName = '$kBaseUrl/api/v1/cargos';
+  static const getAllCargoName = '$kBaseUrl/api/v1/cargos';
+  static const getAllReports = '$kBaseUrl/api/v1/getReport';
   static const tripSheet = '$kBaseUrl/api/v1/trip_sheet/cargo/';
   static const addCargo = '$kBaseUrl/api/v1/trip_sheet/cargo';
   static const addReweight = '$kBaseUrl/api/v1/update/reweight';

@@ -15,7 +15,7 @@ class MainPageScreen extends StatelessWidget {
     const BarcodeScannerScreen(
       isFromTripSheet: false,
     ),
-    const ReportsScreen()
+     ReportsScreen()
   ];
 
   @override

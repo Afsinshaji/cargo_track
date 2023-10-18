@@ -358,7 +358,7 @@ class DropDownTextFieldState extends State<DropDownTextField>
 //Afsin Look Here
       _height = (_dropDownList.length < _maxListItem
           ? _dropDownList.length * _listTileHeight
-          : _listTileHeight * _maxListItem.toDouble()-50);
+          : _listTileHeight * _maxListItem.toDouble() - 50);
     });
   }
 

@@ -7,6 +7,7 @@ class ReportsState with _$ReportsState {
     required bool isLoading,
     required bool isError,
     required List<String> allCargoNameList,
-    required List<String>allVehicleList,
+    required List<String> allVehicleList,
+    required List<ReportsDTO> allReportsList,
   }) = displayingReports;
 }

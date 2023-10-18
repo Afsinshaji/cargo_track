@@ -1,8 +1,12 @@
+import 'package:cargo_track/application/reports/reports_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/prsentation/screens/dashboard/widgets/draggable_bottom_sheet.dart';
 import 'package:cargo_track/prsentation/screens/track/screen_track.dart';
+import 'package:cargo_track/prsentation/screens/track/screen_tracking_cargo.dart';
+import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
 import 'package:cargo_track/prsentation/widgets/login_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:cargo_track/core/constants/constants.dart';
@@ -15,6 +19,7 @@ class DaashBoardScreen extends StatefulWidget {
 }
 
 class _DaashBoardScreenState extends State<DaashBoardScreen> {
+  final TextEditingController statusTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -104,7 +109,7 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                                       elevation: 2,
                                       borderRadius: BorderRadius.circular(25),
                                       child: TextField(
-                                        // controller: searchController,
+                                        controller: statusTextController,
                                         keyboardType: TextInputType.number,
                                         style: GoogleFonts.openSans(
                                           textStyle: const TextStyle(
@@ -139,16 +144,52 @@ class _DaashBoardScreenState extends State<DaashBoardScreen> {
                                     ),
                                   ),
                                 ),
-                                ClickButton(
-                                  onTap: () {
-                                    openDraggableBottomSheet(
-                                        context: context,
-                                        child: const TrackScreen());
+                                BlocBuilder<ReportsBloc, ReportsState>(
+                                  builder: (context, state) {
+                                    List<ReportsDTO> allReportsList = [];
+                                    if (state is displayingReports) {
+                                      if (state.isLoading) {
+                                        return const FourRotatingDots(
+                                            color: kBlackColor, size: 60);
+                                      }
+                                      allReportsList = state.allReportsList;
+                                    }
+                                    return ClickButton(
+                                      onTap: () {
+                                        List<ReportsDTO> neededInvoiceList =
+                                            allReportsList
+                                                .where((element) =>
+                                                    element.invoiceNumber ==
+                                                    statusTextController.text)
+                                                .toList();
+                                        List<ReportsDTO> neededPhoneNumberList =
+                                            allReportsList
+                                                .where((element) =>
+                                                    element.mobilenumber ==
+                                                    statusTextController.text)
+                                                .toList();
+                                        allReportsList=[];
+                                        allReportsList.addAll(neededInvoiceList);
+                                        allReportsList.addAll(neededPhoneNumberList);
+
+                                        openDraggableBottomSheet(
+                                            context: context,
+                                            child:
+                                            //allReportsList.length==1?
+                                             const TrackScreen()
+                                             
+                                            //  :TrackingCargoScreen(
+                                            //   reportList: allReportsList,
+                                            //  )
+                                             
+                                             );
+                                      },
+                                      width: size.width * 0.4,
+                                      text: 'Track',
+                                      height: 35,
+                                      changeColor: kWhiteColor,
+                                    );
                                   },
-                                  width: size.width * 0.4,
-                                  text: 'Track',
-                                  height: 35,
-                                  changeColor: kWhiteColor,
                                 )
                               ],
                             ),

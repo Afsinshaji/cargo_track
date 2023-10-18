@@ -19,7 +19,7 @@ class EmptyBox extends StatelessWidget {
             textStyle: const TextStyle(
               letterSpacing: 2,
               fontSize: 35,
-              color: kWhiteColor,
+              color: kBlackColor,
               fontWeight: FontWeight.w800,
             ),
           ),

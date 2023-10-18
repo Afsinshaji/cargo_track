@@ -5,6 +5,8 @@ import 'package:cargo_track/domain/core/api_end_points.dart';
 import 'package:cargo_track/domain/core/failure/failure.dart';
 import 'package:cargo_track/domain/reports/all_cargo_name/all_cargo_name.dart';
 import 'package:cargo_track/domain/reports/all_cargo_name/datum.dart';
+import 'package:cargo_track/domain/reports/all_reports/all_reports/all_reports.dart';
+import 'package:cargo_track/domain/reports/all_reports/all_reports/datum.dart';
 import 'package:cargo_track/domain/reports/all_vehicle/all_vehicle.dart';
 
 import 'package:cargo_track/domain/reports/all_vehicle/datum.dart';
@@ -73,6 +75,37 @@ class ReportsImplementation extends ReportsService {
         final responsebody = jsonDecode(httpresponse.body);
 
         final result = AllVehicle.fromJson(responsebody);
+
+        return Right(result.data!);
+      } else {
+        return const Left(MainFailure.serverFailure());
+      }
+    } catch (e) {
+      log(e.toString());
+      return const Left(MainFailure.clientFailure());
+    }
+  }
+
+  @override
+  Future<Either<MainFailure, List<AllReportsData>>> getAllReports()async {
+      try {
+      const url = ApiEndPoints.getAllReports;
+      String? authToken =
+          await StorageService.instance.readSecureData('authToken');
+      authToken ??= '';
+      final uri = Uri.parse(url);
+      final headers = {
+        'Authorization': 'Bearer $authToken',
+        'Accept': 'application/json',
+      };
+      final httpresponse = await http.get(
+        uri,
+        headers: headers,
+      );
+      if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
+        final responsebody = jsonDecode(httpresponse.body);
+
+        final result = AllReports.fromJson(responsebody);
 
         return Right(result.data!);
       } else {

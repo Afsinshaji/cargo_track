@@ -10,7 +10,8 @@ class AllCargoData {
 
   AllCargoData({this.id, this.cargoName});
 
-  factory AllCargoData.fromJson(Map<String, dynamic> json) => _$AllCargoDataFromJson(json);
+  factory AllCargoData.fromJson(Map<String, dynamic> json) =>
+      _$AllCargoDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$AllCargoDataToJson(this);
 }
