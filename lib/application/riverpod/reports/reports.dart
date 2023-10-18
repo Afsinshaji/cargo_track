@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cargo_track/domain/reports/all_reports/all_reports/datum.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum Filter { contains, startWith, exact }
