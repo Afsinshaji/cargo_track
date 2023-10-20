@@ -5,6 +5,7 @@ import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/application/login/login_bloc.dart';
 import 'package:cargo_track/application/re_weight/re_weight_bloc.dart';
 import 'package:cargo_track/application/reports/reports_bloc.dart';
+import 'package:cargo_track/application/track/track_bloc.dart';
 import 'package:cargo_track/application/trip_sheet/trip_sheet_bloc.dart';
 import 'package:cargo_track/prsentation/screens/splash_screen/screen_splash.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ReportsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => TrackBloc(),
         ),
       ],
       child: MaterialApp(

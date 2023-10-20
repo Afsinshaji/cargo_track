@@ -16,43 +16,43 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ReWeightEvent {
-  String get reWeight => throw _privateConstructorUsedError;
-  String get goodsId => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String reWeight, String goodsId) addReWeight,
+    required TResult Function() initializeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String reWeight, String goodsId)? addReWeight,
+    TResult? Function()? initializeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String reWeight, String goodsId)? addReWeight,
+    TResult Function()? initializeEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(addReWeight value) addReWeight,
+    required TResult Function(initializeEvent value) initializeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(addReWeight value)? addReWeight,
+    TResult? Function(initializeEvent value)? initializeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(addReWeight value)? addReWeight,
+    TResult Function(initializeEvent value)? initializeEvent,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $ReWeightEventCopyWith<ReWeightEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -61,8 +61,6 @@ abstract class $ReWeightEventCopyWith<$Res> {
   factory $ReWeightEventCopyWith(
           ReWeightEvent value, $Res Function(ReWeightEvent) then) =
       _$ReWeightEventCopyWithImpl<$Res, ReWeightEvent>;
-  @useResult
-  $Res call({String reWeight, String goodsId});
 }
 
 /// @nodoc
@@ -74,33 +72,13 @@ class _$ReWeightEventCopyWithImpl<$Res, $Val extends ReWeightEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? reWeight = null,
-    Object? goodsId = null,
-  }) {
-    return _then(_value.copyWith(
-      reWeight: null == reWeight
-          ? _value.reWeight
-          : reWeight // ignore: cast_nullable_to_non_nullable
-              as String,
-      goodsId: null == goodsId
-          ? _value.goodsId
-          : goodsId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$addReWeightCopyWith<$Res>
-    implements $ReWeightEventCopyWith<$Res> {
+abstract class _$$addReWeightCopyWith<$Res> {
   factory _$$addReWeightCopyWith(
           _$addReWeight value, $Res Function(_$addReWeight) then) =
       __$$addReWeightCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String reWeight, String goodsId});
 }
@@ -170,6 +148,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String reWeight, String goodsId) addReWeight,
+    required TResult Function() initializeEvent,
   }) {
     return addReWeight(reWeight, goodsId);
   }
@@ -178,6 +157,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String reWeight, String goodsId)? addReWeight,
+    TResult? Function()? initializeEvent,
   }) {
     return addReWeight?.call(reWeight, goodsId);
   }
@@ -186,6 +166,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String reWeight, String goodsId)? addReWeight,
+    TResult Function()? initializeEvent,
     required TResult orElse(),
   }) {
     if (addReWeight != null) {
@@ -198,6 +179,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(addReWeight value) addReWeight,
+    required TResult Function(initializeEvent value) initializeEvent,
   }) {
     return addReWeight(this);
   }
@@ -206,6 +188,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(addReWeight value)? addReWeight,
+    TResult? Function(initializeEvent value)? initializeEvent,
   }) {
     return addReWeight?.call(this);
   }
@@ -214,6 +197,7 @@ class _$addReWeight implements addReWeight {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(addReWeight value)? addReWeight,
+    TResult Function(initializeEvent value)? initializeEvent,
     required TResult orElse(),
   }) {
     if (addReWeight != null) {
@@ -228,14 +212,113 @@ abstract class addReWeight implements ReWeightEvent {
       {required final String reWeight,
       required final String goodsId}) = _$addReWeight;
 
-  @override
   String get reWeight;
-  @override
   String get goodsId;
-  @override
   @JsonKey(ignore: true)
   _$$addReWeightCopyWith<_$addReWeight> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$initializeEventCopyWith<$Res> {
+  factory _$$initializeEventCopyWith(
+          _$initializeEvent value, $Res Function(_$initializeEvent) then) =
+      __$$initializeEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$initializeEventCopyWithImpl<$Res>
+    extends _$ReWeightEventCopyWithImpl<$Res, _$initializeEvent>
+    implements _$$initializeEventCopyWith<$Res> {
+  __$$initializeEventCopyWithImpl(
+      _$initializeEvent _value, $Res Function(_$initializeEvent) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$initializeEvent implements initializeEvent {
+  const _$initializeEvent();
+
+  @override
+  String toString() {
+    return 'ReWeightEvent.initializeEvent()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$initializeEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String reWeight, String goodsId) addReWeight,
+    required TResult Function() initializeEvent,
+  }) {
+    return initializeEvent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String reWeight, String goodsId)? addReWeight,
+    TResult? Function()? initializeEvent,
+  }) {
+    return initializeEvent?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String reWeight, String goodsId)? addReWeight,
+    TResult Function()? initializeEvent,
+    required TResult orElse(),
+  }) {
+    if (initializeEvent != null) {
+      return initializeEvent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(addReWeight value) addReWeight,
+    required TResult Function(initializeEvent value) initializeEvent,
+  }) {
+    return initializeEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(addReWeight value)? addReWeight,
+    TResult? Function(initializeEvent value)? initializeEvent,
+  }) {
+    return initializeEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(addReWeight value)? addReWeight,
+    TResult Function(initializeEvent value)? initializeEvent,
+    required TResult orElse(),
+  }) {
+    if (initializeEvent != null) {
+      return initializeEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class initializeEvent implements ReWeightEvent {
+  const factory initializeEvent() = _$initializeEvent;
 }
 
 /// @nodoc
@@ -244,18 +327,21 @@ mixin _$ReWeightState {
   TResult when<TResult extends Object?>({
     required TResult Function() reWeightInitial,
     required TResult Function(bool isAdded, bool isLoading) showResult,
+    required TResult Function() initializing,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reWeightInitial,
     TResult? Function(bool isAdded, bool isLoading)? showResult,
+    TResult? Function()? initializing,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reWeightInitial,
     TResult Function(bool isAdded, bool isLoading)? showResult,
+    TResult Function()? initializing,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -263,18 +349,21 @@ mixin _$ReWeightState {
   TResult map<TResult extends Object?>({
     required TResult Function(reWeightInitial value) reWeightInitial,
     required TResult Function(showResult value) showResult,
+    required TResult Function(initializing value) initializing,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(reWeightInitial value)? reWeightInitial,
     TResult? Function(showResult value)? showResult,
+    TResult? Function(initializing value)? initializing,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(reWeightInitial value)? reWeightInitial,
     TResult Function(showResult value)? showResult,
+    TResult Function(initializing value)? initializing,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -338,6 +427,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() reWeightInitial,
     required TResult Function(bool isAdded, bool isLoading) showResult,
+    required TResult Function() initializing,
   }) {
     return reWeightInitial();
   }
@@ -347,6 +437,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reWeightInitial,
     TResult? Function(bool isAdded, bool isLoading)? showResult,
+    TResult? Function()? initializing,
   }) {
     return reWeightInitial?.call();
   }
@@ -356,6 +447,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reWeightInitial,
     TResult Function(bool isAdded, bool isLoading)? showResult,
+    TResult Function()? initializing,
     required TResult orElse(),
   }) {
     if (reWeightInitial != null) {
@@ -369,6 +461,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult map<TResult extends Object?>({
     required TResult Function(reWeightInitial value) reWeightInitial,
     required TResult Function(showResult value) showResult,
+    required TResult Function(initializing value) initializing,
   }) {
     return reWeightInitial(this);
   }
@@ -378,6 +471,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(reWeightInitial value)? reWeightInitial,
     TResult? Function(showResult value)? showResult,
+    TResult? Function(initializing value)? initializing,
   }) {
     return reWeightInitial?.call(this);
   }
@@ -387,6 +481,7 @@ class _$reWeightInitial implements reWeightInitial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(reWeightInitial value)? reWeightInitial,
     TResult Function(showResult value)? showResult,
+    TResult Function(initializing value)? initializing,
     required TResult orElse(),
   }) {
     if (reWeightInitial != null) {
@@ -475,6 +570,7 @@ class _$showResult implements showResult {
   TResult when<TResult extends Object?>({
     required TResult Function() reWeightInitial,
     required TResult Function(bool isAdded, bool isLoading) showResult,
+    required TResult Function() initializing,
   }) {
     return showResult(isAdded, isLoading);
   }
@@ -484,6 +580,7 @@ class _$showResult implements showResult {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? reWeightInitial,
     TResult? Function(bool isAdded, bool isLoading)? showResult,
+    TResult? Function()? initializing,
   }) {
     return showResult?.call(isAdded, isLoading);
   }
@@ -493,6 +590,7 @@ class _$showResult implements showResult {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? reWeightInitial,
     TResult Function(bool isAdded, bool isLoading)? showResult,
+    TResult Function()? initializing,
     required TResult orElse(),
   }) {
     if (showResult != null) {
@@ -506,6 +604,7 @@ class _$showResult implements showResult {
   TResult map<TResult extends Object?>({
     required TResult Function(reWeightInitial value) reWeightInitial,
     required TResult Function(showResult value) showResult,
+    required TResult Function(initializing value) initializing,
   }) {
     return showResult(this);
   }
@@ -515,6 +614,7 @@ class _$showResult implements showResult {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(reWeightInitial value)? reWeightInitial,
     TResult? Function(showResult value)? showResult,
+    TResult? Function(initializing value)? initializing,
   }) {
     return showResult?.call(this);
   }
@@ -524,6 +624,7 @@ class _$showResult implements showResult {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(reWeightInitial value)? reWeightInitial,
     TResult Function(showResult value)? showResult,
+    TResult Function(initializing value)? initializing,
     required TResult orElse(),
   }) {
     if (showResult != null) {
@@ -543,4 +644,112 @@ abstract class showResult implements ReWeightState {
   @JsonKey(ignore: true)
   _$$showResultCopyWith<_$showResult> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$initializingCopyWith<$Res> {
+  factory _$$initializingCopyWith(
+          _$initializing value, $Res Function(_$initializing) then) =
+      __$$initializingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$initializingCopyWithImpl<$Res>
+    extends _$ReWeightStateCopyWithImpl<$Res, _$initializing>
+    implements _$$initializingCopyWith<$Res> {
+  __$$initializingCopyWithImpl(
+      _$initializing _value, $Res Function(_$initializing) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$initializing implements initializing {
+  const _$initializing();
+
+  @override
+  String toString() {
+    return 'ReWeightState.initializing()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$initializing);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() reWeightInitial,
+    required TResult Function(bool isAdded, bool isLoading) showResult,
+    required TResult Function() initializing,
+  }) {
+    return initializing();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? reWeightInitial,
+    TResult? Function(bool isAdded, bool isLoading)? showResult,
+    TResult? Function()? initializing,
+  }) {
+    return initializing?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? reWeightInitial,
+    TResult Function(bool isAdded, bool isLoading)? showResult,
+    TResult Function()? initializing,
+    required TResult orElse(),
+  }) {
+    if (initializing != null) {
+      return initializing();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(reWeightInitial value) reWeightInitial,
+    required TResult Function(showResult value) showResult,
+    required TResult Function(initializing value) initializing,
+  }) {
+    return initializing(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(reWeightInitial value)? reWeightInitial,
+    TResult? Function(showResult value)? showResult,
+    TResult? Function(initializing value)? initializing,
+  }) {
+    return initializing?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(reWeightInitial value)? reWeightInitial,
+    TResult Function(showResult value)? showResult,
+    TResult Function(initializing value)? initializing,
+    required TResult orElse(),
+  }) {
+    if (initializing != null) {
+      return initializing(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class initializing implements ReWeightState {
+  const factory initializing() = _$initializing;
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
@@ -33,12 +34,14 @@ class InvoiceScreen extends StatefulWidget {
 
   final bool isFromTripSheet;
   final String tripSheetId;
+  static Completer<void> reWeightCompleter = Completer<void>();
   @override
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final TextEditingController reWeightController = TextEditingController();
+
   // bool generateBarcodeButton = false;
   List details = detailsList;
   List dummy = dummyDetails;
@@ -54,9 +57,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     return Scaffold(
       backgroundColor: kBlueColor,
       body: SafeArea(child: SingleChildScrollView(
-        child: BlocBuilder<InvoiceBloc, InvoiceState>(
+        child: BlocBuilder<ReWeightBloc, ReWeightState>(
           builder: (context, state) {
-            if (state is displayInvoice) {
+            if (state is showResult) {
               if (state.isLoading) {
                 return Center(
                   child: Column(
@@ -72,157 +75,210 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   ),
                 );
               }
-              if (state.isError) {
-                return Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.2),
-                  child: const ErrorBox(),
-                );
-              }
-              invoice = state.invoice;
-              if (invoice.data != null) {
-                fieldList = invoice.data!.toList();
-                goodsId = invoice.data!.id.toString();
-                invoiceno = invoice.data!.invoiceno ??= '';
-                recieverAddress = invoice.data!.recieverAddress ??= '';
-              }
-            }
-            if (fieldList.isEmpty) {
-              return Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.2,
-                    ),
-                    const EmptyBox()
-                  ],
-                ),
-              );
-            }
+               BlocProvider.of<ReWeightBloc>(context)
+                  .add(const ReWeightEvent.initializeEvent());
+                BlocProvider.of<InvoiceBloc>(context)
+                  .add(InvoiceEvent.getInvoice(invoiceNumber: invoiceno));
 
-            return Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: CirclePopUpButton(),
+             
+
+            return Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.4,
+                      ),
+                      const FourRotatingDots(
+                        color: kBlackColor,
+                        size: 100,
+                      )
+                    ],
                   ),
-                ),
-                DetailsCard(details: details, dummy: fieldList),
-                RcieverAddressCard(recieverAddress: recieverAddress),
-                reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
-                kHeight50,
-                kHeight30,
-              ],
+                ); 
+            }
+            return BlocBuilder<InvoiceBloc, InvoiceState>(
+              builder: (context, state) {
+                if (state is displayInvoice) {
+                  if (state.isLoading) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.4,
+                          ),
+                          const FourRotatingDots(
+                            color: kBlackColor,
+                            size: 100,
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  if (state.isError) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.2),
+                      child: const ErrorBox(),
+                    );
+                  }
+                  invoice = state.invoice;
+                  if (invoice.data != null) {
+                    fieldList = invoice.data!.toList();
+                    goodsId = invoice.data!.id.toString();
+                    invoiceno = invoice.data!.invoiceno ??= '';
+                    recieverAddress = invoice.data!.recieverAddress ??= '';
+                  }
+                }
+                if (fieldList.isEmpty) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.2,
+                        ),
+                        const EmptyBox()
+                      ],
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: [
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: CirclePopUpButton(),
+                      ),
+                    ),
+                    DetailsCard(details: details, dummy: fieldList),
+                    RcieverAddressCard(recieverAddress: recieverAddress),
+                    reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
+                    kHeight50,
+                    kHeight30,
+                  ],
+                );
+              },
             );
           },
         ),
       )),
       floatingActionButton: Consumer(builder: (context, ref, _) {
-        return BlocBuilder<InvoiceBloc, InvoiceState>(
+        return BlocBuilder<ReWeightBloc, ReWeightState>(
           builder: (context, state) {
-            if (state is displayInvoice) {
-              if (state.isLoading || state.isError) {
+            if (state is showResult) {
+              if (state.isLoading) {
                 return const SizedBox();
               }
-              buttonInvoice = state.invoice;
-              if (buttonInvoice.data != null) {
-                final reweight = buttonInvoice.data!.rewight;
-                if (reweight != null && reweight != 0 && reweight > 0) {
-                  // generateBarcodeButton = true;
-                  Future(() {
-                    ref.read(generateBarcodeProvider.notifier).state = true;
-                  });
-                } else {
-                  Future(() {
-                    ref.read(generateBarcodeProvider.notifier).state = false;
-                  });
-                }
-              }
             }
+            return BlocBuilder<InvoiceBloc, InvoiceState>(
+              builder: (context, state) {
+                if (state is displayInvoice) {
+                  if (state.isLoading || state.isError) {
+                    return const SizedBox();
+                  }
+                  buttonInvoice = state.invoice;
+                  if (buttonInvoice.data != null) {
+                    final reweight = buttonInvoice.data!.rewight;
+                    if (reweight != null && reweight != 0 && reweight > 0) {
+                      // generateBarcodeButton = true;
+                      Future(() {
+                        ref.read(generateBarcodeProvider.notifier).state = true;
+                      });
+                    } else {
+                      Future(() {
+                        ref.read(generateBarcodeProvider.notifier).state =
+                            false;
+                      });
+                    }
+                  }
+                }
 
-            return Padding(
-              padding: ref.watch(reWeightField) == false
-                  //reWeightController.text.isEmpty
-                  ? EdgeInsets.only(
-                      top: size.height - 70,
-                      left: size.width * 0.1,
-                      right: ref.watch(generateBarcodeProvider) == true
-                          ? size.width * 0.2
-                          : 0)
-                  : EdgeInsets.only(
-                      top: size.height - 150, left: size.width * 0.1),
-              child: widget.isFromTripSheet == false
-                  ? Column(
-                      children: [
-                        ref.watch(generateBarcodeProvider) == false
-                            ? ReWeightTextField(
-                                controller: reWeightController,
-                                icon: Icons.monitor_weight,
-                                text: 'Add Re-Weight',
-                              )
-                            : ClickButton(
-                                onTap: () async {
-                                  final id = invoice.data!.id;
+                return Padding(
+                  padding: ref.watch(reWeightField) == false
+                      //reWeightController.text.isEmpty
+                      ? EdgeInsets.only(
+                          top: size.height - 70,
+                          left: size.width * 0.1,
+                          right: ref.watch(generateBarcodeProvider) == true
+                              ? size.width * 0.2
+                              : 0)
+                      : EdgeInsets.only(
+                          top: size.height - 150, left: size.width * 0.1),
+                  child: widget.isFromTripSheet == false
+                      ? Column(
+                          children: [
+                            ref.watch(generateBarcodeProvider) == false
+                                ? ReWeightTextField(
+                                    controller: reWeightController,
+                                    icon: Icons.monitor_weight,
+                                    text: 'Add Re-Weight',
+                                  )
+                                : ClickButton(
+                                    onTap: () async {
+                                      final id = invoice.data!.id;
 
-                                  File? idBarcode;
-                                  if (id != null) {
-                                    idBarcode =
-                                        await generateBarcode(id.toString());
-                                  }
-                                  await generateBarcode(invoiceno)
-                                      .then((value) => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => BarcodeScreen(
-                                                barcodeImage: value,
-                                                idBarcode: idBarcode),
-                                          )));
-                                },
-                                text: 'Generate Barcode',
-                                width: size.width * 0.5,
-                                backGroundColor: kBlackColor,
-                                changeColor: kBlackColor.withOpacity(0.3),
-                              ),
-                        //reWeightController.text.isNotEmpty
-                        ref.watch(reWeightField) == true
-                            ? ClickButton(
-                                onTap: () {
-                                  // setState(() {
-                                  // details.add('RE-WEIGHT');
-                                  // dummy.add(reWeightController.text);
-                                  BlocProvider.of<ReWeightBloc>(context).add(
-                                      ReWeightEvent.addReWeight(
-                                          reWeight: reWeightController.text,
-                                          goodsId: goodsId));
-                                  BlocProvider.of<InvoiceBloc>(context).add(
-                                      InvoiceEvent.getInvoice(
-                                          invoiceNumber: invoiceno));
-                                  ref
-                                      .read(generateBarcodeProvider.notifier)
-                                      .state = true;
-                                  ref.read(reWeightField.notifier).state =
-                                      false;
-                                  reWeightController.clear();
-                                  // });
-                                },
-                                backGroundColor: kBlackColor,
-                                changeColor: kBlackColor.withOpacity(0.3),
-                                text: 'Save',
-                                width: size.width * 0.5,
-                              )
-                            : const SizedBox(),
-                      ],
-                    )
-                  : ClickButton(
-                      onTap: () async {
-                        addInvoiceToCargo(invoice, widget.tripSheetId);
-                      },
-                      text: 'Add to tripsheet',
-                      width: size.width * 0.5,
-                      backGroundColor: kBlackColor,
-                      changeColor: kBlackColor.withOpacity(0.3),
-                    ),
+                                      File? idBarcode;
+                                      if (id != null) {
+                                        idBarcode = await generateBarcode(
+                                            id.toString());
+                                      }
+                                      await generateBarcode(invoiceno)
+                                          .then((value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BarcodeScreen(
+                                                        barcodeImage: value,
+                                                        idBarcode: idBarcode),
+                                              )));
+                                    },
+                                    text: 'Generate Barcode',
+                                    width: size.width * 0.5,
+                                    backGroundColor: kBlackColor,
+                                    changeColor: kBlackColor.withOpacity(0.3),
+                                  ),
+                            //reWeightController.text.isNotEmpty
+                            ref.watch(reWeightField) == true
+                                ? ClickButton(
+                                    onTap: () {
+                                      // setState(() {
+                                      // details.add('RE-WEIGHT');
+                                      // dummy.add(reWeightController.text);
+
+                                      BlocProvider.of<ReWeightBloc>(context)
+                                          .add(ReWeightEvent.addReWeight(
+                                              reWeight: reWeightController.text,
+                                              goodsId: goodsId));
+
+                                      ref
+                                          .read(
+                                              generateBarcodeProvider.notifier)
+                                          .state = true;
+                                      ref.read(reWeightField.notifier).state =
+                                          false;
+                                      reWeightController.clear();
+                                      // });
+                                    },
+                                    backGroundColor: kBlackColor,
+                                    changeColor: kBlackColor.withOpacity(0.3),
+                                    text: 'Save',
+                                    width: size.width * 0.5,
+                                  )
+                                : const SizedBox(),
+                          ],
+                        )
+                      : ClickButton(
+                          onTap: () async {
+                            addInvoiceToCargo(invoice, widget.tripSheetId);
+                          },
+                          text: 'Add to tripsheet',
+                          width: size.width * 0.5,
+                          backGroundColor: kBlackColor,
+                          changeColor: kBlackColor.withOpacity(0.3),
+                        ),
+                );
+              },
             );
           },
         );

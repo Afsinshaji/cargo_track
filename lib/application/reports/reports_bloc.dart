@@ -125,9 +125,9 @@ class ReportsDTO {
       required this.driverName});
   List<String> toList() {
     String realStatus = '';
-    
-    switch(status){
-          case 0:
+
+    switch (status) {
+      case 0:
         realStatus = 'On the Way';
         break;
       case 1:

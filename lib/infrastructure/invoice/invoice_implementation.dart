@@ -38,6 +38,7 @@ class InvoiceImplementation extends InvoiceService {
         uri,
         headers: headers,
       );
+      log(httpresponse.statusCode.toString());
       if (httpresponse.statusCode == 200 || httpresponse.statusCode == 201) {
         final responsebody = jsonDecode(httpresponse.body);
         invoice = Invoice.fromJson(responsebody);

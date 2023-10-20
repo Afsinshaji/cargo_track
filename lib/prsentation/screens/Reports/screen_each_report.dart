@@ -9,9 +9,10 @@ import '../../widgets/circle_popup_button.dart';
 
 class EachReportScreen extends StatelessWidget {
   const EachReportScreen({
-    super.key, required this.report,
+    super.key,
+    required this.report,
   });
- final ReportsDTO report;
+  final ReportsDTO report;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class EachReportCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
               children: List.generate(tripSheetDetails.length, (index) {
-            if (detailsList[index] == 'null'||detailsList[index] == '-1') {
+            if (detailsList[index] == 'null' || detailsList[index] == '-1') {
               detailsList[index] = 'nil';
             }
             return Padding(

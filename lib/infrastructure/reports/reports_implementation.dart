@@ -87,8 +87,8 @@ class ReportsImplementation extends ReportsService {
   }
 
   @override
-  Future<Either<MainFailure, List<AllReportsData>>> getAllReports()async {
-      try {
+  Future<Either<MainFailure, List<AllReportsData>>> getAllReports() async {
+    try {
       const url = ApiEndPoints.getAllReports;
       String? authToken =
           await StorageService.instance.readSecureData('authToken');

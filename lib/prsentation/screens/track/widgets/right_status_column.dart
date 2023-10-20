@@ -4,7 +4,9 @@ import 'package:cargo_track/prsentation/screens/track/widgets/track_indicator.da
 import 'package:flutter/material.dart';
 
 class RightStatusColumn extends StatelessWidget {
-  const RightStatusColumn({super.key});
+  const RightStatusColumn({super.key, required this.recieveDate, required this.isDelivered});
+  final String recieveDate;
+  final bool isDelivered;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class RightStatusColumn extends StatelessWidget {
         ),
         const StatusText(text: 'Recieved At Calicut'),
         kHeight,
-        const StatusText(text: '12/10/2022'),
+        StatusText(text: recieveDate),
         SizedBox(
           height: size.height * 0.14,
         ),
@@ -31,9 +33,10 @@ class RightStatusColumn extends StatelessWidget {
         SizedBox(
           height: size.height * 0.15,
         ),
-        const StatusText(text: 'Delivered'),
         kHeight,
-        const StatusText(text: '12/10/2022'),
+         StatusText(
+            text: !isDelivered ? 'Not yet delivered' : 'Delivered'),
+        kHeight,
       ],
     );
   }

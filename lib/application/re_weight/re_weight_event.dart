@@ -4,4 +4,5 @@ part of 're_weight_bloc.dart';
 class ReWeightEvent with _$ReWeightEvent {
   const factory ReWeightEvent.addReWeight(
       {required String reWeight, required String goodsId}) = addReWeight;
+      const factory ReWeightEvent.initializeEvent()=initializeEvent;
 }

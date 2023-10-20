@@ -80,8 +80,16 @@ class ReportsScreen extends ConsumerWidget {
               List<ReportsDTO> allReportsList = [];
               final ReportsSearchDTO reportsSearch =
                   ref.watch(reportsSearchProvider);
+              bool isLoaded = true;
               if (state is displayingReports) {
                 // log(state.allReportsList.toString());
+                if (state.isLoading) {
+                  isLoaded = false;
+                }
+                if (!state.isLoading) {
+                  isLoaded = true;
+                }
+
                 allReportsList = state.allReportsList;
 
                 if (reportsSearch.invoice.isNotEmpty) {
@@ -158,91 +166,108 @@ class ReportsScreen extends ConsumerWidget {
                         ),
                       );
                     }
-
+                    if (!isLoaded) {
+                      return const Center(
+                        child: FourRotatingDots(
+                          color: kBlueColor,
+                          size: 100,
+                        ),
+                      );
+                    }
                     return SizedBox(
                       height: size.height * 0.73,
-                      child:allReportsList.isEmpty?const EmptyBox(): ListView.builder(
-                        // shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EachReportScreen(report:allReportsList[index] ),
-                              ));
-                            },
-                            title: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        blurRadius: 2,
-                                        color: kBlackColor,
-                                        spreadRadius: 0,
-                                        offset: Offset(1, 1))
-                                  ],
-                                  color: allReportsList[index].status == 3
-                                      ? kGreenColor
-                                      : kBlueColor,
-                                  borderRadius: const BorderRadius.only(
-                                    bottomRight: Radius.circular(50),
-                                    topLeft: Radius.circular(50),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(8),
-                                height: size.width * 0.2,
-                                width: size.width * 0.9,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      width: size.width * 0.3,
-                                      child: Text(
-                                        allReportsList[index].invoiceNumber,
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            letterSpacing: .5,
-                                            fontSize: 18,
-                                            color: kBlackColor,
-                                            fontWeight: FontWeight.w600,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                      child: allReportsList.isEmpty
+                          ? const EmptyBox()
+                          : ListView.builder(
+                              // shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => EachReportScreen(
+                                          report: allReportsList[index]),
+                                    ));
+                                  },
+                                  title: Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              blurRadius: 2,
+                                              color: kBlackColor,
+                                              spreadRadius: 0,
+                                              offset: Offset(1, 1))
+                                        ],
+                                        color: allReportsList[index].status == 3
+                                            ? kGreenColor
+                                            : kBlueColor,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomRight: Radius.circular(50),
+                                          topLeft: Radius.circular(50),
                                         ),
                                       ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          allReportsList[index].driverName,
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 16,
-                                              color: kBlackColor,
-                                              fontWeight: FontWeight.w600,
-                                              overflow: TextOverflow.ellipsis,
+                                      padding: const EdgeInsets.all(8),
+                                      height: size.width * 0.2,
+                                      width: size.width * 0.9,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.3,
+                                            child: Text(
+                                              allReportsList[index]
+                                                  .invoiceNumber,
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  letterSpacing: .5,
+                                                  fontSize: 18,
+                                                  color: kBlackColor,
+                                                  fontWeight: FontWeight.w600,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          allReportsList[index].vehicleNumber,
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 16,
-                                              color: kBlackColor,
-                                              fontWeight: FontWeight.w600,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                )),
-                          );
-                        },
-                        itemCount: allReportsList.length,
-                      ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                allReportsList[index]
+                                                    .driverName,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 16,
+                                                    color: kBlackColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                allReportsList[index]
+                                                    .vehicleNumber,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 16,
+                                                    color: kBlackColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                );
+                              },
+                              itemCount: allReportsList.length,
+                            ),
                     );
                   },
                   childCount: 2,
@@ -305,20 +330,24 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
               padding: const EdgeInsets.all(0.0),
               child: Row(
                 children: [
-                  const Material(
-                    elevation: 2,
-                    shadowColor: kBlackColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      bottomLeft: Radius.circular(35),
-                    )),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: FilterDropDown(),
+                  SizedBox(
+                    height: widget.size.height * 0.06,
+                    child: const Material(
+                      elevation: 2,
+                      shadowColor: kBlackColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        bottomLeft: Radius.circular(35),
+                      )),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: FilterDropDown(),
+                      ),
                     ),
                   ),
                   SizedBox(
+                      height: widget.size.height * 0.06,
                       width: widget.size.width * 0.58,
                       child: InvoiceField(
                         size: widget.size,

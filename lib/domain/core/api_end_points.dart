@@ -12,6 +12,7 @@ class ApiEndPoints {
   static const tripSheet = '$kBaseUrl/api/v1/trip_sheet/cargo/';
   static const addCargo = '$kBaseUrl/api/v1/trip_sheet/cargo';
   static const addReweight = '$kBaseUrl/api/v1/update/reweight';
+  static const getTrackingStatus = '$kBaseUrl/api/v1/getStatus?search=';
 }
 
 //'$kBaseUrl/discover/movie?api_key=$apiKey&page={pagenumber}';

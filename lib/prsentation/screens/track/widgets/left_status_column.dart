@@ -4,7 +4,9 @@ import 'package:cargo_track/prsentation/screens/track/widgets/track_indicator.da
 import 'package:flutter/material.dart';
 
 class LeftStatusColumn extends StatelessWidget {
-  const LeftStatusColumn({super.key});
+  const LeftStatusColumn({super.key, required this.sendDate, required this.status});
+  final String sendDate;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class LeftStatusColumn extends StatelessWidget {
       children: [
         const StatusText(text: 'Sending Date'),
         kHeight,
-        const StatusText(text: '12/10/2022'),
+        StatusText(text: sendDate),
         SizedBox(
           height: size.height * 0.14,
         ),
@@ -25,9 +27,9 @@ class LeftStatusColumn extends StatelessWidget {
         SizedBox(
           height: size.height * 0.18,
         ),
-        const StatusText(text: 'Out For Delivery'),
+         StatusText(text: status),
         kHeight,
-        const StatusText(text: '12/10/2022'),
+        kHeight20,
         SizedBox(
           height: size.height * 0.13,
         ),
