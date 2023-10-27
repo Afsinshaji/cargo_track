@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
@@ -14,6 +15,7 @@ import 'package:cargo_track/domain/invoice/invoice/invoice.dart';
 
 import 'package:cargo_track/prsentation/widgets/circle_popup_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:cargo_track/core/colors/colors.dart';
@@ -28,7 +30,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'widgets/re_weight_text_field.dart';
 import 'package:barcode/barcode.dart';
 
-class InvoiceScreen extends StatefulWidget {
+class InvoiceScreen extends ConsumerStatefulWidget {
   const InvoiceScreen(
       {super.key, this.isFromTripSheet = false, this.tripSheetId = ''});
 
@@ -36,12 +38,12 @@ class InvoiceScreen extends StatefulWidget {
   final String tripSheetId;
   static Completer<void> reWeightCompleter = Completer<void>();
   @override
-  State<InvoiceScreen> createState() => _InvoiceScreenState();
+  InvoiceScreenState createState() => InvoiceScreenState();
 }
 
-class _InvoiceScreenState extends State<InvoiceScreen> {
+class InvoiceScreenState extends ConsumerState<InvoiceScreen> {
   final TextEditingController reWeightController = TextEditingController();
-
+ late double reWeightValue;
   // bool generateBarcodeButton = false;
   List details = detailsList;
   List dummy = dummyDetails;
@@ -49,6 +51,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Invoice invoice = Invoice.empty();
+
     Invoice buttonInvoice = Invoice.empty();
     List fieldList = [];
     String recieverAddress = '';
@@ -56,11 +59,82 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     String invoiceno = '';
     return Scaffold(
       backgroundColor: kBlueColor,
-      body: SafeArea(child: SingleChildScrollView(
-        child: BlocBuilder<ReWeightBloc, ReWeightState>(
-          builder: (context, state) {
-            if (state is showResult) {
-              if (state.isLoading) {
+      body: SafeArea(child: SingleChildScrollView(child:
+              // BlocBuilder<ReWeightBloc, ReWeightState>(
+              //   builder: (context, state) {
+              //     return
+              BlocBuilder<InvoiceBloc, InvoiceState>(
+        builder: (context, state) {
+          if (state is displayInvoice) {
+            if (state.isLoading) {
+              return Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.4,
+                    ),
+                    const FourRotatingDots(
+                      color: kBlackColor,
+                      size: 100,
+                    )
+                  ],
+                ),
+              );
+            }
+            if (state.isError) {
+              return Padding(
+                padding: EdgeInsets.only(top: size.height * 0.2),
+                child: const ErrorBox(),
+              );
+            }
+            invoice = state.invoice;
+            if (invoice.data != null) {
+              fieldList = invoice.data!.toList();
+              goodsId = invoice.data!.id.toString();
+              invoiceno = invoice.data!.invoiceno ??= '';
+              recieverAddress = invoice.data!.recieverAddress ??= '';
+              print(invoice.data!.rewight ??= 0);
+              reWeightValue = invoice.data!.rewight ??= 0;
+              // ref.read(reWeightValueChanger.notifier).state =
+              //     invoice.data!.rewight ??= 0;
+            }
+          }
+          if (fieldList.isEmpty) {
+            return Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height * 0.2,
+                  ),
+                  const EmptyBox()
+                ],
+              ),
+            );
+          }
+
+          return BlocBuilder<ReWeightBloc, ReWeightState>(
+            builder: (context, state) {
+              if (state is showResult) {
+                if (state.isLoading) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.4,
+                        ),
+                        const FourRotatingDots(
+                          color: kBlackColor,
+                          size: 100,
+                        )
+                      ],
+                    ),
+                  );
+                }
+                BlocProvider.of<ReWeightBloc>(context)
+                    .add(const ReWeightEvent.initializeEvent());
+                // BlocProvider.of<InvoiceBloc>(context)
+                //     .add(InvoiceEvent.getInvoice(invoiceNumber: invoiceno));
+
                 return Center(
                   child: Column(
                     children: [
@@ -75,94 +149,37 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   ),
                 );
               }
-               BlocProvider.of<ReWeightBloc>(context)
-                  .add(const ReWeightEvent.initializeEvent());
-                BlocProvider.of<InvoiceBloc>(context)
-                  .add(InvoiceEvent.getInvoice(invoiceNumber: invoiceno));
-
-             
-
-            return Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: size.height * 0.4,
-                      ),
-                      const FourRotatingDots(
-                        color: kBlackColor,
-                        size: 100,
-                      )
-                    ],
+              return Column(
+                children: [
+                  const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: CirclePopUpButton(),
+                    ),
                   ),
-                ); 
-            }
-            return BlocBuilder<InvoiceBloc, InvoiceState>(
-              builder: (context, state) {
-                if (state is displayInvoice) {
-                  if (state.isLoading) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.4,
-                          ),
-                          const FourRotatingDots(
-                            color: kBlackColor,
-                            size: 100,
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  if (state.isError) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.2),
-                      child: const ErrorBox(),
-                    );
-                  }
-                  invoice = state.invoice;
-                  if (invoice.data != null) {
-                    fieldList = invoice.data!.toList();
-                    goodsId = invoice.data!.id.toString();
-                    invoiceno = invoice.data!.invoiceno ??= '';
-                    recieverAddress = invoice.data!.recieverAddress ??= '';
-                  }
-                }
-                if (fieldList.isEmpty) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.2,
-                        ),
-                        const EmptyBox()
-                      ],
-                    ),
-                  );
-                }
-
-                return Column(
-                  children: [
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: CirclePopUpButton(),
-                      ),
-                    ),
-                    DetailsCard(details: details, dummy: fieldList),
-                    RcieverAddressCard(recieverAddress: recieverAddress),
-                    reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
-                    kHeight50,
-                    kHeight30,
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      )),
+                  DetailsCard(
+                    details: details,
+                    dummy: fieldList,
+                    reWeightValue: ref.watch(reWeightValueChanger) == 0.0
+                        ? reWeightValue.toString()
+                        : ref.watch(reWeightValueChanger).toString(),
+                  ),
+                  RcieverAddressCard(recieverAddress: recieverAddress),
+                  reWeightController.text.isNotEmpty ? kHeight100 : kHeight,
+                  kHeight50,
+                  kHeight30,
+                ],
+              );
+            },
+          );
+        },
+      )
+          //     ;
+          //   },
+          // ),
+          )),
       floatingActionButton: Consumer(builder: (context, ref, _) {
         return BlocBuilder<ReWeightBloc, ReWeightState>(
           builder: (context, state) {
@@ -170,17 +187,32 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               if (state.isLoading) {
                 return const SizedBox();
               }
+              if (state.isAdded) {
+                Fluttertoast.showToast(
+                  gravity: ToastGravity.CENTER,
+                  msg: 'Re-Weight Added   ✅',
+                  toastLength: Toast.LENGTH_LONG,
+                  backgroundColor: Colors.green,
+                  textColor: kWhiteColor,
+                  fontSize: 22,
+                );
+              }
             }
             return BlocBuilder<InvoiceBloc, InvoiceState>(
               builder: (context, state) {
+               
                 if (state is displayInvoice) {
                   if (state.isLoading || state.isError) {
                     return const SizedBox();
                   }
+
                   buttonInvoice = state.invoice;
                   if (buttonInvoice.data != null) {
-                    final reweight = buttonInvoice.data!.rewight;
-                    if (reweight != null && reweight != 0 && reweight > 0) {
+                   // log(reWeightValue.toString());
+                    final reweight = ref.watch(reWeightValueChanger) == 0.0
+                        ? buttonInvoice.data!.rewight??=0
+                        : ref.watch(reWeightValueChanger);
+                    if (reweight != 0 && reweight > 0) {
                       // generateBarcodeButton = true;
                       Future(() {
                         ref.read(generateBarcodeProvider.notifier).state = true;
@@ -229,8 +261,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     BarcodeScreen(
+                                                        goodsId:
+                                                            invoice
+                                                                .data!.id
+                                                                .toString(),
+                                                        irNum: invoice.data!.id
+                                                            .toString(),
                                                         barcodeImage: value,
-                                                        idBarcode: idBarcode),
+                                                        idBarcode: idBarcode!),
                                               )));
                                     },
                                     text: 'Generate Barcode',
@@ -257,6 +295,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                           .state = true;
                                       ref.read(reWeightField.notifier).state =
                                           false;
+                                      ref
+                                              .read(reWeightValueChanger.notifier)
+                                              .state =
+                                          double.parse(reWeightController.text);
                                       reWeightController.clear();
                                       // });
                                     },
@@ -368,13 +410,16 @@ class DetailsCard extends StatelessWidget {
     super.key,
     required this.details,
     required this.dummy,
+    required this.reWeightValue,
   });
 
   final List details;
   final List dummy;
+  final String reWeightValue;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -394,7 +439,14 @@ class DetailsCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FieldText(details: details[index]),
-                            DetailsText(dummy: dummy[index] ??= ''),
+                            SizedBox(
+                                width: size.width * 0.45,
+                                child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: DetailsText(
+                                        dummy: index == 14
+                                            ? reWeightValue
+                                            : dummy[index] ??= ''))),
                           ],
                         ),
                       ))),
@@ -420,6 +472,7 @@ class DetailsText extends StatelessWidget {
       dummy,
       style: GoogleFonts.poppins(
         textStyle: TextStyle(
+          overflow: TextOverflow.ellipsis,
           letterSpacing: .5,
           fontSize: fontSize,
           color: kBlackColor,
@@ -446,7 +499,7 @@ class FieldText extends StatelessWidget {
       style: GoogleFonts.poppins(
         textStyle: TextStyle(
           letterSpacing: .5,
-          fontSize: 16,
+          fontSize: 14,
           color: kBlackColor.withOpacity(0.6),
           fontWeight: FontWeight.w500,
         ),

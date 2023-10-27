@@ -58,6 +58,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
           ),
         );
       } else {
+        //h
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

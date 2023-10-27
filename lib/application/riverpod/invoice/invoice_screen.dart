@@ -10,6 +10,9 @@ final reWeightField = StateProvider(
     return false;
   },
 );
+final reWeightValueChanger = StateProvider((ref) {
+  return 0.0;
+});
 
 isGenerateBarcode(bool isBarcodeGenerate, WidgetRef ref) {
   ref.read(generateBarcodeProvider.notifier).state = isBarcodeGenerate;

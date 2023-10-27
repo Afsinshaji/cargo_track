@@ -68,7 +68,7 @@ alertBox(BuildContext context, String message, Function() onTap) {
                     textStyle: const TextStyle(
                       letterSpacing: .5,
                       fontSize: 14,
-                      color: kBlackColor,
+                      color: kWhiteColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

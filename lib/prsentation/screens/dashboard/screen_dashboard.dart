@@ -30,31 +30,41 @@ class DaashBoardScreenState extends ConsumerState<DaashBoardScreen> {
             child: SingleChildScrollView(
           child: Column(
             children: [
-              Center(
-                  child: Row(
-                children: [
-                  // LogoImageBox(
-                  //     logoHeight: size.width * 0.5, logimage: ctsWhiteLogo),
-                  SizedBox(
-                    height: size.width * 0.5,
-                    child: Image.asset('assets/images/Untitled-design.jpg'),
-                  ),
-                  // LogoImageBox(
-                  //   logoHeight: size.width * 0.5,
-                  //   logimage: tagLineWhiteLogo,
-                  // )
-                  SizedBox(
-                    height: size.width * 0.5,
-                    child: Image.asset('assets/images/Untitled-design-1.jpg'),
-                  )
-                ],
-              )),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Image.asset(
-                    'assets/images/Truck-Transparent-Images-PNG.png'),
+              SizedBox(
+                height: size.height * 0.55,
+                child: Column(
+                  children: [
+                    Center(
+                        child: Row(
+                      children: [
+                        // LogoImageBox(
+                        //     logoHeight: size.width * 0.5, logimage: ctsWhiteLogo),
+                        SizedBox(
+                          height: size.width * 0.5,
+                          child:
+                              Image.asset('assets/images/Untitled-design.jpg'),
+                        ),
+                        // LogoImageBox(
+                        //   logoHeight: size.width * 0.5,
+                        //   logimage: tagLineWhiteLogo,
+                        // )
+                        SizedBox(
+                          height: size.width * 0.5,
+                          child: Image.asset(
+                              'assets/images/Untitled-design-1.jpg'),
+                        ),
+                      ],
+                    )),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Image.asset(
+                          'assets/images/Truck-Transparent-Images-PNG.png'),
+                    ),
+                  ],
+                ),
               ),
               Container(
+                height: size.height * 0.45,
                 decoration: const BoxDecoration(
                     color: kWhiteColor,
                     borderRadius:

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
 import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
 import 'package:cargo_track/application/login/login_bloc.dart';
+import 'package:cargo_track/application/reports/reports_bloc.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/infrastructure/services/secure_storage/secure_storage.dart';
@@ -130,6 +131,17 @@ class EmailPasswordCard extends StatelessWidget {
                 if (state.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
+                if(state.isError){
+                    Fluttertoast.showToast(
+                    msg: 'Something went wrong. Please try again!',
+                    toastLength: Toast.LENGTH_LONG,
+                    backgroundColor: Colors.red,
+                    textColor: kWhiteColor,
+                    fontSize: 22,
+                  );
+                   BlocProvider.of<LoginBloc>(context)
+                      .add(const LoginEvent.loginInitialized());
+                }
                 if (state.statusMap['status'] == true) {
                   log('A');
                   StorageService.instance.writeSecureData(StorageItem(
@@ -147,7 +159,10 @@ class EmailPasswordCard extends StatelessWidget {
                         .add(const AllTripSheetEvent.getAllTripSheetList());
                     BlocProvider.of<AllInvoiceBloc>(context)
                         .add(const AllInvoiceEvent.getAllInvoiceList());
-                    Navigator.push(
+                    BlocProvider.of<ReportsBloc>(context)
+                        .add(const ReportsEvent.getAllReports());
+
+                    Navigator.pushReplacement(
                       context,
                       CupertinoPageRoute(
                         builder: (context) => MainPageScreen(),
@@ -156,7 +171,7 @@ class EmailPasswordCard extends StatelessWidget {
                     BlocProvider.of<LoginBloc>(context)
                         .add(const LoginEvent.loginInitialized());
                   });
-                } else {
+                } else if(state.statusMap['status'] == false) {
                   //Type An Error Here
 
                   Fluttertoast.showToast(

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
 import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
+import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/application/riverpod/search/search.dart';
 import 'package:cargo_track/application/trip_sheet/trip_sheet_bloc.dart';
 
@@ -160,6 +161,7 @@ class InvoiceBuilder extends ConsumerWidget {
           onTap: () {
             BlocProvider.of<InvoiceBloc>(context).add(InvoiceEvent.getInvoice(
                 invoiceNumber: invoiceList[index].invoiceno ??= ''));
+            ref.read(reWeightValueChanger.notifier).state = 0.0;
             Navigator.push(
                 context,
                 CupertinoPageRoute(

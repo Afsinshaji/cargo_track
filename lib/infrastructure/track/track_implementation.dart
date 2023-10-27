@@ -10,8 +10,8 @@ import 'package:cargo_track/infrastructure/services/secure_storage/secure_storag
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
-class TrackImplementation extends TrackService{
-   // creating a singleton
+class TrackImplementation extends TrackService {
+  // creating a singleton
   TrackImplementation.internal();
   static TrackImplementation instance = TrackImplementation.internal();
   TrackImplementation factory() {
@@ -20,17 +20,19 @@ class TrackImplementation extends TrackService{
 
   //
   @override
-  Future<Either<MainFailure, List<StatusData>>> getTrackingStatus({required String searchingNumber})async {
+  Future<Either<MainFailure, List<StatusData>>> getTrackingStatus(
+      {required String searchingNumber}) async {
     try {
+      log('heree');
       final url = '${ApiEndPoints.getTrackingStatus}$searchingNumber';
       String? token = await StorageService.instance.readSecureData('authToken');
       token ??= '';
       final uri = Uri.parse(url);
       final headers = {
         'Authorization': 'Bearer $token',
-        
       };
       final httpResponse = await http.post(uri, headers: headers);
+      log(httpResponse.statusCode.toString());
       if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
         log(httpResponse.body.toString());
 
@@ -56,5 +58,4 @@ class TrackImplementation extends TrackService{
       return const Left(MainFailure.clientFailure());
     }
   }
-  
 }

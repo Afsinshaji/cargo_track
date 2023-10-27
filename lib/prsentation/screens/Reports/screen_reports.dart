@@ -5,8 +5,13 @@ import 'package:cargo_track/application/riverpod/reports/reports.dart';
 import 'package:cargo_track/core/colors/colors.dart';
 import 'package:cargo_track/core/constants/constants.dart';
 import 'package:cargo_track/core/list/list.dart';
+import 'package:cargo_track/infrastructure/services/secure_storage/secure_storage.dart';
+import 'package:cargo_track/infrastructure/services/shared_preferences/login_authorization.dart';
+import 'package:cargo_track/prsentation/screens/dashboard/widgets/draggable_bottom_sheet.dart';
+import 'package:cargo_track/prsentation/screens/login/screen_login.dart';
 import 'package:cargo_track/prsentation/screens/reports/screen_each_report.dart';
 import 'package:cargo_track/prsentation/screens/reports/widgets/invoice_field.dart';
+import 'package:cargo_track/prsentation/widgets/alert_box.dart';
 import 'package:cargo_track/prsentation/widgets/dropdown_field.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
 import 'package:cargo_track/prsentation/widgets/four_rotating_drop.dart';
@@ -23,259 +28,365 @@ class ReportsScreen extends ConsumerWidget {
   ReportsScreen({super.key});
 
   AnimationController? animationController;
+  final DraggableScrollableController dragController =
+      DraggableScrollableController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kBlueColor.withOpacity(0.3),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            leading: null,
-            pinned: true,
-            backgroundColor: kBlueColor.withOpacity(0.01),
-            expandedHeight: size.height * 0.65,
-            flexibleSpace: SizedBox(
-              height: size.height * 0.7,
-              child: Stack(
-                children: [
-                  Container(
-                    width: size.width,
-                    height: size.height * 0.3,
-                    decoration: const BoxDecoration(
-                        color: kBlueColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30))),
-                    alignment: Alignment.topCenter,
-                    padding: EdgeInsets.only(top: size.height * 0.04),
-                    child: Text(
-                      'Reports',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          letterSpacing: .5,
-                          fontSize: 28,
-                          color: kBlackColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+      body: RefreshIndicator(
+        onRefresh: ()async{
+    BlocProvider.of<ReportsBloc>(context)
+            .add(const ReportsEvent.getAllReports());
+        },
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              leading: null,
+              pinned: true,
+              backgroundColor: kBlueColor.withOpacity(0.01),
+              expandedHeight: size.height * 0.65,
+              flexibleSpace: SizedBox(
+                height: size.height * 0.7,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: size.width,
+                      height: size.height * 0.3,
+                      decoration: const BoxDecoration(
+                          color: kBlueColor,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30))),
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(top: size.height * 0.04),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.1,
+                          ),
+                          Container(
+                            alignment: Alignment.topCenter,
+                            width: size.width * 0.7,
+                            child: Text(
+                              'Reports',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  letterSpacing: .5,
+                                  fontSize: 28,
+                                  color: kBlackColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                onPressed: () {
+                                  alertBox(context, 'Logging Out', ()async {
+                                                 
+      
+                                                  await StorageService.instance
+                                                      .deleteAllSecureData();
+                                                  await LoginAuthorization
+                                                      .instance
+                                                      .deleteAuthToken();
+                                                  await LoginAuthorization
+                                                      .instance
+                                                      .setLoginFalse()
+                                                      .then((value) => Navigator
+                                                          .pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    LoginScreen(),
+                                                              ),
+                                                              (route) => false));
+                                                },);
+                                  // openDraggableBottomSheet(
+                                  //     controller: dragController,
+                                  //     child: Material(
+                                  //       elevation: 50,
+                                  //       shadowColor: kBlackColor,
+                                  //       borderRadius: const BorderRadius.only(
+                                  //         topLeft: Radius.circular(80),
+                                  //         topRight: Radius.circular(80),
+                                  //       ),
+                                  //       child: Container(
+                                  //         height: size.height * 0.3,
+                                  //         decoration: const BoxDecoration(
+                                  //             borderRadius: BorderRadius.only(
+                                  //               topLeft: Radius.circular(80),
+                                  //               topRight: Radius.circular(80),
+                                  //             ),
+                                  //             color: kWhiteColor),
+                                  //         child: Padding(
+                                  //           padding:
+                                  //               EdgeInsets.all(size.width * 0.2),
+                                  //           child: ClickButton(
+                                  //               boxShadow: [
+                                  //                 BoxShadow(
+                                  //                     blurRadius: 0.5,
+                                  //                     color: kBlackColor
+                                  //                         .withOpacity(0.5),
+                                  //                     spreadRadius: 0.01,
+                                  //                     offset: const Offset(2, 2))
+                                  //               ],
+                                  //               width: size.width * 0.5,
+                                                // onTap: () async {
+                                                //   // var auth = await StorageService.instance
+                                                //   //     .readSecureData('authToken');
+                                                //   // log(auth ??= 'nothing');
+                                                //   dragController.jumpTo(0);
+      
+                                                //   await StorageService.instance
+                                                //       .deleteAllSecureData();
+                                                //   await LoginAuthorization
+                                                //       .instance
+                                                //       .deleteAuthToken();
+                                                //   await LoginAuthorization
+                                                //       .instance
+                                                //       .setLoginFalse()
+                                                //       .then((value) => Navigator
+                                                //           .pushAndRemoveUntil(
+                                                //               context,
+                                                //               MaterialPageRoute(
+                                                //                 builder: (context) =>
+                                                //                     LoginScreen(),
+                                                //               ),
+                                                //               (route) => false));
+                                                // },
+                                  //               text: 'Logout'),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //     context: context);
+                                },
+                                icon: Icon(Icons.logout),
+                                color: kBlackColor,
+                              )),
+                        ],
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: size.width * 0.05,
-                    top: size.height * 0.13,
-                    child: ReportDropdownStack(
-                      size: size,
-                      ref: ref,
+                    Positioned(
+                      left: size.width * 0.05,
+                      top: size.height * 0.13,
+                      child: ReportDropdownStack(
+                        size: size,
+                        ref: ref,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SliverList(delegate: SliverChildListDelegate([])),
-          BlocBuilder<ReportsBloc, ReportsState>(
-            builder: (context, state) {
-              List<ReportsDTO> allReportsList = [];
-              final ReportsSearchDTO reportsSearch =
-                  ref.watch(reportsSearchProvider);
-              bool isLoaded = true;
-              if (state is displayingReports) {
-                // log(state.allReportsList.toString());
-                if (state.isLoading) {
-                  isLoaded = false;
-                }
-                if (!state.isLoading) {
-                  isLoaded = true;
-                }
-
-                allReportsList = state.allReportsList;
-
-                if (reportsSearch.invoice.isNotEmpty) {
-                  final invoice = reportsSearch.invoice;
-                  if (reportsSearch.filter == 'Contains') {
+            SliverList(delegate: SliverChildListDelegate([])),
+            BlocBuilder<ReportsBloc, ReportsState>(
+              builder: (context, state) {
+                List<ReportsDTO> allReportsList = [];
+                final ReportsSearchDTO reportsSearch =
+                    ref.watch(reportsSearchProvider);
+                bool isLoaded = true;
+                if (state is displayingReports) {
+                  // log(state.allReportsList.toString());
+                  if (state.isLoading) {
+                    isLoaded = false;
+                  }
+                  if (!state.isLoading) {
+                    isLoaded = true;
+                  }
+      
+                  allReportsList = state.allReportsList;
+      
+                  if (reportsSearch.invoice.isNotEmpty) {
+                    final invoice = reportsSearch.invoice;
+                    if (reportsSearch.filter == 'Contains') {
+                      final searchList = allReportsList
+                          .where((element) =>
+                              element.invoiceNumber.contains(invoice))
+                          .toList();
+                      allReportsList = searchList;
+                    } else if (reportsSearch.filter == 'Start With') {
+                      final searchList = allReportsList
+                          .where((element) =>
+                              element.invoiceNumber.startsWith(invoice))
+                          .toList();
+                      allReportsList = searchList;
+                    } else if (reportsSearch.filter == 'Exact') {
+                      final searchList = allReportsList
+                          .where((element) => element.invoiceNumber == invoice)
+                          .toList();
+                      allReportsList = searchList;
+                    }
+                  }
+                  if (reportsSearch.vehicleNum.isNotEmpty) {
                     final searchList = allReportsList
                         .where((element) =>
-                            element.invoiceNumber.contains(invoice))
-                        .toList();
-                    allReportsList = searchList;
-                  } else if (reportsSearch.filter == 'Start With') {
-                    final searchList = allReportsList
-                        .where((element) =>
-                            element.invoiceNumber.startsWith(invoice))
-                        .toList();
-                    allReportsList = searchList;
-                  } else if (reportsSearch.filter == 'Exact') {
-                    final searchList = allReportsList
-                        .where((element) => element.invoiceNumber == invoice)
+                            element.vehicleNumber == reportsSearch.vehicleNum)
                         .toList();
                     allReportsList = searchList;
                   }
+                  if (reportsSearch.cargoName.isNotEmpty) {
+                    final searchList = allReportsList
+                        .where((element) =>
+                            element.cargoName == reportsSearch.cargoName)
+                        .toList();
+                    allReportsList = searchList;
+                  }
+                  // log('Here${allReportsList.toString()}');
                 }
-                if (reportsSearch.vehicleNum.isNotEmpty) {
-                  final searchList = allReportsList
-                      .where((element) =>
-                          element.vehicleNumber == reportsSearch.vehicleNum)
-                      .toList();
-                  allReportsList = searchList;
-                }
-                if (reportsSearch.cargoName.isNotEmpty) {
-                  final searchList = allReportsList
-                      .where((element) =>
-                          element.cargoName == reportsSearch.cargoName)
-                      .toList();
-                  allReportsList = searchList;
-                }
-                // log('Here${allReportsList.toString()}');
-              }
-
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (_, int sliverindex) {
-                    if (sliverindex == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            left: 25.0, top: 15, right: 20, bottom: 10),
-                        child: Column(
-                          children: [
-                            Center(
-                                child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.3),
-                              child: const Divider(
-                                color: kGreyColor,
-                                thickness: 5,
-                              ),
-                            )),
-                            Row(children: [
-                              Text(
-                                'Invoices',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    letterSpacing: .5,
-                                    fontSize: 16,
-                                    color: kBlackColor,
-                                    fontWeight: FontWeight.w600,
+      
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, int sliverindex) {
+                      if (sliverindex == 0) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 25.0, top: 15, right: 20, bottom: 10),
+                          child: Column(
+                            children: [
+                              Center(
+                                  child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.3),
+                                child: const Divider(
+                                  color: kGreyColor,
+                                  thickness: 5,
+                                ),
+                              )),
+                              Row(children: [
+                                Text(
+                                  'Invoices',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      letterSpacing: .5,
+                                      fontSize: 16,
+                                      color: kBlackColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Icon(Icons.arrow_drop_down_outlined)
-                            ]),
-                          ],
-                        ),
-                      );
-                    }
-                    if (!isLoaded) {
-                      return const Center(
-                        child: FourRotatingDots(
-                          color: kBlueColor,
-                          size: 100,
-                        ),
-                      );
-                    }
-                    return SizedBox(
-                      height: size.height * 0.73,
-                      child: allReportsList.isEmpty
-                          ? const EmptyBox()
-                          : ListView.builder(
-                              // shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => EachReportScreen(
-                                          report: allReportsList[index]),
-                                    ));
-                                  },
-                                  title: Container(
-                                      decoration: BoxDecoration(
-                                        boxShadow: const [
-                                          BoxShadow(
-                                              blurRadius: 2,
-                                              color: kBlackColor,
-                                              spreadRadius: 0,
-                                              offset: Offset(1, 1))
-                                        ],
-                                        color: allReportsList[index].status == 3
-                                            ? kGreenColor
-                                            : kBlueColor,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomRight: Radius.circular(50),
-                                          topLeft: Radius.circular(50),
+                                const Icon(Icons.arrow_drop_down_outlined)
+                              ]),
+                            ],
+                          ),
+                        );
+                      }
+                      if (!isLoaded) {
+                        return const Center(
+                          child: FourRotatingDots(
+                            color: kBlueColor,
+                            size: 100,
+                          ),
+                        );
+                      }
+                      return SizedBox(
+                        height: size.height * 0.73,
+                        child: allReportsList.isEmpty
+                            ? const EmptyBox()
+                            : ListView.builder(
+                                // shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => EachReportScreen(
+                                            report: allReportsList[index]),
+                                      ));
+                                    },
+                                    title: Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                blurRadius: 2,
+                                                color: kBlackColor,
+                                                spreadRadius: 0,
+                                                offset: Offset(1, 1))
+                                          ],
+                                          color: allReportsList[index].status == 3
+                                              ? kGreenColor
+                                              : kBlueColor,
+                                          borderRadius: const BorderRadius.only(
+                                            bottomRight: Radius.circular(50),
+                                            topLeft: Radius.circular(50),
+                                          ),
                                         ),
-                                      ),
-                                      padding: const EdgeInsets.all(8),
-                                      height: size.width * 0.2,
-                                      width: size.width * 0.9,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SizedBox(
-                                            width: size.width * 0.3,
-                                            child: Text(
-                                              allReportsList[index]
-                                                  .invoiceNumber,
-                                              style: GoogleFonts.poppins(
-                                                textStyle: const TextStyle(
-                                                  letterSpacing: .5,
-                                                  fontSize: 18,
-                                                  color: kBlackColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.all(8),
+                                        height: size.width * 0.2,
+                                        width: size.width * 0.9,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            SizedBox(
+                                              width: size.width * 0.3,
+                                              child: Text(
+                                                allReportsList[index]
+                                                    .invoiceNumber,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 18,
+                                                    color: kBlackColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                allReportsList[index]
-                                                    .driverName,
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 16,
-                                                    color: kBlackColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  allReportsList[index]
+                                                      .driverName,
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      letterSpacing: .5,
+                                                      fontSize: 16,
+                                                      color: kBlackColor,
+                                                      fontWeight: FontWeight.w600,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Text(
-                                                allReportsList[index]
-                                                    .vehicleNumber,
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 16,
-                                                    color: kBlackColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                Text(
+                                                  allReportsList[index]
+                                                      .vehicleNumber,
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      letterSpacing: .5,
+                                                      fontSize: 16,
+                                                      color: kBlackColor,
+                                                      fontWeight: FontWeight.w600,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )),
-                                );
-                              },
-                              itemCount: allReportsList.length,
-                            ),
-                    );
-                  },
-                  childCount: 2,
-                ),
-              );
-            },
-          ),
-        ],
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        )),
+                                  );
+                                },
+                                itemCount: allReportsList.length,
+                              ),
+                      );
+                    },
+                    childCount: 2,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -310,7 +421,9 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            kHeight30,
+            SizedBox(
+              height: widget.size.height * 0.01,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Text(
@@ -325,7 +438,9 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                 ),
               ),
             ),
-            kHeight,
+            SizedBox(
+              height: widget.size.height * 0.01,
+            ),
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: Row(
@@ -348,14 +463,16 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                   ),
                   SizedBox(
                       height: widget.size.height * 0.06,
-                      width: widget.size.width * 0.58,
+                      width: widget.size.width * 0.56,
                       child: InvoiceField(
                         size: widget.size,
                       )),
                 ],
               ),
             ),
-            kHeight30,
+            SizedBox(
+              height: widget.size.height * 0.03,
+            ),
             BlocBuilder<ReportsBloc, ReportsState>(builder: (context, state) {
               List<String> allCargoName = [];
               List<String> allVehicle = [];
@@ -380,7 +497,9 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                     dataList: allVehicle,
                     isVehicleNum: true,
                   ),
-                  kHeight30,
+                  SizedBox(
+                    height: widget.size.height * 0.03,
+                  ),
                   DropDownSearchTextField(
                     hintText: 'Cargo Name',
                     dataList: allCargoName,
@@ -389,7 +508,9 @@ class _ReportDropdownStackState extends State<ReportDropdownStack> {
                 ],
               );
             }),
-            kHeight20,
+            SizedBox(
+              height: widget.size.height * 0.01,
+            ),
             Center(
               child: ClickButton(
                 boxShadow: [
@@ -495,23 +616,23 @@ class DropDownSearchTextField extends ConsumerWidget {
 
 // Image.asset(
 //               'assets/images/isometric-illustration-concept-expedition-of-land-sea-and-air-free-vector-removebg-preview.png'),
-//           ClickButton(
-//               onTap: () async {
-//                 // var auth = await StorageService.instance
-//                 //     .readSecureData('authToken');
-//                 // log(auth ??= 'nothing');
+          // ClickButton(
+          //     onTap: () async {
+          //       // var auth = await StorageService.instance
+          //       //     .readSecureData('authToken');
+          //       // log(auth ??= 'nothing');
 
-//                 alertSnackbar(context, '');
-//                 await StorageService.instance.deleteAllSecureData();
-//                 await LoginAuthorization.instance.deleteAuthToken();
-//                 await LoginAuthorization.instance
-//                     .setLoginFalse()
-//                     .then((value) => Navigator.pushAndRemoveUntil(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (context) => LoginScreen(),
-//                         ),
-//                         (route) => false));
-//               },
-//               width: 200,
-//               text: 'Logout'),
+          //       alertSnackbar(context, '');
+          //       await StorageService.instance.deleteAllSecureData();
+          //       await LoginAuthorization.instance.deleteAuthToken();
+          //       await LoginAuthorization.instance
+          //           .setLoginFalse()
+          //           .then((value) => Navigator.pushAndRemoveUntil(
+          //               context,
+          //               MaterialPageRoute(
+          //                 builder: (context) => LoginScreen(),
+          //               ),
+          //               (route) => false));
+          //     },
+          //     width: 200,
+          //     text: 'Logout'),

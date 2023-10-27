@@ -26,7 +26,7 @@ class SearchingBar extends ConsumerWidget {
           )),
       child: Column(
         children: [
-          kHeight50,
+          SizedBox(height: size.height*0.04,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Material(

@@ -76,7 +76,7 @@ class TrackingCargoScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
-                                      width: size.width*0.3,
+                                      width: size.width*0.2,
                                       child: Text(
                                         cargoList[index].invoiceNumber ??= '',
                                         style: GoogleFonts.poppins(

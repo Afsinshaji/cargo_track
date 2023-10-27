@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cargo_track/application/all_invoice/all_invoice_bloc.dart';
 import 'package:cargo_track/application/all_trip_sheet/all_trip_sheet_bloc.dart';
+import 'package:cargo_track/application/barcode/barcode_bloc.dart';
 import 'package:cargo_track/application/cargo/cargo_bloc.dart';
 import 'package:cargo_track/application/invoice/invoice_bloc.dart';
 import 'package:cargo_track/application/login/login_bloc.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -28,6 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => BarcodeBloc(),
+        ),
         BlocProvider(
           create: (context) => ReWeightBloc(),
         ),
@@ -66,5 +73,13 @@ class MyApp extends StatelessWidget {
         home: const SplashScreen(),
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }
