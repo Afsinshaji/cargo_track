@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
 // import 'package:pdf/widgets.dart' as pw;
 
 class BarcodeScreen extends StatelessWidget {
@@ -21,11 +20,13 @@ class BarcodeScreen extends StatelessWidget {
       required this.barcodeImage,
       required this.idBarcode,
       required this.irNum,
-      required this.goodsId});
+      required this.goodsId,
+      required this.invoiceNum});
   final File barcodeImage;
   final File idBarcode;
   final String irNum;
   final String goodsId;
+  final String invoiceNum;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -33,38 +34,39 @@ class BarcodeScreen extends StatelessWidget {
       backgroundColor: kBlueColor,
       floatingActionButton: BlocBuilder<BarcodeBloc, BarcodeState>(
         builder: (context, state) {
-          if(state is showResult){
-            if(state.isLoading){
-                   return const Center(
-                    child: FourRotatingDots(
-                      color: kBlackColor,
-                      size: 100,
-                    ),
-                  );
+          if (state is showResult) {
+            if (state.isLoading) {
+              return const Center(
+                child: FourRotatingDots(
+                  color: kBlackColor,
+                  size: 100,
+                ),
+              );
             }
-            if(state.isAdded){
-            if(state.isAdded){
-                  Fluttertoast.showToast(
-                    
-                    gravity: ToastGravity.CENTER,
-                    msg: 'Barcode Uploaded  ✅',
-                    toastLength: Toast.LENGTH_LONG,
-                    backgroundColor: Colors.green,
-                    textColor: kWhiteColor,
-                    fontSize: 22,
-                  );
+            if (state.isAdded) {
+              if (state.isAdded) {
+                Fluttertoast.showToast(
+                  gravity: ToastGravity.CENTER,
+                  msg: 'Barcode Uploaded  ✅',
+                  toastLength: Toast.LENGTH_LONG,
+                  backgroundColor: Colors.green,
+                  textColor: kWhiteColor,
+                  fontSize: 22,
+                );
               }
             }
           }
           return Padding(
-            padding:  EdgeInsets.symmetric(horizontal: size.width * 0.2,),
+            padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.2,
+            ),
             child: ClickButton(
               onTap: () async {
-                BlocProvider.of<BarcodeBloc>(context).add(BarcodeEvent.addBarcode(
-                    goodsId: goodsId,
-                    irNum: irNum,
-                    invoiceBarcode: barcodeImage,
-                    irBarcode: idBarcode));
+                BlocProvider.of<BarcodeBloc>(context).add(
+                    BarcodeEvent.addBarcode(
+                        goodsId: goodsId,
+                        irNum: irNum,
+                        invoiceNumber: invoiceNum));
               },
               text: 'Upload Barcode',
               width: size.width * 0.5,
@@ -82,7 +84,9 @@ class BarcodeScreen extends StatelessWidget {
         title: Row(
           children: [
             const CirclePopUpButton(),
-            SizedBox(width: size.width*0.05,),
+            SizedBox(
+              width: size.width * 0.05,
+            ),
             Text(
               'Invoice Barcode',
               style: GoogleFonts.poppins(
@@ -94,18 +98,19 @@ class BarcodeScreen extends StatelessWidget {
                 ),
               ),
             ),
-              SizedBox(width: size.width*0.01,),
+            SizedBox(
+              width: size.width * 0.01,
+            ),
             IconButton(
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) =>
-                //       //  PrintingScreen(
-                //       //   barcodeImage: barcodeImage,
-                //       //   idBarcode: idBarcode,
-                //       // ),
-                //     ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrintingScreen(
+                        barcodeImage: barcodeImage,
+                        idBarcode: idBarcode,
+                      ),
+                    ));
               },
               icon: const Icon(
                 Icons.print,

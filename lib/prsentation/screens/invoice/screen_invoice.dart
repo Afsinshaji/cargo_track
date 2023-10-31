@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:cargo_track/application/riverpod/invoice/invoice_screen.dart';
 import 'package:cargo_track/prsentation/widgets/empty_box.dart';
@@ -93,7 +92,7 @@ class InvoiceScreenState extends ConsumerState<InvoiceScreen> {
               goodsId = invoice.data!.id.toString();
               invoiceno = invoice.data!.invoiceno ??= '';
               recieverAddress = invoice.data!.recieverAddress ??= '';
-              print(invoice.data!.rewight ??= 0);
+              
               reWeightValue = invoice.data!.rewight ??= 0;
               // ref.read(reWeightValueChanger.notifier).state =
               //     invoice.data!.rewight ??= 0;
@@ -261,6 +260,8 @@ class InvoiceScreenState extends ConsumerState<InvoiceScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     BarcodeScreen(
+                                                      invoiceNum:  invoice
+                                                                .data!.invoiceno??='',
                                                         goodsId:
                                                             invoice
                                                                 .data!.id

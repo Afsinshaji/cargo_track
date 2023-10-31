@@ -18,26 +18,23 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$BarcodeEvent {
   String get goodsId => throw _privateConstructorUsedError;
   String get irNum => throw _privateConstructorUsedError;
-  File get invoiceBarcode => throw _privateConstructorUsedError;
-  File get irBarcode => throw _privateConstructorUsedError;
+  String get invoiceNumber => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)
+            String goodsId, String irNum, String invoiceNumber)
         addBarcode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)?
+    TResult? Function(String goodsId, String irNum, String invoiceNumber)?
         addBarcode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)?
+    TResult Function(String goodsId, String irNum, String invoiceNumber)?
         addBarcode,
     required TResult orElse(),
   }) =>
@@ -70,8 +67,7 @@ abstract class $BarcodeEventCopyWith<$Res> {
           BarcodeEvent value, $Res Function(BarcodeEvent) then) =
       _$BarcodeEventCopyWithImpl<$Res, BarcodeEvent>;
   @useResult
-  $Res call(
-      {String goodsId, String irNum, File invoiceBarcode, File irBarcode});
+  $Res call({String goodsId, String irNum, String invoiceNumber});
 }
 
 /// @nodoc
@@ -89,8 +85,7 @@ class _$BarcodeEventCopyWithImpl<$Res, $Val extends BarcodeEvent>
   $Res call({
     Object? goodsId = null,
     Object? irNum = null,
-    Object? invoiceBarcode = null,
-    Object? irBarcode = null,
+    Object? invoiceNumber = null,
   }) {
     return _then(_value.copyWith(
       goodsId: null == goodsId
@@ -101,14 +96,10 @@ class _$BarcodeEventCopyWithImpl<$Res, $Val extends BarcodeEvent>
           ? _value.irNum
           : irNum // ignore: cast_nullable_to_non_nullable
               as String,
-      invoiceBarcode: null == invoiceBarcode
-          ? _value.invoiceBarcode
-          : invoiceBarcode // ignore: cast_nullable_to_non_nullable
-              as File,
-      irBarcode: null == irBarcode
-          ? _value.irBarcode
-          : irBarcode // ignore: cast_nullable_to_non_nullable
-              as File,
+      invoiceNumber: null == invoiceNumber
+          ? _value.invoiceNumber
+          : invoiceNumber // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -121,8 +112,7 @@ abstract class _$$addBarcodeCopyWith<$Res>
       __$$addBarcodeCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String goodsId, String irNum, File invoiceBarcode, File irBarcode});
+  $Res call({String goodsId, String irNum, String invoiceNumber});
 }
 
 /// @nodoc
@@ -138,8 +128,7 @@ class __$$addBarcodeCopyWithImpl<$Res>
   $Res call({
     Object? goodsId = null,
     Object? irNum = null,
-    Object? invoiceBarcode = null,
-    Object? irBarcode = null,
+    Object? invoiceNumber = null,
   }) {
     return _then(_$addBarcode(
       goodsId: null == goodsId
@@ -150,14 +139,10 @@ class __$$addBarcodeCopyWithImpl<$Res>
           ? _value.irNum
           : irNum // ignore: cast_nullable_to_non_nullable
               as String,
-      invoiceBarcode: null == invoiceBarcode
-          ? _value.invoiceBarcode
-          : invoiceBarcode // ignore: cast_nullable_to_non_nullable
-              as File,
-      irBarcode: null == irBarcode
-          ? _value.irBarcode
-          : irBarcode // ignore: cast_nullable_to_non_nullable
-              as File,
+      invoiceNumber: null == invoiceNumber
+          ? _value.invoiceNumber
+          : invoiceNumber // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -168,21 +153,18 @@ class _$addBarcode implements addBarcode {
   const _$addBarcode(
       {required this.goodsId,
       required this.irNum,
-      required this.invoiceBarcode,
-      required this.irBarcode});
+      required this.invoiceNumber});
 
   @override
   final String goodsId;
   @override
   final String irNum;
   @override
-  final File invoiceBarcode;
-  @override
-  final File irBarcode;
+  final String invoiceNumber;
 
   @override
   String toString() {
-    return 'BarcodeEvent.addBarcode(goodsId: $goodsId, irNum: $irNum, invoiceBarcode: $invoiceBarcode, irBarcode: $irBarcode)';
+    return 'BarcodeEvent.addBarcode(goodsId: $goodsId, irNum: $irNum, invoiceNumber: $invoiceNumber)';
   }
 
   @override
@@ -192,15 +174,12 @@ class _$addBarcode implements addBarcode {
             other is _$addBarcode &&
             (identical(other.goodsId, goodsId) || other.goodsId == goodsId) &&
             (identical(other.irNum, irNum) || other.irNum == irNum) &&
-            (identical(other.invoiceBarcode, invoiceBarcode) ||
-                other.invoiceBarcode == invoiceBarcode) &&
-            (identical(other.irBarcode, irBarcode) ||
-                other.irBarcode == irBarcode));
+            (identical(other.invoiceNumber, invoiceNumber) ||
+                other.invoiceNumber == invoiceNumber));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, goodsId, irNum, invoiceBarcode, irBarcode);
+  int get hashCode => Object.hash(runtimeType, goodsId, irNum, invoiceNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -212,32 +191,30 @@ class _$addBarcode implements addBarcode {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)
+            String goodsId, String irNum, String invoiceNumber)
         addBarcode,
   }) {
-    return addBarcode(goodsId, irNum, invoiceBarcode, irBarcode);
+    return addBarcode(goodsId, irNum, invoiceNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)?
+    TResult? Function(String goodsId, String irNum, String invoiceNumber)?
         addBarcode,
   }) {
-    return addBarcode?.call(goodsId, irNum, invoiceBarcode, irBarcode);
+    return addBarcode?.call(goodsId, irNum, invoiceNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String goodsId, String irNum, File invoiceBarcode, File irBarcode)?
+    TResult Function(String goodsId, String irNum, String invoiceNumber)?
         addBarcode,
     required TResult orElse(),
   }) {
     if (addBarcode != null) {
-      return addBarcode(goodsId, irNum, invoiceBarcode, irBarcode);
+      return addBarcode(goodsId, irNum, invoiceNumber);
     }
     return orElse();
   }
@@ -275,17 +252,14 @@ abstract class addBarcode implements BarcodeEvent {
   const factory addBarcode(
       {required final String goodsId,
       required final String irNum,
-      required final File invoiceBarcode,
-      required final File irBarcode}) = _$addBarcode;
+      required final String invoiceNumber}) = _$addBarcode;
 
   @override
   String get goodsId;
   @override
   String get irNum;
   @override
-  File get invoiceBarcode;
-  @override
-  File get irBarcode;
+  String get invoiceNumber;
   @override
   @JsonKey(ignore: true)
   _$$addBarcodeCopyWith<_$addBarcode> get copyWith =>

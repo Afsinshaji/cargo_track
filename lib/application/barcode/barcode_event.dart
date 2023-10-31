@@ -5,7 +5,6 @@ class BarcodeEvent with _$BarcodeEvent {
   const factory BarcodeEvent.addBarcode({
     required String goodsId,
     required String irNum,
-    required File invoiceBarcode,
-    required File irBarcode,
+    required String invoiceNumber,
   }) = addBarcode;
 }

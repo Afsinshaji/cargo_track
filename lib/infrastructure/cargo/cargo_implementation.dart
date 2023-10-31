@@ -44,7 +44,7 @@ class CargoImplementation extends CargoService {
         "phone": cargo.phone ??= 0,
         "weight": cargo.weight ??= '',
         "pcs": cargo.pcs ??= '',
-        "status": "Tripsheet Created"
+        "status": "Out for Delivery"
       });
 
       final httpResponse = await http.post(uri, headers: headers, body: body);

@@ -1,4 +1,4 @@
-import 'dart:io';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:cargo_track/infrastructure/barcode/barcode_implementation.dart';
@@ -15,8 +15,8 @@ class BarcodeBloc extends Bloc<BarcodeEvent, BarcodeState> {
       final result = await BarcodeImplementation.instance.addBarcode(
           goodsId: event.goodsId,
           irNum: event.irNum,
-          invoiceBarcode: event.invoiceBarcode,
-          irBarcode: event.irBarcode);
+          invoiceNumber: event.invoiceNumber
+          );
 
       result.fold(
           (l) => emit(const showResult(isAdded: false, isLoading: false)),

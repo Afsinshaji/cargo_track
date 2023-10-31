@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+
 
 import 'package:cargo_track/domain/barcode/barcode_service.dart';
 import 'package:cargo_track/domain/core/api_end_points.dart';
@@ -23,14 +23,12 @@ class BarcodeImplementation extends BarcodeService {
   Future<Either<MainFailure, bool>> addBarcode(
       {required String goodsId,
       required String irNum,
-      required File invoiceBarcode,
-      required File irBarcode}) async {
+      required String invoiceNumber,
+     }) async {
     try {
-      final invoicebarcodeBytes = await invoiceBarcode.readAsBytes();
-      final irbarcodeBytes = await irBarcode.readAsBytes();
+  
 
-      final invoiceBase64String = base64Encode(invoicebarcodeBytes);
-      final irBase64String = base64Encode(irbarcodeBytes);
+ 
 
       const url = ApiEndPoints.addBarcode;
       String? token = await StorageService.instance.readSecureData('authToken');
@@ -41,13 +39,11 @@ class BarcodeImplementation extends BarcodeService {
         // 'Accept': 'application/json',
         'Content-Type': 'application/json'
       };
-      log('ir$irBase64String');
-      log('invoice$invoiceBase64String');
+
       final body = jsonEncode({
         "goods_id": goodsId,
-        "barcode": irNum,
-        'barcode_invoice': 'invoice',
-        'lr_no': irNum
+      "invoice_no":invoiceNumber,
+        "lr_no": irNum
       });
 
       final httpResponse = await http.post(uri, headers: headers, body: body);

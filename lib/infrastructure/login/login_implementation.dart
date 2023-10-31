@@ -6,12 +6,12 @@ import 'package:cargo_track/domain/core/failure/failure.dart';
 import 'package:cargo_track/domain/login/login_service.dart';
 import 'package:cargo_track/domain/login/models/login/login.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+
 
 import 'package:http/http.dart' as http;
 
 class LoginImplementation extends LoginService {
-  final dio = Dio();
+ 
 
   // creating a singleton
   LoginImplementation.internal();
